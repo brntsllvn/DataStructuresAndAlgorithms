@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataStructuresAndAlgorithms", "DataStructuresAndAlgorithms\DataStructuresAndAlgorithms.csproj", "{244E4626-5927-4D29-B039-7B936314A871}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Algorithmic Toolbox", "Algorithmic Toolbox", "{8E284C18-A9E5-4FBD-86E5-D6F3E302B6FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Week1_APlusB", "Week1_APlusB\Week1_APlusB.csproj", "{31257ACF-A87B-4B3A-AC20-149641768659}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,12 +13,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{244E4626-5927-4D29-B039-7B936314A871}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{244E4626-5927-4D29-B039-7B936314A871}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{244E4626-5927-4D29-B039-7B936314A871}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{244E4626-5927-4D29-B039-7B936314A871}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31257ACF-A87B-4B3A-AC20-149641768659}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31257ACF-A87B-4B3A-AC20-149641768659}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31257ACF-A87B-4B3A-AC20-149641768659}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31257ACF-A87B-4B3A-AC20-149641768659}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{31257ACF-A87B-4B3A-AC20-149641768659} = {8E284C18-A9E5-4FBD-86E5-D6F3E302B6FC}
 	EndGlobalSection
 EndGlobal
