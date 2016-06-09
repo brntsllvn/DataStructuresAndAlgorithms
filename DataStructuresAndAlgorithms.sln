@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Week1_APlusB", "Week1_APlus
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Week1_MaximumPairwiseProduct", "Week1_MaximumPairwiseProduct\Week1_MaximumPairwiseProduct.csproj", "{18542191-EEC1-42A6-8113-107F8D183D46}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LauncherTemplate", "LauncherTemplate\LauncherTemplate.csproj", "{C9FD7592-EC7F-4B7D-BCF7-B5B7BC227B99}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{18542191-EEC1-42A6-8113-107F8D183D46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18542191-EEC1-42A6-8113-107F8D183D46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18542191-EEC1-42A6-8113-107F8D183D46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9FD7592-EC7F-4B7D-BCF7-B5B7BC227B99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9FD7592-EC7F-4B7D-BCF7-B5B7BC227B99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9FD7592-EC7F-4B7D-BCF7-B5B7BC227B99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9FD7592-EC7F-4B7D-BCF7-B5B7BC227B99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,5 +36,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{31257ACF-A87B-4B3A-AC20-149641768659} = {8E284C18-A9E5-4FBD-86E5-D6F3E302B6FC}
 		{18542191-EEC1-42A6-8113-107F8D183D46} = {8E284C18-A9E5-4FBD-86E5-D6F3E302B6FC}
+		{C9FD7592-EC7F-4B7D-BCF7-B5B7BC227B99} = {8E284C18-A9E5-4FBD-86E5-D6F3E302B6FC}
 	EndGlobalSection
 EndGlobal
