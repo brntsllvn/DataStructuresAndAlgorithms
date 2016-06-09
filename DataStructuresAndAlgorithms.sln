@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Algorithmic Toolbox", "Algo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Week1_APlusB", "Week1_APlusB\Week1_APlusB.csproj", "{31257ACF-A87B-4B3A-AC20-149641768659}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Week1_MaximumPairwiseProduct", "Week1_MaximumPairwiseProduct\Week1_MaximumPairwiseProduct.csproj", "{18542191-EEC1-42A6-8113-107F8D183D46}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,11 +19,16 @@ Global
 		{31257ACF-A87B-4B3A-AC20-149641768659}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31257ACF-A87B-4B3A-AC20-149641768659}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31257ACF-A87B-4B3A-AC20-149641768659}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18542191-EEC1-42A6-8113-107F8D183D46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18542191-EEC1-42A6-8113-107F8D183D46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18542191-EEC1-42A6-8113-107F8D183D46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18542191-EEC1-42A6-8113-107F8D183D46}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{31257ACF-A87B-4B3A-AC20-149641768659} = {8E284C18-A9E5-4FBD-86E5-D6F3E302B6FC}
+		{18542191-EEC1-42A6-8113-107F8D183D46} = {8E284C18-A9E5-4FBD-86E5-D6F3E302B6FC}
 	EndGlobalSection
 EndGlobal
