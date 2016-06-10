@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Shouldly;
 
 namespace Week1_MaximumPairwiseProduct
@@ -6,31 +7,16 @@ namespace Week1_MaximumPairwiseProduct
     [TestFixture]
     class MaximumPairwiseProductTests
     {
-        [Test]
-        public void Pairwise_Product1()
+        [TestCase(new long[] { 1, 2, 3 }, 6, 1)]
+        [TestCase(new long[] { 7, 5, 14, 2, 8, 8, 10, 1, 2, 3 }, 140, 1)]
+        [TestCase(new long[] { 4, 6, 2, 6, 1 }, 36, 1)]
+        [TestCase(new long[] { 100000, 90000 }, 9000000000, 1)]
+        public void Pairwise_Product1(long[] longArr, long expectedProduct, int completionTime)
         {
-            var arr = new int[] { 1, 2, 3 };
-            var product = new Launcher().FindMaxPairwiseProduct(arr);
+            var product = new Launcher().FindMaxPairwiseProduct(longArr);
 
-            product.ShouldBe(6);
-        }
-
-        [Test]
-        public void Pairwise_Product2()
-        {
-            var arr = new int[] { 7, 5, 14, 2, 8, 8, 10, 1, 2, 3 };
-            var product = new Launcher().FindMaxPairwiseProduct(arr);
-
-            product.ShouldBe(140);
-        }
-
-        [Test]
-        public void Pairwise_Product3()
-        {
-            var arr = new int[] { 4, 6, 2, 6, 1 };
-            var product = new Launcher().FindMaxPairwiseProduct(arr);
-
-            product.ShouldBe(36);
+            product.ShouldBe(expectedProduct);
+            Should.CompleteIn(() => product, TimeSpan.FromMilliseconds(completionTime));
         }
     }
 }

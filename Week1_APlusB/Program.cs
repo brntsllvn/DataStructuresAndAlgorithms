@@ -1,6 +1,7 @@
 ﻿using System;
-using NUnit.Framework;
-using Shouldly;
+using System.Linq;
+//using NUnit.Framework;
+//using Shouldly;
 
 namespace APlusB
 {
@@ -8,30 +9,26 @@ namespace APlusB
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("a: ");
-            var a = int.Parse(Console.ReadLine());
+            var input = Console.ReadLine().Split(' ').Select(n => Convert.ToInt32(n)).ToArray();
 
-            Console.WriteLine("b: ");
-            var b = int.Parse(Console.ReadLine());
+            var sum = input[0] + input[1];
 
-            var sum = a + b;
-
-            Console.WriteLine("sum: {0}", sum);
+            Console.WriteLine(sum);
             Console.Read();
         }
     }
 
-    [TestFixture]
-    class ProgramTests
-    {
-        [Test]
-        public void Program_Sum_Works()
-        {
-            var a = 3;
-            var b = 17;
-            var sum = a + b;
+    //[TestFixture]
+    //class ProgramTests
+    //{
+    //    [Test]
+    //    public void Program_Sum_Works()
+    //    {
+    //        var a = 3;
+    //        var b = 17;
+    //        var sum = a + b;
 
-            sum.ShouldBe(20);
-        }
-    }
+    //        sum.ShouldBe(20);
+    //    }
+    //}
 }

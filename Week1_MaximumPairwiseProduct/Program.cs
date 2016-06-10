@@ -15,14 +15,12 @@ namespace Week1_MaximumPairwiseProduct
     {
         public void Run(string[] args)
         {
-            int[] userInts;
+            long[] userInts;
 
             while (true)
             {
-                Console.WriteLine("Number of integers: ");
                 var numOfInts = int.Parse(Console.ReadLine());
-                Console.WriteLine("Integers: ");
-                userInts = Console.ReadLine().Split(' ').Select(n => Convert.ToInt32(n)).ToArray();
+                userInts = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
 
                 if (!InputHasErrors(numOfInts, userInts))
                     break;
@@ -31,33 +29,40 @@ namespace Week1_MaximumPairwiseProduct
             Console.WriteLine(FindMaxPairwiseProduct(userInts));
         }
 
-        public int FindMaxPairwiseProduct(int[] userInts)
+        public long FindMaxPairwiseProduct(long[] userInts)
         {
-            if (userInts.Length == 1)
-            {
-                return userInts[0];
-            }
+            var arrLength = userInts.Length;
 
-            var maxPairwiseProduct = 0;
-            var length = userInts.Length;
-
-            for (int i = 0; i < length; i++)
+            switch (arrLength)
             {
-                for (int j = 0; j < length; j++)
-                {
-                    Int32 product = userInts[i]*userInts[j];
-                    if (i != j && product > maxPairwiseProduct)
+                case 1:
+                    return userInts[0];
+                case 2:
+                    return userInts[0]*userInts[1];
+                default:
+
+                    var maxIndex1 = 0;
+
+                    for (int i = 0; i < arrLength; i++)
                     {
-                        maxPairwiseProduct = product;
+                        if (userInts[i] > userInts[maxIndex1])
+                            maxIndex1 = i;
                     }
-                }    
-            }
 
-            return maxPairwiseProduct;
+                    var maxIndex2 = 0;
+
+                    for (int j = 0; j < arrLength; j++)
+                    {
+                        if (j != maxIndex1 && userInts[j] > userInts[maxIndex2])
+                            maxIndex2 = j;
+                    }
+
+                    return userInts[maxIndex1]*userInts[maxIndex2];
+            }
         }
 
 
-        private bool InputHasErrors(int numOfInts, int[] userInts)
+        private bool InputHasErrors(int numOfInts, long[] userInts)
         {
             if (numOfInts < 2 || numOfInts > 2 * 100000)
             {
