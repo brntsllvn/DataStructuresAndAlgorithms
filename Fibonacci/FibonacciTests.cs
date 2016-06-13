@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using NUnit.Framework;
 using Shouldly;
 
@@ -22,8 +23,12 @@ namespace Fibonacci
             Should.CompleteIn(
                 () => f0.CalculateFibonacci(input), TimeSpan.FromMilliseconds(1500));
 
-            long memory = GC.GetTotalMemory(true);
-            memory.ShouldBeLessThanOrEqualTo(512*1000*1000);
+            // not correct...? Off by a couple orders of magnitude. Answer on instructor machine: 8667136/536870912
+            //long memory = GC.GetTotalMemory(true);
+            //memory.ShouldBe(15);
+
+            var proc = Process.GetCurrentProcess();
+            proc.PrivateMemorySize64.ShouldBeLessThanOrEqualTo(512 * 1000 * 1000);
         }
     }
 }
