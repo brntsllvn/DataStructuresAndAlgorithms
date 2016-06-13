@@ -17,6 +17,8 @@ namespace Week1_MaximumPairwiseProduct
 
             product.ShouldBe(expectedProduct);
             Should.CompleteIn(() => product, TimeSpan.FromMilliseconds(completionTime));
+            long memory = GC.GetTotalMemory(true);
+            memory.ShouldBeLessThanOrEqualTo(1000000);
         }
     }
 }
