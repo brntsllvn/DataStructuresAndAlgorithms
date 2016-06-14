@@ -1,15 +1,24 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Diagnostics;
+using NUnit.Framework;
 using Shouldly;
 
 namespace LauncherTemplate
 {
     [TestFixture]
-    class LauncherTests
+    class FibonacciTests
     {
-        [Test]
-        public void Launcher_Works()
+        [TestCase(0, "hello")]
+        public void Test_1(int input, string expected)
         {
-            true.ShouldBe(true);
-        } 
+            var f0 = new Launcher();
+            f0.MyFunction(input).ShouldBe(expected);
+
+            Should.CompleteIn(
+                () => f0.MyFunction(input), TimeSpan.FromMilliseconds(1500));
+
+            var proc = Process.GetCurrentProcess();
+            proc.PrivateMemorySize64.ShouldBeLessThanOrEqualTo(512 * 1000 * 1000);
+        }
     }
 }

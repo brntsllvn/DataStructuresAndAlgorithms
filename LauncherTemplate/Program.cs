@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace LauncherTemplate
 {
@@ -15,7 +14,13 @@ namespace LauncherTemplate
     {
         public void Run(string[] args)
         {
+            var n = int.Parse(Console.ReadLine());
+            Console.WriteLine(MyFunction(n));
+        }
 
+        public string MyFunction(long n)
+        {
+            return "hello";
         }
     }
 }
