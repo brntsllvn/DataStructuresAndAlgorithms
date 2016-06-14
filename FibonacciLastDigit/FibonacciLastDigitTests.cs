@@ -8,15 +8,16 @@ namespace FibonacciLastDigit
     [TestFixture]
     class FibonacciTests
     {
-        [TestCase(0,  "0")]
-        [TestCase(1,  "1")]
-        [TestCase(2,  "1")]
-        [TestCase(3,  "2")]
-        [TestCase(10, "5")]
-        [TestCase(20, "5")]
-        [TestCase(50, "5")]
-        [TestCase(99, "6")]
-        public void Fibonacci(long input, string expected)
+        [TestCase(0, 0)]
+        [TestCase(1, 1)]
+        [TestCase(2, 1)]
+        [TestCase(3, 2)]
+        [TestCase(10,5)]
+        [TestCase(20,5)]
+        [TestCase(50,5)]
+        [TestCase(200,5)]
+        [TestCase(239,1)]
+        public void Fibonacci(long input, int expected)
         {
             var f0 = new Launcher();
             f0.CalculateFibonacciLastDigit(input).ShouldBe(expected);

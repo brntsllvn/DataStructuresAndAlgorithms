@@ -18,27 +18,24 @@ namespace FibonacciLastDigit
             Console.WriteLine(CalculateFibonacciLastDigit(n));
         }
 
-        public string CalculateFibonacciLastDigit(long n)
+        public int CalculateFibonacciLastDigit(long n)
         {
             if (n == 0)
-                return "0";
+                return 0;
 
             if (n == 1)
-                return "1";
+                return 1;
 
-            var fibonacciArray = new long[n];
+            var fibonacciArray = new int[n];
             fibonacciArray[0] = 0;
             fibonacciArray[1] = 1;
 
-            for (long i = 2; i < n; i++)
+            for (int i = 2; i < n; i++)
             {
-                fibonacciArray[i] = fibonacciArray[i - 1] + fibonacciArray[i - 2];
+                fibonacciArray[i] = (fibonacciArray[i - 1] + fibonacciArray[i - 2]) % 10;
             }
 
-            var result = fibonacciArray[n - 1] + fibonacciArray[n - 2];
-            var fibString = result.ToString();
-            var lastDigit = fibString.Substring(fibString.Length-1);
-            return lastDigit;
+            return (fibonacciArray[n - 1] + fibonacciArray[n - 2]) % 10;
         }
     }
 }
