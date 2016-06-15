@@ -30,7 +30,7 @@ namespace GreatestCommonDivisor
             var maxInput = inputLongs[0] > inputLongs[1] ? inputLongs[0] : inputLongs[1];
             var minInput = inputLongs[0] > inputLongs[1] ? inputLongs[1] : inputLongs[0];
 
-            var remainder = maxInput%minInput;
+            var remainder = maxInput % minInput;
 
             if (remainder == 0)
                 return minInput;

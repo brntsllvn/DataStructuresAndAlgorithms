@@ -21,9 +21,11 @@ namespace LeastCommonMultiple
 
         public long CalculateLcm(long[] inputLongs)
         {
-            var Gcd = CalculateGcd(new long[] {inputLongs[0], inputLongs[1]});
+            var Gcd = CalculateGcd(new[] {inputLongs[0], inputLongs[1]});
 
-            return (long) ((double)(inputLongs[0] * inputLongs[1]) / (double)Gcd);
+            var bigProduct = inputLongs[0]*inputLongs[1];
+
+            return bigProduct / Gcd;
         }
 
         public long CalculateGcd(long[] inputLongs)
