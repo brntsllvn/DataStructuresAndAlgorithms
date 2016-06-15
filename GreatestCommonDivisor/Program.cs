@@ -21,7 +21,24 @@ namespace GreatestCommonDivisor
 
         public long CalculateGcd(long[] inputLongs)
         {
-            return 0;
+            if (inputLongs[0] == 1 || inputLongs[1] == 1)
+                return 1;
+
+            if (inputLongs[0] == inputLongs[1])
+                return inputLongs[0];
+
+            // find larger of two inputs
+            var maxInput = inputLongs[0] > inputLongs[1] ? inputLongs[0] : inputLongs[1];
+            var minInput = inputLongs[0] > inputLongs[1] ? inputLongs[1] : inputLongs[0];
+
+            // modulo larger by smaller
+            var remainder = maxInput%minInput;
+
+            if (remainder == 0)
+                return minInput;
+
+            // recursively call CalculateGcd again this time with smaller of the inputs and remainer
+            return CalculateGcd(new long[] {remainder, minInput});
         }
     }
 }

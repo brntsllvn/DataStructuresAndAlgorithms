@@ -8,8 +8,8 @@ namespace LauncherTemplate
     [TestFixture]
     class FibonacciTests
     {
-        [TestCase(0, "hello")]
-        public void Test_1(int input, string expected)
+        [TestCase(new long[] {0}, "hello")]
+        public void Test_1(long[] input, string expected)
         {
             var f0 = new Launcher();
             f0.MyFunction(input).ShouldBe(expected);

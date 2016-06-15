@@ -5,11 +5,13 @@ using Shouldly;
 namespace GreatestCommonDivisor
 {
     [TestFixture]
-    class FibonacciTests
+    class GcdTests
     {
-        [TestCase(0, 1, 0)]
-        [TestCase(3, 5, 1)]
-        [TestCase(2, 2*1000*1000*1000, 2)]
+        [TestCase(new long[] {1, 1}, 1)]
+        [TestCase(new long[] {3, 5}, 1)]
+        [TestCase(new long[] {1024, 32}, 32)]
+        [TestCase(new long[] {28851538, 1183019}, 17657)]
+        [TestCase(new long[] { 2, 2 * 1000 * 1000 * 1000 }, 2)]
         public void Test_1(long[] inputLongs, long expected)
         {
             var f0 = new Launcher();
