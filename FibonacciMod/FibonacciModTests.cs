@@ -18,12 +18,14 @@ namespace FibonacciMod
         [TestCase(new long[] { 2, 2 }, 1)]
         [TestCase(new long[] { 2, 3 }, 1)]
         [TestCase(new long[] { 2, 8 }, 1)]
-        //[TestCase(new long[] { 2, 2 }, 1)]
-        //[TestCase(new long[] { 3, 2 }, 0)]
-        //[TestCase(new long[] { 4, 2 }, 1)]
-        //[TestCase(new long[] { 4, 3 }, 0)]
-        //[TestCase(new long[] { 5, 3 }, 2)]
-        //[TestCase(new long[] { 1 * 10, 2 * 1000 * 1000 * 1000 }, )]
+        [TestCase(new long[] { 3, 2 }, 0)]
+        [TestCase(new long[] { 3, 3 }, 2)]
+        [TestCase(new long[] { 3, 4 }, 2)]
+        [TestCase(new long[] { 4, 2 }, 1)]
+        [TestCase(new long[] { 4, 3 }, 0)]
+        [TestCase(new long[] { 4, 4 }, 3)]
+        [TestCase(new long[] { 4, 5 }, 3)]
+        //[TestCase(new long[] { 281621358815590, 30524 }, 11963)]
         public void Test_1(long[] inputLongs, long expected)
         {
             var f0 = new Launcher();
