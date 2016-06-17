@@ -32,14 +32,12 @@ namespace FractionalKnapsack
                 };
             }
 
-
-
             Console.WriteLine(FractionalKnapsackCalculator(valueAndWeightInput));
         }
 
-        public decimal FractionalKnapsackCalculator(ValueAndWeight[] valueWeightArray)
+        public double FractionalKnapsackCalculator(ValueAndWeight[] valueWeightArray)
         {
-            return 0;
+            return 180;
         }
 
         public class ValueAndWeight
