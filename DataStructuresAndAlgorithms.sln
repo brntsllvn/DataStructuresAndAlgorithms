@@ -26,11 +26,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FibonacciMod", "FibonacciMod\FibonacciMod.csproj", "{1D0BFF3B-07E5-47FC-8213-858FAC1CD93E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Week3", "Week3", "{1A40F0D3-9721-4974-B577-ABE6FB49C8F3}"
-	ProjectSection(SolutionItems) = preProject
-		ChangingMoney\ChangingMoneyTests.cs = ChangingMoney\ChangingMoneyTests.cs
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChangingMoney", "ChangingMoney\ChangingMoney.csproj", "{30108B46-1939-4297-A0B2-5DBE3C53F3E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FractionalKnapsack", "FractionalKnapsack\FractionalKnapsack.csproj", "{229293CC-02F2-40CB-941A-51D8051691D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,6 +73,10 @@ Global
 		{30108B46-1939-4297-A0B2-5DBE3C53F3E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30108B46-1939-4297-A0B2-5DBE3C53F3E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30108B46-1939-4297-A0B2-5DBE3C53F3E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{229293CC-02F2-40CB-941A-51D8051691D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{229293CC-02F2-40CB-941A-51D8051691D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{229293CC-02F2-40CB-941A-51D8051691D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{229293CC-02F2-40CB-941A-51D8051691D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,5 +94,6 @@ Global
 		{1D0BFF3B-07E5-47FC-8213-858FAC1CD93E} = {C0A1C2C0-A4F8-49AB-93EE-EC1D3C345701}
 		{1A40F0D3-9721-4974-B577-ABE6FB49C8F3} = {8E284C18-A9E5-4FBD-86E5-D6F3E302B6FC}
 		{30108B46-1939-4297-A0B2-5DBE3C53F3E6} = {1A40F0D3-9721-4974-B577-ABE6FB49C8F3}
+		{229293CC-02F2-40CB-941A-51D8051691D3} = {1A40F0D3-9721-4974-B577-ABE6FB49C8F3}
 	EndGlobalSection
 EndGlobal
