@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Linq;
 
 namespace FractionalKnapsack
@@ -32,12 +33,31 @@ namespace FractionalKnapsack
                 };
             }
 
-            Console.WriteLine(FractionalKnapsackCalculator(valueAndWeightInput));
+            Console.WriteLine(FractionalKnapsackCalculator(knapsackCapacity, valueAndWeightInput));
         }
 
-        public double FractionalKnapsackCalculator(ValueAndWeight[] valueWeightArray)
+        public double FractionalKnapsackCalculator(long capacityOfKnapsack, ValueAndWeight[] valueWeightArray)
         {
-            return 180;
+            var numberOfItems = valueWeightArray.Length;
+            
+            var valueWeightRatioArr = new double[valueWeightArray.Length];
+
+            for (int i = 0; i < valueWeightRatioArr.Length; i++)
+            {
+                valueWeightRatioArr[i] = (double) valueWeightArray[i].Value / valueWeightArray[i].Weight;
+            }
+
+            Array.Reverse(valueWeightRatioArr);
+
+            // fill up the knapsack one fraction at a time using the sorted list
+
+            // base case
+            if (numberOfItems == 1)
+            {
+                return (double)capacityOfKnapsack / valueWeightArray[0].Weight*valueWeightArray[0].Value;
+            }
+
+            return 0;
         }
 
         public class ValueAndWeight
