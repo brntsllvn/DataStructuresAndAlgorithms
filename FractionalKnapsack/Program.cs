@@ -52,10 +52,20 @@ namespace FractionalKnapsack
             // fill up the knapsack one fraction at a time using the sorted list
 
             // base case
-            if (numberOfItems == 1)
+            if (numberOfItems == 1 || valueWeightArray[0].Weight > capacityOfKnapsack)
             {
                 return (double)capacityOfKnapsack / valueWeightArray[0].Weight*valueWeightArray[0].Value;
             }
+
+            var optimalKnapsackValue = 0;
+
+            // add highest value item to knapsack
+            //return 
+
+            // subtract this capacity from the knapsack
+            // subract item from inventory
+            // recursively call FractionalKnapsackCalculator with small capacity
+
 
             return 0;
         }
