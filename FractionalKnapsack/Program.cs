@@ -36,38 +36,25 @@ namespace FractionalKnapsack
             Console.WriteLine(FractionalKnapsackCalculator(knapsackCapacity, valueAndWeightInput));
         }
 
-        public double FractionalKnapsackCalculator(long capacityOfKnapsack, ValueAndWeight[] valueWeightArray)
+        public double FractionalKnapsackCalculator(long knapsackCapacity, ValueAndWeight[] valueWeightArray)
         {
             var numberOfItems = valueWeightArray.Length;
             
-            var valueWeightRatioArr = new double[valueWeightArray.Length];
+            var descendingValueWeight = valueWeightArray.OrderByDescending(x => x.Value / x.Weight).ToArray();
 
-            for (int i = 0; i < valueWeightRatioArr.Length; i++)
+            if (numberOfItems == 1 || valueWeightArray[0].Weight >= knapsackCapacity)
             {
-                valueWeightRatioArr[i] = (double) valueWeightArray[i].Value / valueWeightArray[i].Weight;
+                return (double)knapsackCapacity / valueWeightArray[0].Weight*valueWeightArray[0].Value;
             }
 
-            Array.Reverse(valueWeightRatioArr);
+            var remainingKnapsackCapacity = knapsackCapacity - descendingValueWeight[0].Weight;
+            var remainingInventoryItems = descendingValueWeight.Skip(1).ToArray();
+            var frackNap = FractionalKnapsackCalculator(remainingKnapsackCapacity, remainingInventoryItems);
 
-            // fill up the knapsack one fraction at a time using the sorted list
+            double optimalKnapsackValue = 0;
+            optimalKnapsackValue = optimalKnapsackValue + descendingValueWeight[0].Value + frackNap;
 
-            // base case
-            if (numberOfItems == 1 || valueWeightArray[0].Weight > capacityOfKnapsack)
-            {
-                return (double)capacityOfKnapsack / valueWeightArray[0].Weight*valueWeightArray[0].Value;
-            }
-
-            var optimalKnapsackValue = 0;
-
-            // add highest value item to knapsack
-            //return 
-
-            // subtract this capacity from the knapsack
-            // subract item from inventory
-            // recursively call FractionalKnapsackCalculator with small capacity
-
-
-            return 0;
+            return optimalKnapsackValue;
         }
 
         public class ValueAndWeight
