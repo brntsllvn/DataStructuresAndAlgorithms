@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.Linq;
+using System.Data;
 
 namespace FractionalKnapsack
 {
@@ -48,7 +48,14 @@ namespace FractionalKnapsack
             }
 
             var remainingKnapsackCapacity = knapsackCapacity - descendingValueWeight[0].Weight;
-            var remainingInventoryItems = descendingValueWeight.Skip(1).ToArray();
+
+            var newLength = numberOfItems - 1;
+            var remainingInventoryItems = new ValueAndWeight[numberOfItems-1];
+            for (int i = 0; i < newLength; i++)
+            {
+                remainingInventoryItems[i] = descendingValueWeight[i + 1];
+            }
+
             var frackNap = FractionalKnapsackCalculator(remainingKnapsackCapacity, remainingInventoryItems);
 
             double optimalKnapsackValue = 0;
