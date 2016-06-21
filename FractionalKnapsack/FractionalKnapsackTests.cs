@@ -54,7 +54,7 @@ namespace FractionalKnapsack
         }
 
         [Test]
-        public void Test_2()
+        public void FractionalKnapsack_MultipleItems()
         {
             var numberOfItems = 3;
             var capacityOfKnapsack = 50;

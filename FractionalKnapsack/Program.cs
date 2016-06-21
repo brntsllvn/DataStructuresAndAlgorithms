@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Data;
+using System.Linq;
 
 namespace FractionalKnapsack
 {
@@ -36,6 +36,12 @@ namespace FractionalKnapsack
             Console.WriteLine(FractionalKnapsackCalculator(knapsackCapacity, valueAndWeightInput));
         }
 
+        public class ValueAndWeight
+        {
+            public long Value { get; set; }
+            public long Weight { get; set; }
+        }
+
         public double FractionalKnapsackCalculator(long knapsackCapacity, ValueAndWeight[] valueWeightArray)
         {
             var numberOfItems = valueWeightArray.Length;
@@ -62,12 +68,6 @@ namespace FractionalKnapsack
             optimalKnapsackValue = optimalKnapsackValue + descendingValueWeight[0].Value + frackNap;
 
             return optimalKnapsackValue;
-        }
-
-        public class ValueAndWeight
-        {
-            public long Value { get; set; }
-            public long Weight { get; set; }
         }
     }
 }
