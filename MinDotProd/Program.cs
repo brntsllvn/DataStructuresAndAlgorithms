@@ -15,7 +15,7 @@ namespace MinDotProd
     {
         public void Run(string[] args)
         {
-            //var numInts = Console.ReadLine();
+            var numInts = Console.ReadLine();
             var firstSequence = Console.ReadLine().Split(' ').Select(n => Convert.ToInt32(n)).ToArray();
             var secondSequence = Console.ReadLine().Split(' ').Select(n => Convert.ToInt32(n)).ToArray();
             Console.WriteLine(ComputeMinDotProduct(firstSequence, secondSequence));
