@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChangingMoney", "ChangingMo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FractionalKnapsack", "FractionalKnapsack\FractionalKnapsack.csproj", "{229293CC-02F2-40CB-941A-51D8051691D3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinDotProd", "MinDotProd\MinDotProd.csproj", "{B2D6B357-A5FB-468E-B7F7-5577CD6937B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{229293CC-02F2-40CB-941A-51D8051691D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{229293CC-02F2-40CB-941A-51D8051691D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{229293CC-02F2-40CB-941A-51D8051691D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2D6B357-A5FB-468E-B7F7-5577CD6937B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2D6B357-A5FB-468E-B7F7-5577CD6937B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2D6B357-A5FB-468E-B7F7-5577CD6937B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2D6B357-A5FB-468E-B7F7-5577CD6937B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,5 +101,6 @@ Global
 		{1A40F0D3-9721-4974-B577-ABE6FB49C8F3} = {8E284C18-A9E5-4FBD-86E5-D6F3E302B6FC}
 		{30108B46-1939-4297-A0B2-5DBE3C53F3E6} = {1A40F0D3-9721-4974-B577-ABE6FB49C8F3}
 		{229293CC-02F2-40CB-941A-51D8051691D3} = {1A40F0D3-9721-4974-B577-ABE6FB49C8F3}
+		{B2D6B357-A5FB-468E-B7F7-5577CD6937B5} = {1A40F0D3-9721-4974-B577-ABE6FB49C8F3}
 	EndGlobalSection
 EndGlobal

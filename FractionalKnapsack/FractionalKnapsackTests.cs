@@ -12,7 +12,7 @@ namespace FractionalKnapsack
         [Test]
         public void One_Item_Fills_Knapsack()
         {
-            var numberOfItems = 1;
+            //var numberOfItems = 1;
             var capacityOfKnapsack = 50;
 
             var valAndWeightArr = new[]
@@ -33,7 +33,7 @@ namespace FractionalKnapsack
         [Test]
         public void One_Item_Fills_Knapsack_Capacity()
         {
-            var numberOfItems = 1;
+            //var numberOfItems = 1;
             var capacityOfKnapsack = 50;
 
             var valAndWeightArr = new[]
@@ -56,7 +56,7 @@ namespace FractionalKnapsack
         [Test]
         public void FractionalKnapsack_MultipleItems()
         {
-            var numberOfItems = 3;
+            //var numberOfItems = 3;
             var capacityOfKnapsack = 50;
 
             var valAndWeightArr = new[]
@@ -80,7 +80,7 @@ namespace FractionalKnapsack
         [Test]
         public void FractionalKnapsack_2()
         {
-            var numberOfItems = 1;
+            //var numberOfItems = 1;
             var capacityOfKnapsack = 1000;
 
             var valAndWeightArr = new[]
@@ -101,7 +101,7 @@ namespace FractionalKnapsack
         [Test]
         public void FractionalKnapsack_3()
         {
-            var numberOfItems = 4;
+            //var numberOfItems = 4;
             var capacityOfKnapsack = 15;
 
             var valAndWeightArr = new[]
