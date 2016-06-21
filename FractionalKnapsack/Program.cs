@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Linq;
 
 namespace FractionalKnapsack
@@ -46,21 +45,21 @@ namespace FractionalKnapsack
         {
             var numberOfItems = valueWeightArray.Length;
             
-            var descendingValueWeight = valueWeightArray.OrderByDescending(x => x.Value / x.Weight).ToArray();
+            var descendingValueWeight = valueWeightArray.OrderByDescending(x => (double)x.Value / x.Weight).ToArray();
 
-            if (numberOfItems == 1 || valueWeightArray[0].Weight >= knapsackCapacity)
-            {
-                return (double)knapsackCapacity / valueWeightArray[0].Weight*valueWeightArray[0].Value;
-            }
+            if (numberOfItems == 1 && descendingValueWeight[0].Weight < knapsackCapacity)
+                return descendingValueWeight[0].Value;
+
+            if (descendingValueWeight[0].Weight >= knapsackCapacity)
+                return (double)knapsackCapacity / descendingValueWeight[0].Weight * descendingValueWeight[0].Value;
 
             var remainingKnapsackCapacity = knapsackCapacity - descendingValueWeight[0].Weight;
 
             var newLength = numberOfItems - 1;
+
             var remainingInventoryItems = new ValueAndWeight[numberOfItems-1];
             for (int i = 0; i < newLength; i++)
-            {
                 remainingInventoryItems[i] = descendingValueWeight[i + 1];
-            }
 
             var frackNap = FractionalKnapsackCalculator(remainingKnapsackCapacity, remainingInventoryItems);
 
