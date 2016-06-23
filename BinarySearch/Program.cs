@@ -51,6 +51,30 @@ namespace BinarySearch
                     }
                 }
             }
+            else
+            {
+                for (int i = 0; i < numSearchTerms; i++)
+                {
+                    var leftHalfLength = searchableData.Length / 2;
+                    var rightHalfLength = searchableData.Length / 2;
+                    var leftHalf = new long[leftHalfLength];
+                    var rightHalf = new long[rightHalfLength];
+
+                    for (int j = 0; j < leftHalfLength; j++)
+                    {
+                        leftHalf[j] = searchableData[j];
+                    }
+
+                    for (int k = 0; k < rightHalfLength; k++)
+                    {
+                        rightHalf[k] = searchableData[k + leftHalfLength];
+                    }
+
+                    // split array
+                    // recurse binary array
+                    // append results to resultString
+                }
+            }
 
             return resultString.Trim();
         }
