@@ -42,52 +42,6 @@ namespace BinarySearch
             return resultString.Trim();
         }
 
-
-        //var resultString = "";
-        //if (numSearchableDataElements == 1)
-        //{
-        //    for (int i = 0; i < numActualSearchTerms; i++)
-        //    {
-        //        if (actualSearchTerms[i] == searchableData[0])
-        //        {
-        //            resultString += "0 ";
-        //        }
-        //        else
-        //        {
-        //            resultString += "-1 ";
-        //        }
-        //    }
-        //}
-        //else
-        //{
-        //    for (int i = 0; i < numActualSearchTerms; i++)
-        //    {
-        //        var leftHalfLength = searchableData.Length / 2;
-        //        var rightHalfLength = searchableData.Length / 2;
-        //        var leftHalf = new long[leftHalfLength];
-        //        var rightHalf = new long[rightHalfLength];
-
-        //        for (int j = 0; j < leftHalfLength; j++)
-        //        {
-        //            leftHalf[j] = searchableData[j];
-        //        }
-
-        //        for (int k = 0; k < rightHalfLength; k++)
-        //        {
-        //            rightHalf[k] = searchableData[k + leftHalfLength];
-        //        }
-
-        //        if (actualSearchTerms[i] <= searchableData[numSearchableDataElements/2-1])
-        //        {
-        //            resultString += BinarySearchSetup(leftHalf, new long[1] {actualSearchTerms[i]});
-        //        }
-        //        else
-        //        {
-        //            resultString += BinarySearchSetup(rightHalf, new long[1] { actualSearchTerms[i] });
-        //        }
-        //    }
-
-
         public long BinarySearch(long[] data, long searchTerm)
         {
             if (data.Length == 1)
@@ -96,9 +50,44 @@ namespace BinarySearch
                     return 0;
                 return -1;
             }
+            else
+            {
+                var leftHalf = GetLeftHalfArray(data);
+                var rightHalf = GetRightHalfArray(data, leftHalf.Length);
 
-            return -1;
+                if (searchTerm <= leftHalf.Last())
+                {
+                    return BinarySearch(leftHalf, searchTerm);
+                }
+                else
+                {
+                    return BinarySearch(rightHalf, searchTerm);
+                }
+            }
         }
 
+        private long[] GetLeftHalfArray(long[] data)
+        {
+            var leftHalfLength = data.Length/2;
+            var leftHalf = new long[leftHalfLength];
+
+            for (int j = 0; j < leftHalfLength; j++)
+            {
+                leftHalf[j] = data[j];
+            }
+            return leftHalf;
+        }
+
+        private long[] GetRightHalfArray(long[] data, long leftHalfLength)
+        {
+            var rightHalfLength = data.Length / 2;
+            var rightHalf = new long[rightHalfLength];
+
+            for (int k = 0; k < rightHalfLength; k++)
+            {
+                rightHalf[k] = data[k + leftHalfLength];
+            }
+            return rightHalf;
+        }
     }
 }
