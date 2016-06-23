@@ -34,60 +34,34 @@ namespace BinarySearch
             for (var i = 0; i < numActualSearchTerms; i++)
                 actualSearchTerms[i] = searchTerms[i + 1];
 
+            var lowerBound = 0;
+            var upperBound = data.Length - 1;
+
             for (var i = 0; i < numActualSearchTerms; i++)
-            {
-                resultString += BinarySearch(searchableData, actualSearchTerms[i]) + " ";
-            }
+                resultString += BinarySearch(searchableData, lowerBound, upperBound, actualSearchTerms[i]) + " ";
 
             return resultString.Trim();
         }
 
-        public long BinarySearch(long[] data, long searchTerm)
+        public long BinarySearch(long[] data, long lowerBound, long upperBound, long searchTerm)
         {
-            if (data.Length == 1)
+            if (upperBound == 1)
             {
-                if (data[0] == searchTerm)
-                    return 0;
-                return -1;
+                if (data[lowerBound] == searchTerm)
+                    return lowerBound;
             }
             else
             {
-                var leftHalf = GetLeftHalfArray(data);
-                var rightHalf = GetRightHalfArray(data, leftHalf.Length);
+                var leftLower = 0;
+                var leftUpper =leftLower + (upperBound - leftLower) / 2;
+                var rightLower = upperBound / 2 + 1;
+                var rightUpper = rightLower + (upperBound - rightLower) / 2;
 
-                if (searchTerm <= leftHalf.Last())
-                {
-                    return BinarySearch(leftHalf, searchTerm);
-                }
-                else
-                {
-                    return BinarySearch(rightHalf, searchTerm);
-                }
+                if (searchTerm <= data[leftUpper])
+                    return BinarySearch(data, leftLower, leftUpper, searchTerm);
+                return BinarySearch(data, rightLower, rightUpper, searchTerm);
             }
-        }
-
-        private long[] GetLeftHalfArray(long[] data)
-        {
-            var leftHalfLength = data.Length/2;
-            var leftHalf = new long[leftHalfLength];
-
-            for (int j = 0; j < leftHalfLength; j++)
-            {
-                leftHalf[j] = data[j];
-            }
-            return leftHalf;
-        }
-
-        private long[] GetRightHalfArray(long[] data, long leftHalfLength)
-        {
-            var rightHalfLength = data.Length / 2;
-            var rightHalf = new long[rightHalfLength];
-
-            for (int k = 0; k < rightHalfLength; k++)
-            {
-                rightHalf[k] = data[k + leftHalfLength];
-            }
-            return rightHalf;
+            return -1;
         }
     }
 }
