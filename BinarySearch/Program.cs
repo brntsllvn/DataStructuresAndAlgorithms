@@ -17,8 +17,8 @@ namespace BinarySearch
     {
         public void Run(string[] args)
         {
-            var input = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToList();
-            var search = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToList();
+            var input = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
+            var search = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
             Console.WriteLine(BinarySearchSetup(input, search));
         }
 
@@ -45,7 +45,7 @@ namespace BinarySearch
             return resultString.Trim();
         }
 
-        public long BinarySearch(List<long> data, long low, long high, long key)
+        public long BinarySearch(long[] data, long low, long high, long key)
         {
             if (high < low)
                 return -1;
