@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BinarySearch
@@ -18,12 +19,14 @@ namespace BinarySearch
             var input = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
             var numData = (int)input[0];
             //var data = input.Skip(1).Take((int) (numData)).ToArray();
-            var data = new ArraySegment<long>(input, 1, numData).ToArray();
+            //var data = new ArraySegment<long>(input, 1, numData).ToArray();
+            var data = new List<long>(input).GetRange(1, numData).ToArray();
 
             var searchTerms = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
             var numSearchTerms = (int)searchTerms[0];
             //var search = searchTerms.Skip(1).Take((int)(numSearchTerms)).ToArray();
-            var search = new ArraySegment<long>(searchTerms, 1, numSearchTerms).ToArray();
+            //var search = new ArraySegment<long>(searchTerms, 1, numSearchTerms).ToArray();
+            var search = new List<long>(searchTerms).GetRange(1, numSearchTerms).ToArray();
 
             Console.WriteLine(BinarySearchSetup(data, search));
         }
@@ -41,19 +44,40 @@ namespace BinarySearch
             return resultString.Trim();
         }
 
+        // recursive
+        //public long BinarySearch(long[] data, long low, long high, long key)
+        //{
+        //    if (high < low)
+        //        return -1;
+
+        //    var mid = low + (high - low) / 2;
+
+        //    if (key == data[mid])
+        //        return mid;
+
+        //    else if (key < data[mid])
+        //        return BinarySearch(data, low, mid - 1, key);
+
+        //    else
+        //        return BinarySearch(data, mid + 1, high, key);
+        //}
+
+        // iterative
         public long BinarySearch(long[] data, long low, long high, long key)
         {
-            if (high < low)
-                return -1;
+            while (low <= high)
+            {
+                long mid = (low + high) / 2;
+                if (key == data[mid])
+                    return mid;
 
-            var mid = low + (high - low) / 2;
+                else if (key < data[mid])
+                    high = mid - 1;
 
-            if (key == data[mid])
-                return mid;
-            else if (key < data[mid])
-                return BinarySearch(data, low, mid - 1, key);
-            else
-                return BinarySearch(data, mid + 1, high, key);
+                else
+                    low = mid + 1;
+            }
+            return -1;
         }
     }
 }

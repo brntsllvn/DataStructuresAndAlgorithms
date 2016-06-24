@@ -8,7 +8,7 @@ namespace BinarySearch
     [TestFixture]
     class BinarySearchTests
     {
-        [TestCase(new long[] { 13 }, new long[] { 13 }, "0")]
+        [TestCase(new long[] { 13 }, new long[] { 13 }, "0")] // why is this case so slow?
         [TestCase(new long[] { 13 }, new long[] { 13, 13 }, "0 0")]
         [TestCase(new long[] { 13 }, new long[] { 13, 13, 13 }, "0 0 0")]
         [TestCase(new long[] { 13 }, new long[] { 7 }, "-1")]
@@ -29,7 +29,7 @@ namespace BinarySearch
             f0.BinarySearchSetup(data, searchTerms).ShouldBe(expected);
 
             Should.CompleteIn(
-            () => f0.BinarySearchSetup(data, searchTerms), TimeSpan.FromMilliseconds(3000));
+            () => f0.BinarySearchSetup(data, searchTerms), TimeSpan.FromMilliseconds(10));
 
             var proc = Process.GetCurrentProcess();
             proc.PrivateMemorySize64.ShouldBeLessThanOrEqualTo(512 * 1000 * 1000);
