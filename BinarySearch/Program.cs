@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework;
 
 namespace BinarySearch
 {
@@ -15,8 +17,8 @@ namespace BinarySearch
     {
         public void Run(string[] args)
         {
-            var input = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
-            var search = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
+            var input = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToList();
+            var search = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToList();
             Console.WriteLine(BinarySearchSetup(input, search));
         }
 
@@ -35,7 +37,7 @@ namespace BinarySearch
                 actualSearchTerms[i] = searchTerms[i + 1];
 
             var lowerBound = 0;
-            var upperBound = data.Length - 1;
+            var upperBound = searchableData.Length - 1;
 
             for (var i = 0; i < numActualSearchTerms; i++)
                 resultString += BinarySearch(searchableData, lowerBound, upperBound, actualSearchTerms[i]) + " ";
@@ -43,25 +45,25 @@ namespace BinarySearch
             return resultString.Trim();
         }
 
-        public long BinarySearch(long[] data, long lowerBound, long upperBound, long searchTerm)
+        public long BinarySearch(List<long> data, long low, long high, long key)
         {
-            if (upperBound == 1)
+            if (high < low)
+                return -1;
+
+            var mid = low + (high - low) / 2;
+
+            if (key == data[mid])
             {
-                if (data[lowerBound] == searchTerm)
-                    return lowerBound;
+                return mid;
+            }
+            else if (key < data[mid])
+            {
+                return BinarySearch(data, low, mid - 1, key);
             }
             else
             {
-                var leftLower = 0;
-                var leftUpper =leftLower + (upperBound - leftLower) / 2;
-                var rightLower = upperBound / 2 + 1;
-                var rightUpper = rightLower + (upperBound - rightLower) / 2;
-
-                if (searchTerm <= data[leftUpper])
-                    return BinarySearch(data, leftLower, leftUpper, searchTerm);
-                return BinarySearch(data, rightLower, rightUpper, searchTerm);
+                return BinarySearch(data, mid + 1, high, key);
             }
-            return -1;
         }
     }
 }
