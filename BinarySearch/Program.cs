@@ -15,13 +15,15 @@ namespace BinarySearch
     {
         public void Run(string[] args)
         {
-            var input = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToList();
-            var numData = input[0];
-            var data = input.Skip(1).Take((int) (numData)).ToArray();
+            var input = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
+            var numData = (int)input[0];
+            //var data = input.Skip(1).Take((int) (numData)).ToArray();
+            var data = new ArraySegment<long>(input, 1, numData).ToArray();
 
             var searchTerms = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToList();
-            var numSearchTerms = searchTerms[0];
-            var search = searchTerms.Skip(1).Take((int)(numSearchTerms)).ToArray();
+            var numSearchTerms = (int)searchTerms[0];
+            //var search = searchTerms.Skip(1).Take((int)(numSearchTerms)).ToArray();
+            var search = new ArraySegment<long>(input, 1, numSearchTerms).ToArray();
 
             Console.WriteLine(BinarySearchSetup(data, search));
         }
@@ -47,17 +49,11 @@ namespace BinarySearch
             var mid = low + (high - low) / 2;
 
             if (key == data[mid])
-            {
                 return mid;
-            }
             else if (key < data[mid])
-            {
                 return BinarySearch(data, low, mid - 1, key);
-            }
             else
-            {
                 return BinarySearch(data, mid + 1, high, key);
-            }
         }
     }
 }
