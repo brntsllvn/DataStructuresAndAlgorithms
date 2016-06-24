@@ -18,6 +18,7 @@ namespace BinarySearch
         [TestCase(new long[] { 13, 87 }, new long[] { 13 }, "0")]
         [TestCase(new long[] { 13, 87 }, new long[] { 87 }, "1")]
         [TestCase(new long[] { 13, 87, 13 }, new long[] { 87, 13 }, "1 0")]
+        [TestCase(new long[] { 1, 5, 8, 12, 13 }, new long[] { 87, 13 }, "-1 4")]
         [TestCase(new long[] { 1, 5, 8, 12, 13 }, new long[] { 8, 1, 23, 1, 11 }, "2 0 -1 0 -1")]
         [TestCase(new long[] { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 },
                   new long[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 },

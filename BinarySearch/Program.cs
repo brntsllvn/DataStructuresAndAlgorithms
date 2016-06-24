@@ -20,10 +20,10 @@ namespace BinarySearch
             //var data = input.Skip(1).Take((int) (numData)).ToArray();
             var data = new ArraySegment<long>(input, 1, numData).ToArray();
 
-            var searchTerms = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToList();
+            var searchTerms = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
             var numSearchTerms = (int)searchTerms[0];
             //var search = searchTerms.Skip(1).Take((int)(numSearchTerms)).ToArray();
-            var search = new ArraySegment<long>(input, 1, numSearchTerms).ToArray();
+            var search = new ArraySegment<long>(searchTerms, 1, numSearchTerms).ToArray();
 
             Console.WriteLine(BinarySearchSetup(data, search));
         }
