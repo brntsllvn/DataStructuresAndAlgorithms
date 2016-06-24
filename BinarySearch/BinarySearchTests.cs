@@ -8,19 +8,19 @@ namespace BinarySearch
     [TestFixture]
     class BinarySearchTests
     {
-        [TestCase(new long[] { 1, 13 }, new long[] { 1, 13 }, "0")]
-        [TestCase(new long[] { 1, 13 }, new long[] { 2, 13, 13 }, "0 0")]
-        [TestCase(new long[] { 1, 13 }, new long[] { 3, 13, 13, 13 }, "0 0 0")]
-        [TestCase(new long[] { 1, 13 }, new long[] { 1, 7 }, "-1")]
-        [TestCase(new long[] { 1, 13 }, new long[] { 2, 7, 7 }, "-1 -1")]
-        [TestCase(new long[] { 1, 13 }, new long[] { 3, 7, 7, 7 }, "-1 -1 -1")]
-        [TestCase(new long[] { 1, 13 }, new long[] { 3, 7, 13, 7 }, "-1 0 -1")]
-        [TestCase(new long[] { 2, 13, 87 }, new long[] { 1, 13 }, "0")]
-        [TestCase(new long[] { 2, 13, 87 }, new long[] { 1, 87 }, "1")]
-        [TestCase(new long[] { 3, 13, 87, 13 }, new long[] { 2, 87, 13 }, "1 0")]
-        [TestCase(new long[] { 5, 1, 5, 8, 12, 13 }, new long[] { 5, 8, 1, 23, 1, 11 }, "2 0 -1 0 -1")]
-        [TestCase(new long[] { 10, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 },
-                  new long[] { 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 },
+        [TestCase(new long[] { 13 }, new long[] { 13 }, "0")]
+        [TestCase(new long[] { 13 }, new long[] { 13, 13 }, "0 0")]
+        [TestCase(new long[] { 13 }, new long[] { 13, 13, 13 }, "0 0 0")]
+        [TestCase(new long[] { 13 }, new long[] { 7 }, "-1")]
+        [TestCase(new long[] { 13 }, new long[] { 7, 7 }, "-1 -1")]
+        [TestCase(new long[] { 13 }, new long[] { 7, 7, 7 }, "-1 -1 -1")]
+        [TestCase(new long[] { 13 }, new long[] { 7, 13, 7 }, "-1 0 -1")]
+        [TestCase(new long[] { 13, 87 }, new long[] { 13 }, "0")]
+        [TestCase(new long[] { 13, 87 }, new long[] { 87 }, "1")]
+        [TestCase(new long[] { 13, 87, 13 }, new long[] { 87, 13 }, "1 0")]
+        [TestCase(new long[] { 1, 5, 8, 12, 13 }, new long[] { 8, 1, 23, 1, 11 }, "2 0 -1 0 -1")]
+        [TestCase(new long[] { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 },
+                  new long[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 },
                   "-1 0 1 2 3 4 5 6 7 8 9 -1")]
         public void BinarySearch_GameOn(long[] data, long[] searchTerms, string expected)
         {
