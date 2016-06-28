@@ -25,6 +25,9 @@ namespace MajorityElement
 
         public long Majority(long[] n, long low, long high)
         {
+            // identify candidates through halving 
+            // iterate each candidate through the entire array to see if majority
+
             if (high - low == 0)
                 return 1;
 
