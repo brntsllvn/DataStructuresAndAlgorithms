@@ -1,8 +1,5 @@
 ﻿using System;
-using System.CodeDom;
 using System.Linq;
-using NUnit.Core;
-using Shouldly.Configuration;
 
 namespace MajorityElement
 {
@@ -25,46 +22,39 @@ namespace MajorityElement
 
         public long Majority(long[] n, long low, long high)
         {
-            // identify candidates through halving 
-            // iterate each candidate through the entire array to see if majority
-
             if (high - low == 0)
-                return 1;
-
+                if (IsMajorityElement(n, n[low]))
+                    return 1;
+                
             if (high - low == 1)
-            {
-                return n[low] == n[high] ? 1 : 0;
-            }
+                if(n[low] == n[high] && IsMajorityElement(n, n[low]))
+                    return 1;
 
             var mid = low + (high - low) / 2;
 
-            if (high - low > 0)
+            if (high - low > 1)
             {
                 var lResult = Majority(n, low, mid);
-                var rResult = Majority(n, mid + 1, high);
-
-                if (IsMajorityElement(n, low, high, lResult))
+                if (lResult == 1)
                     return 1;
-
-                if (IsMajorityElement(n, low, high, rResult))
+                var rResult = Majority(n, mid + 1, high);
+                if (rResult == 1)
                     return 1;
             }
 
             return 0;
         }
 
-        private bool IsMajorityElement(long[] n, long low, long high, long candidate)
+        private bool IsMajorityElement(long[] n, long candidate)
         {
-            var subN = new long[high - low + 1];
-            for (int i = 0, j = (int)low; i < subN.Length; i++, j++)
-                subN[i] = n[j];
+            var candidateInstanceCounter = 0;
+            for (int i = 0; i < n.Length; i++)
+                if (n[i] == candidate)
+                    candidateInstanceCounter++;
 
-            var hurdle = (high - low) / 2;
+            var hurdle = n.Length / 2;
 
-            var candidateCount = subN.Select(x => x == candidate).Count();
-
-            return candidateCount > hurdle;
-
+            return candidateInstanceCounter > hurdle;
         }
     }
 }
