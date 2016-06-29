@@ -15,13 +15,65 @@ namespace MergeSort
     {
         public void Run(string[] args)
         {
-            var input = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
-            Console.WriteLine(MergeSort(input));
+            var input = Console.ReadLine().Split(' ').Select(n => Convert.ToInt32(n)).ToArray();
+            MergeSort(input, 0, input.Length - 1);
         }
 
-        public long[] MergeSort(long[] n)
+        public void MergeSort(int[] n, int low, int high)
         {
-            return new long[1] {0};
+            if (low < high)
+            {
+                var mid = (int)Math.Floor((double) ((high+low) / 2));
+
+                MergeSort(n, low, mid);
+                MergeSort(n, mid+1, high);
+                Merge(n, low, mid, high);
+            }
+        }
+
+        private void Merge(int[] n, int low, int mid, int high)
+        {
+            int bigCounter = 0;
+           
+            var left = new int[mid - low + 1];
+            for (int i = 0; bigCounter < mid; i++)
+            {
+                left[i] = n[bigCounter];
+                bigCounter++;
+            }
+
+            var right = new int[high - mid + 1];
+            for (int j = 0; bigCounter < high; j++)
+            {
+                right[j] = n[bigCounter];
+                bigCounter++;
+            }
+
+            int leftIncrementer = 0;
+            int rightIncrementer = 0;
+            for (bigCounter = 0; leftIncrementer < left.Length && rightIncrementer < right.Length; bigCounter++)
+            {
+                if (left[leftIncrementer] < right[rightIncrementer])
+                {
+                    n[bigCounter] = left[leftIncrementer];
+                    leftIncrementer++;
+                }
+                else
+                {
+                    n[bigCounter] = right[rightIncrementer];
+                    rightIncrementer++;
+                }
+            }
+
+            for (; leftIncrementer < left.Length; leftIncrementer++, bigCounter++)
+            {
+                n[bigCounter] = left[leftIncrementer];
+            }
+
+            for (; rightIncrementer < right.Length; rightIncrementer++, bigCounter++)
+            {
+                n[bigCounter] = right[rightIncrementer];
+            }
         }
     }
 }

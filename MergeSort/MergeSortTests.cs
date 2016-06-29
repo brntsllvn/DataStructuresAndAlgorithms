@@ -6,17 +6,14 @@ namespace MergeSort
     [TestFixture]
     class MergeSortTests
     {
-        [TestCase("A", new long[] { 0 }, new long[] { 0 })]
-        public void Test_1(string name, long[] input, long[] expected)
+        [TestCase("A", new[] { 0 },    new[] { 0 })]
+        [TestCase("B", new[] { 0, 1 }, new[] { 0, 1 })]
+        [TestCase("C", new[] { 1, 0 }, new[] { 0, 1 })]
+        public void Test_1(string name, int[] input, int[] expected)
         {
             var f0 = new Launcher();
-            f0.MergeSort(input).ShouldBe(expected);
-
-            //Should.CompleteIn(
-            //    () => f0.MergeSort(input), TimeSpan.FromMilliseconds(1500));
-
-            //var proc = Process.GetCurrentProcess();
-            //proc.PrivateMemorySize64.ShouldBeLessThanOrEqualTo(512 * 1000 * 1000);
+            f0.MergeSort(input, 0,input.Length-1);
+            input.ShouldBe(expected);
         }
     }
 }
