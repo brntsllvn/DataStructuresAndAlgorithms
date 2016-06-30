@@ -23,7 +23,7 @@ namespace MergeSort
         {
             if (low < high)
             {
-                var mid = (int)Math.Floor((double) ((high+low) / 2));
+                var mid = low + (high-low) / 2;
 
                 MergeSort(n, low, mid);
                 MergeSort(n, mid+1, high);
@@ -33,17 +33,17 @@ namespace MergeSort
 
         private void Merge(int[] n, int low, int mid, int high)
         {
-            int bigCounter = 0;
+            int bigCounter = low;
            
             var left = new int[mid - low + 1];
-            for (int i = 0; bigCounter < mid; i++)
+            for (int i = 0; bigCounter <= mid; i++)
             {
                 left[i] = n[bigCounter];
                 bigCounter++;
             }
 
-            var right = new int[high - mid + 1];
-            for (int j = 0; bigCounter < high; j++)
+            var right = new int[high - mid];
+            for (int j = 0; bigCounter <= high; j++)
             {
                 right[j] = n[bigCounter];
                 bigCounter++;
@@ -51,7 +51,7 @@ namespace MergeSort
 
             int leftIncrementer = 0;
             int rightIncrementer = 0;
-            for (bigCounter = 0; leftIncrementer < left.Length && rightIncrementer < right.Length; bigCounter++)
+            for (bigCounter = low; leftIncrementer < left.Length && rightIncrementer < right.Length; bigCounter++)
             {
                 if (left[leftIncrementer] < right[rightIncrementer])
                 {
