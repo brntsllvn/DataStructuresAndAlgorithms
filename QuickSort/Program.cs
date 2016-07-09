@@ -16,12 +16,21 @@ namespace QuickSort
         public void Run(string[] args)
         {
             var input = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
-            Console.WriteLine(MyFunction(input));
         }
 
-        public string MyFunction(long[] n)
+        public void QuickSort(long[] n, int beg, int end)
         {
-            return "hello";
+            
+        }
+
+        public void Swap(long[] n, int index1, int index2)
+        {
+
+        }
+
+        public void Partition(long[] n)
+        {
+
         }
     }
 }

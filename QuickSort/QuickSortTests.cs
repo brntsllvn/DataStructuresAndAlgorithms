@@ -8,14 +8,32 @@ namespace QuickSort
     [TestFixture]
     class QuickSortTests
     {
-        [TestCase(new long[] { 0 }, "hello")]
-        public void Test_1(long[] input, string expected)
+        [Test]
+        public void PartitionTests()
+        {
+            var result = 0;
+            result.ShouldBe(12);
+        }
+
+        [TestCase("A", new long[] { 0 }, 0, 0, new long[] { 0 })]
+        public void SwapTests(string caseName, long[] input, int index1, int index2, long[] expected)
         {
             var f0 = new Launcher();
-            f0.MyFunction(input).ShouldBe(expected);
+            f0.Swap(input, index1, index2);
+            input.ShouldBe(expected);
+        }
+
+        [TestCase("A", new long[] { }, new long[] { })]
+        [TestCase("B", new long[] { 0 }, new long[] { 0 })]
+        public void QuickSortTestCases(string caseName, long[] input, long[] expected)
+        {
+            var f0 = new Launcher();
+            var inputMaxIndex = input.Length - 1;
+            f0.QuickSort(input, 0, inputMaxIndex);
+            input.ShouldBe(expected);
 
             Should.CompleteIn(
-                () => f0.MyFunction(input), TimeSpan.FromMilliseconds(1500));
+                () => f0.QuickSort(input, 0, inputMaxIndex), TimeSpan.FromMilliseconds(1500));
 
             var proc = Process.GetCurrentProcess();
             proc.PrivateMemorySize64.ShouldBeLessThanOrEqualTo(512 * 1000 * 1000);
