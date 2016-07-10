@@ -23,9 +23,11 @@ namespace QuickSort
             
         }
 
-        public void Swap(long[] n, int index1, int index2)
+        public void Swap(long[] n, int indexOfValueToBeOverwritten, int indexOfOverwritingValue)
         {
-
+            var overwrittenValue = n[indexOfValueToBeOverwritten];
+            n[indexOfValueToBeOverwritten] = n[indexOfOverwritingValue];
+            n[indexOfOverwritingValue] = overwrittenValue;
         }
 
         public void Partition(long[] n)

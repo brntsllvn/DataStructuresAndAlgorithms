@@ -15,7 +15,9 @@ namespace QuickSort
             result.ShouldBe(12);
         }
 
-        [TestCase("A", new long[] { 0 }, 0, 0, new long[] { 0 })]
+        [TestCase("A SWAP", new long[] { 0 }, 0, 0, new long[] { 0 })]
+        [TestCase("B SWAP", new long[] { 0, 1 }, 0, 1, new long[] { 1, 0 })]
+        [TestCase("C SWAP", new long[] { 0, 1, 42, -10 }, 1, 3, new long[] { 0, -10, 42, 1 })]
         public void SwapTests(string caseName, long[] input, int index1, int index2, long[] expected)
         {
             var f0 = new Launcher();
@@ -23,8 +25,8 @@ namespace QuickSort
             input.ShouldBe(expected);
         }
 
-        [TestCase("A", new long[] { }, new long[] { })]
-        [TestCase("B", new long[] { 0 }, new long[] { 0 })]
+        [TestCase("A QUICKSORT", new long[] { }, new long[] { })]
+        [TestCase("B QUICKSORT", new long[] { 0 }, new long[] { 0 })]
         public void QuickSortTestCases(string caseName, long[] input, long[] expected)
         {
             var f0 = new Launcher();
