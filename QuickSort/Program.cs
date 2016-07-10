@@ -20,7 +20,30 @@ namespace QuickSort
 
         public void QuickSort(long[] n, int beg, int end)
         {
-            
+            if (beg < end)
+            {
+                var pivot = Partition(n, beg, end);
+                QuickSort(n, beg, pivot - 1);
+                QuickSort(n, pivot + 1, end);
+            }
+        }
+
+        public int Partition(long[] n, int beg, int end)
+        {
+            var pivot = beg;
+
+            for (int j = beg; j < end; j++)
+            {
+                if (n[j] <= n[end])
+                {
+                    Swap(n, j, pivot);
+                    pivot++;
+                }
+            }
+
+            Swap(n, pivot, end);
+
+            return pivot;
         }
 
         public void Swap(long[] n, int indexOfValueToBeOverwritten, int indexOfOverwritingValue)
@@ -28,11 +51,6 @@ namespace QuickSort
             var overwrittenValue = n[indexOfValueToBeOverwritten];
             n[indexOfValueToBeOverwritten] = n[indexOfOverwritingValue];
             n[indexOfOverwritingValue] = overwrittenValue;
-        }
-
-        public void Partition(long[] n)
-        {
-
         }
     }
 }

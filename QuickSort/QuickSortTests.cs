@@ -8,11 +8,17 @@ namespace QuickSort
     [TestFixture]
     class QuickSortTests
     {
-        [Test]
-        public void PartitionTests()
+        [TestCase("A PARTITION", new long[] { 0 }, 0, 0, new long[] { 0 }, 0)]
+        [TestCase("B PARTITION", new long[] { 0, 1 }, 0, 1, new long[] { 0, 1 }, 1)]
+        [TestCase("C PARTITION", new long[] { 0, 1, -2 }, 0, 2, new long[] { -2, 1, 0 }, 0)]
+        [TestCase("D PARTITION", new long[] { 0, 3, -2, 1}, 0, 3, new long[] { 0, -2, 1, 3 }, 2)]
+        [TestCase("E PARTITION", new long[] { 0, 3, -2, -100 }, 0, 3, new long[] { -100, 3, -2, 0}, 0)]
+        public void PartitionTests(string caseName, long[] input, int beg, int end, long[] expArray, int expPivot)
         {
-            var result = 0;
-            result.ShouldBe(12);
+            var f0 = new Launcher();
+            var pivot = f0.Partition(input, beg, end);
+            input.ShouldBe(expArray);
+            pivot.ShouldBe(expPivot);
         }
 
         [TestCase("A SWAP", new long[] { 0 }, 0, 0, new long[] { 0 })]
@@ -27,6 +33,10 @@ namespace QuickSort
 
         [TestCase("A QUICKSORT", new long[] { }, new long[] { })]
         [TestCase("B QUICKSORT", new long[] { 0 }, new long[] { 0 })]
+        [TestCase("C QUICKSORT", new long[] { 1, 0 }, new long[] { 0, 1 })]
+        [TestCase("D QUICKSORT", new long[] { 1, 0, -1}, new long[] { -1, 0, 1 })]
+        [TestCase("E QUICKSORT", new long[] { 1, 0, -1, 2 }, new long[] { -1, 0, 1, 2 })]
+        [TestCase("F QUICKSORT", new long[] { 1, 0, 42, -1, 2 }, new long[] { -1, 0, 1, 2, 42 })]
         public void QuickSortTestCases(string caseName, long[] input, long[] expected)
         {
             var f0 = new Launcher();
