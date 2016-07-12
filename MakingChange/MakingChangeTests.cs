@@ -11,6 +11,8 @@ namespace MakingChange
         [TestCase("B USD", new int[] { 1, 5, 10, 25, 50 }, 1, 1)]
         [TestCase("C USD", new int[] { 1, 5, 10, 25, 50 }, 2, 2)]
         [TestCase("D USD", new int[] { 1, 5, 10, 25, 50 }, 5, 1)]
+        [TestCase("E USD", new int[] { 1, 5, 10, 25, 50 }, 16, 3)]
+        [TestCase("F USD", new int[] { 1, 5, 10, 25, 50 }, 20, 2)]
         public void MakeChange(string caseName, int[] coinDenominations, int amountToChange, int expectedNumCoins)
         {
             var f0 = new Launcher();
