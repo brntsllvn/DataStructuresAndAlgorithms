@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Algorithmic Toolbox", "Algorithmic Toolbox", "{8E284C18-A9E5-4FBD-86E5-D6F3E302B6FC}"
 EndProject
@@ -48,6 +48,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MakingChange", "MakingChange\MakingChange.csproj", "{CEF3FF4A-EF36-4DEF-AEA7-F9EC00D97686}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrimitiveCalculator", "PrimitiveCalculator\PrimitiveCalculator.csproj", "{FA6DD53E-658F-4028-90BC-09D14E0D5F67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnapsackWithoutRepetitions", "KnapsackWithoutRepetitions\KnapsackWithoutRepetitions.csproj", "{14071937-2DCE-4BBF-AA02-0984213A36ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -193,6 +195,14 @@ Global
 		{FA6DD53E-658F-4028-90BC-09D14E0D5F67}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FA6DD53E-658F-4028-90BC-09D14E0D5F67}.Release|x64.ActiveCfg = Release|Any CPU
 		{FA6DD53E-658F-4028-90BC-09D14E0D5F67}.Release|x64.Build.0 = Release|Any CPU
+		{14071937-2DCE-4BBF-AA02-0984213A36ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14071937-2DCE-4BBF-AA02-0984213A36ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14071937-2DCE-4BBF-AA02-0984213A36ED}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{14071937-2DCE-4BBF-AA02-0984213A36ED}.Debug|x64.Build.0 = Debug|Any CPU
+		{14071937-2DCE-4BBF-AA02-0984213A36ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14071937-2DCE-4BBF-AA02-0984213A36ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14071937-2DCE-4BBF-AA02-0984213A36ED}.Release|x64.ActiveCfg = Release|Any CPU
+		{14071937-2DCE-4BBF-AA02-0984213A36ED}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -220,5 +230,6 @@ Global
 		{00C608A6-3C17-4EEA-BB26-CE335B5009E1} = {8E284C18-A9E5-4FBD-86E5-D6F3E302B6FC}
 		{CEF3FF4A-EF36-4DEF-AEA7-F9EC00D97686} = {00C608A6-3C17-4EEA-BB26-CE335B5009E1}
 		{FA6DD53E-658F-4028-90BC-09D14E0D5F67} = {00C608A6-3C17-4EEA-BB26-CE335B5009E1}
+		{14071937-2DCE-4BBF-AA02-0984213A36ED} = {00C608A6-3C17-4EEA-BB26-CE335B5009E1}
 	EndGlobalSection
 EndGlobal
