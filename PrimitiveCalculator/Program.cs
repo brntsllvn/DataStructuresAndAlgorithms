@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
 
 namespace PrimitiveCalculator
 {
@@ -18,12 +17,22 @@ namespace PrimitiveCalculator
         public void Run(string[] args)
         {
             var input = Console.ReadLine().Split(' ').Select(n => Convert.ToInt32(n)).ToArray();
+            var minCalcInteger = input[0];
 
-            var minNumCalculations = PrimitiveCalculatorOperationCounter(input[0]).Length - 1;
-            var calculationSequence = string.Join(" ", PrimitiveCalculatorOperationCounter(input[0]));
+            var minNumCalculations = PrimitiveCalculatorOperationCounter(minCalcInteger).Length - 1;
+            var calculationSequence = string.Join(" ", PrimitiveCalculatorOperationCounter(minCalcInteger));
 
-            Console.WriteLine(minNumCalculations);
-            Console.WriteLine(calculationSequence);
+            if (minCalcInteger == 1)
+            {
+                Console.WriteLine(0);
+                Console.WriteLine(1);
+            }
+            else
+            {
+                Console.WriteLine(minNumCalculations);
+                Console.WriteLine(calculationSequence);
+            }
+
             Console.Read();
         }
 
@@ -32,8 +41,9 @@ namespace PrimitiveCalculator
             if (n == 1)
                 return new int[0];
 
-            var integerSequence = new List<int>();
-            integerSequence.Add(1);
+            var integerSequence = new List<int?>();
+            integerSequence.Add(null);
+            integerSequence.Add(0);
 
             var minNumOperations = new int[n + 1];
             minNumOperations[0] = 0;
@@ -46,18 +56,19 @@ namespace PrimitiveCalculator
                     minNumOperations[i] = minNumOperations[i / 3] + 1;
                     integerSequence.Add(3);
                 }
-                else if (IsPowerOfX(i,2))
-                {
-                    minNumOperations[i] = minNumOperations[i / 2] + 1;
-                    integerSequence.Add(2);
-                }
                 else if (i % 3 == 0)
                 {
                     minNumOperations[i] = minNumOperations[i / 3] + 1;
                     integerSequence.Add(3);
                 }
+                else if (IsPowerOfX(i, 2))
+                {
+                    minNumOperations[i] = minNumOperations[i / 2] + 1;
+                    integerSequence.Add(2);
+                }
                 else if (i % 3 == 1)
                 {
+                    // I think "+2" is wrong
                     minNumOperations[i] = minNumOperations[i / 3] + 2;
                     integerSequence.Add(1);
                 }
@@ -68,6 +79,7 @@ namespace PrimitiveCalculator
                 }
                 else if (i % 3 == 2)
                 {
+                    // I think "+3" is wrong 
                     minNumOperations[i] = minNumOperations[i / 3] + 3;
                     integerSequence.Add(1);
                 }
@@ -80,12 +92,11 @@ namespace PrimitiveCalculator
             {
                 outputSequence.Add(j);
 
-                var elementUnderQuestion = integerSequence.ElementAt(j-1);
-                if (elementUnderQuestion == 3)
-                    j = j / 3;
-                else if (elementUnderQuestion == 2)
-                    j = j / 2;
-                else if (elementUnderQuestion == 1)
+                if (integerSequence[j] == 3)
+                    j = j/3;
+                else if (integerSequence[j] == 2)
+                    j = j/2;
+                else
                     j--;
             }
 
