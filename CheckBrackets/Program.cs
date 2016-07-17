@@ -15,13 +15,16 @@ namespace CheckBrackets
     {
         public void Run(string[] args)
         {
-            var input = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
-            Console.WriteLine(MyFunction(input));
+            //var input = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
+            var input = Console.ReadLine();
+            Console.WriteLine(CheckBrackets(input));
         }
 
-        public string MyFunction(long[] n)
+        public string CheckBrackets(string input)
         {
-            return "hello";
+            // design an algorithm that checks if every {,[,( has a matching },],)
+
+            return "Success";
         }
     }
 }
