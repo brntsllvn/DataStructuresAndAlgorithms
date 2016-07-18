@@ -16,14 +16,21 @@ namespace TreeHeight
     {
         public void Run(string[] args)
         {
-            var numVertices = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
-            var parentCoordinates = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
+            var numVertices = Console.ReadLine().Split(' ').Select(n => Convert.ToInt32(n)).ToArray();
+            var parentCoordinates = Console.ReadLine().Split(' ').Select(n => Convert.ToInt32(n)).ToArray();
             Console.WriteLine(CalculateTreeHeight(parentCoordinates));
         }
 
-        public string CalculateTreeHeight(long[] n)
+        public int CalculateTreeHeight(int[] n)
         {
-            return "hello";
+            if (n.Length == 1)
+                return 1;
+
+            // construct tree
+
+            // measure tree height
+
+            return -1;
         }
     }
 
