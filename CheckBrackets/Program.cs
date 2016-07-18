@@ -31,29 +31,38 @@ namespace CheckBrackets
             char[] openBracketChars = { '{', '[', '(' };
             char[] closeBracketChars = { '}', ']', ')' };
 
+            char top = 'a';
+
             for (int i = 0; i < input.Length; i++)
             {
                 var c = input[i];
 
+                if (i == input.Length - 1 && openBracketChars.Contains(c))
+                    return (i + 1).ToString();
+
                 if (openBracketChars.Contains(c))
                     bracketStack.Push(c);
-                else
+                else if (closeBracketChars.Contains(c))
                 {
                     if (bracketStack.Empty())
                         return (i + 1).ToString();
 
-                    if (!closeBracketChars.Contains(c))
-                        continue;
-
-                    var top = bracketStack.PopNode().Payload;
+                    top = bracketStack.PopNode().Payload;
 
                     if ((top == '[' && c != ']')
                         || (top == '{' && c != '}')
                         || (top == '(' && c != ')'))
                     {
-                        return (i+1).ToString();
+                        return (i + 1).ToString();
                     }
                 }
+            }
+
+            if (!bracketStack.Empty())
+            {
+                top = bracketStack.Top.Payload;
+                var unmatchedBracketIndex = input.IndexOf(top) + 1;
+                return unmatchedBracketIndex.ToString();
             }
 
             return "Success";
