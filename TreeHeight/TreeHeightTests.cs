@@ -8,8 +8,8 @@ namespace TreeHeight
     [TestFixture]
     class TreeHeightTests
     {
-        [TestCase("A", 1, new int[1] { 0 }, 1)]
-        [TestCase("B", 2, new int[2] { -1, 0 }, 2)]
+        [TestCase("A", 1, new[] { 0 }, 1)]
+        [TestCase("B", 2, new[] { -1, 0 }, 2)]
         public void Test_1(string caseName, int numberVertices, int[] input, int expected)
         {
             var f0 = new Launcher();
