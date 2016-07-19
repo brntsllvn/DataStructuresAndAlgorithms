@@ -33,11 +33,9 @@ namespace TreeHeight
 
             var root = tree.FirstOrDefault(node => node.Parent == null) ?? tree.FirstOrDefault().Parent;
 
-            var rootChildren = root.Children;
-
             var childrenTreeHeights = new List<int>();
 
-            foreach (var child in rootChildren)
+            foreach (var child in root.Children)
             {
                 var grandChildren = child.Value.GetAllChildren();
                 grandChildren.Add(child.Value);
