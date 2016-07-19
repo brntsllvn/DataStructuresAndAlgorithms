@@ -39,13 +39,14 @@ namespace TreeHeight
 
             foreach (var child in rootChildren)
             {
-                var childrenChildren = new List<TreeNode>();
-                childrenChildren = child.Value.GetAllChildren();
-                childrenTreeHeights.Add(CalculateTreeHeight(childrenChildren));
+                var grandChildren = child.Value.GetAllChildren();
+                grandChildren.Add(child.Value);
+
+                var height = CalculateTreeHeight(grandChildren);
+                childrenTreeHeights.Add(height);
             }
 
-            var treeHeight = childrenTreeHeights.Max(x => x); 
-            return treeHeight;
+            return 1 + childrenTreeHeights.Max();
         }
 
         public List<TreeNode> ConstructTreeFromArray(int[] parentCoordinates)
@@ -95,7 +96,7 @@ namespace TreeHeight
         public List<TreeNode> GetAllChildren()
         {
             return Children.Values.ToList();
-        } 
+        }
 
         public void Add(TreeNode node)
         {
