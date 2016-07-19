@@ -12,15 +12,16 @@ namespace TreeHeight
         [TestCase("B", 2, new[] { -1, 0 }, 2)]
         public void Test_1(string caseName, int numberVertices, int[] input, int expected)
         {
-            //var f0 = new Launcher();
-            //var treeHeight = f0.CalculateTreeHeight(input);
-            //treeHeight.ShouldBe(expected);
+            var f0 = new Launcher();
+            var tree = f0.ConstructTreeFromArray(input);
+            var treeHeight = f0.CalculateTreeHeight(tree);
+            treeHeight.ShouldBe(expected);
 
-            //Should.CompleteIn(
-            //    () => f0.CalculateTreeHeight(input), TimeSpan.FromMilliseconds(1500));
+            Should.CompleteIn(
+                () => f0.CalculateTreeHeight(tree), TimeSpan.FromMilliseconds(1500));
 
-            //var proc = Process.GetCurrentProcess();
-            //proc.PrivateMemorySize64.ShouldBeLessThanOrEqualTo(512 * 1000 * 1000);
+            var proc = Process.GetCurrentProcess();
+            proc.PrivateMemorySize64.ShouldBeLessThanOrEqualTo(512 * 1000 * 1000);
         }
     }
 }
