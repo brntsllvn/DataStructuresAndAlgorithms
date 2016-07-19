@@ -51,8 +51,8 @@ namespace TreeHeight
 
                 foreach (var childLocation in childrenLocations)
                 {
-                    if (parentCoordinates[j] > -1)
-                        tree[j].Children.Add(j, tree.ElementAt(childLocation));
+                    // werid error happening down here...
+                    tree[j].Children.Add(j, tree.ElementAt(childLocation));
                 }
             }
 
