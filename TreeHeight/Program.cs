@@ -60,26 +60,26 @@ namespace TreeHeight
 
             var tree = new List<TreeNode>();
             for (int i = 0; i < numNodes; i++)
-                tree.Add(new TreeNode(i));
+                tree.Add(new TreeNode(i) {Parent = new TreeNode(parentCoordinates[i])});
 
             if (parentCoordinates.Length == 1)
                 return tree;
 
-            for (int j = 0; j < numNodes; j++)
-            {
-                TreeNode parentNode = null;
-                if (parentCoordinates[j] > -1)
-                    parentNode = tree.ElementAt(parentCoordinates[j]);
-                tree[j].Parent = parentNode;
+            //for (int j = 0; j < numNodes; j++)
+            //{
+            //    TreeNode parentNode = null;
+            //    if (parentCoordinates[j] > -1)
+            //        parentNode = tree.ElementAt(parentCoordinates[j]);
+            //    tree[j].Parent = parentNode;
 
-                var childrenLocations = Enumerable
-                    .Range(0, parentCoordinates.Length)
-                    .Where(k => parentCoordinates[k] == j)
-                    .ToList();
+            //    var childrenLocations = Enumerable
+            //        .Range(0, parentCoordinates.Length)
+            //        .Where(k => parentCoordinates[k] == j)
+            //        .ToList();
 
-                foreach (var childLocation in childrenLocations)
-                    tree[j].Children.Add(childLocation, tree.ElementAt(childLocation));
-            }
+            //    foreach (var childLocation in childrenLocations)
+            //        tree[j].Children.Add(childLocation, tree.ElementAt(childLocation));
+            //}
 
             return tree;
         }
@@ -88,12 +88,12 @@ namespace TreeHeight
     public class TreeNode : IEnumerable<TreeNode>
     {
         public Dictionary<int, TreeNode> Children = new Dictionary<int, TreeNode>();
-        public int ID;
+        public int Id;
         public TreeNode Parent { get; set; }
 
         public TreeNode(int id)
         {
-            ID = id;
+            Id = id;
         }
 
         public TreeNode GetChild(int id)
@@ -109,10 +109,10 @@ namespace TreeHeight
         public void Add(TreeNode node)
         {
             if (node.Parent != null)
-                node.Parent.Children.Remove(node.ID);
+                node.Parent.Children.Remove(node.Id);
 
             node.Parent = this;
-            Children.Add(node.ID, node);
+            Children.Add(node.Id, node);
         }
 
         public IEnumerator<TreeNode> GetEnumerator()
@@ -124,10 +124,5 @@ namespace TreeHeight
         {
             return GetEnumerator();
         }
-
-        //public int CountChildren
-        //{
-        //    get { return Children.Count; }
-        //}
     }
 }
