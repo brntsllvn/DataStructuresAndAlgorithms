@@ -20,31 +20,38 @@ namespace TreeHeight
             var numVertices = Console.ReadLine().Split(' ').Select(n => Convert.ToInt32(n)).ToArray();
             var parentCoordinates = Console.ReadLine().Split(' ').Select(n => Convert.ToInt32(n)).ToArray();
             var tree = ConstructTreeFromArray(parentCoordinates);
-            Console.WriteLine(CalculateTreeHeight(tree));
+            var root = tree.FirstOrDefault(node => node.Parent == null);
+            Console.WriteLine(CalculateTreeHeight(root));
         }
 
-        public int CalculateTreeHeight(List<TreeNode> tree)
+        public int CalculateTreeHeight(TreeNode node)
         {
-            if (tree.Count == 0)
+            if (node == null)
                 return 0;
 
-            if (tree.Count == 1)
-                return 1;
+            var q = new List<TreeNode>();
+            q.Add(node);
 
-            var root = tree.FirstOrDefault(node => node.Parent == null) ?? tree.FirstOrDefault().Parent;
+            int height = 0;
 
-            var childrenTreeHeights = new List<int>();
-
-            foreach (var child in root.Children)
+            while (true)
             {
-                var grandChildren = child.Value.GetAllChildren();
-                grandChildren.Add(child.Value);
+                int nodeCount = q.Count;
+                if (nodeCount == 0)
+                    return height;
 
-                var height = CalculateTreeHeight(grandChildren);
-                childrenTreeHeights.Add(height);
+                height++;
+
+                while (nodeCount > 0)
+                {
+                    var newnode = q.First();
+                    q.RemoveAt(0);
+
+                    q.AddRange(newnode.GetAllChildren());
+
+                    nodeCount--;
+                }
             }
-
-            return 1 + childrenTreeHeights.Max();
         }
 
         public List<TreeNode> ConstructTreeFromArray(int[] parentCoordinates)
@@ -54,6 +61,9 @@ namespace TreeHeight
             var tree = new List<TreeNode>();
             for (int i = 0; i < numNodes; i++)
                 tree.Add(new TreeNode(i));
+
+            if (parentCoordinates.Length == 1)
+                return tree;
 
             for (int j = 0; j < numNodes; j++)
             {

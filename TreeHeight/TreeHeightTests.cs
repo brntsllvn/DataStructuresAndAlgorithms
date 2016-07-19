@@ -2,6 +2,7 @@
 using Shouldly;
 using System;
 using System.Diagnostics;
+using System.Linq;
 
 namespace TreeHeight
 {
@@ -20,11 +21,12 @@ namespace TreeHeight
         {
             var f0 = new Launcher();
             var tree = f0.ConstructTreeFromArray(input);
-            var treeHeight = f0.CalculateTreeHeight(tree);
+            var root = tree.FirstOrDefault(node => node.Parent == null);
+            var treeHeight = f0.CalculateTreeHeight(root);
             treeHeight.ShouldBe(expected);
 
             Should.CompleteIn(
-                () => f0.CalculateTreeHeight(tree), TimeSpan.FromMilliseconds(1500));
+                () => f0.CalculateTreeHeight(root), TimeSpan.FromMilliseconds(1500));
 
             var proc = Process.GetCurrentProcess();
             proc.PrivateMemorySize64.ShouldBeLessThanOrEqualTo(512 * 1000 * 1000);
