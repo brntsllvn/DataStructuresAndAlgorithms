@@ -15,21 +15,6 @@ namespace TreeHeight
             Parent = parent;
         }
 
-        //public int ComputeHeight()
-        //{
-        //    var maxHeight = 0;
-        //    for (int vertex = 0; vertex < N; vertex++)
-        //    {
-        //        var height = 0;
-        //        for (int i = vertex; i != -1; i = Parent[i])
-        //        {
-        //            height++;
-        //        }
-        //        maxHeight = Math.Max(maxHeight, height);
-        //    }
-        //    return maxHeight;
-        //}
-
         public int CalculateTreeHeight()
         {
             if (Parent.Length == 0)
@@ -60,40 +45,14 @@ namespace TreeHeight
             }
         }
 
-        public List<int> GetChildren(int parentIndex)
+        public List<int> GetChildren(int index)
         {
-            return Parent.Where(k => Parent[k] == parentIndex).ToList();
+            var childrenLocations = Enumerable
+                .Range(0, Parent.Length)
+                .Where(k => Parent[k] == index)
+                .ToList();
+            return childrenLocations;
         } 
-
-        //        public int CalculateTreeHeight(TreeNode node)
-        //        {
-        //            if (node == null)
-        //                return 0;
-
-        //            var q = new List<TreeNode>();
-        //            q.Add(node);
-
-        //            int height = 0;
-
-        //            while (true)
-        //            {
-        //                int nodeCount = q.Count;
-        //                if (nodeCount == 0)
-        //                    return height;
-
-        //                height++;
-
-        //                while (nodeCount > 0)
-        //                {
-        //                    var newnode = q.First();
-        //                    q.RemoveAt(0);
-
-        //                    q.AddRange(newnode.GetAllChildren());
-
-        //                    nodeCount--;
-        //                }
-        //            }
-        //        }
     }
 }
 
