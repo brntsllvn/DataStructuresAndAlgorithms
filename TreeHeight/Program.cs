@@ -7,10 +7,10 @@ namespace TreeHeight
 {
     public class Program
     {
-        public static void Main(string[] args)
-        {
-            new Launcher().Run(args);
-        }
+        //public static void Main(string[] args)
+        //{
+        //    new Launcher().Run(args);
+        //}
     }
 
     public class Launcher
