@@ -18,10 +18,10 @@ namespace CheckBrackets
             //var input = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
             var input = Console.ReadLine();
 
-            Console.WriteLine(bracketsBalanced(input));
+            Console.WriteLine(BracketsBalanced(input));
         }
 
-        public string bracketsBalanced(string input)
+        public string BracketsBalanced(string input)
         {
             if (input.Length == 1)
                 return "1";

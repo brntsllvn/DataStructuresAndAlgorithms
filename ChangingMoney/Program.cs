@@ -21,8 +21,8 @@ namespace ChangingMoney
 
         public int MinimumNumberOfCoinsToChangeMoney(int n)
         {
-            var countOf10s = 0;
-            var countOf5sAnd1s = 0;
+            var countOf10S = 0;
+            var countOf5SAnd1S = 0;
 
             if (n < 5)
             {
@@ -34,11 +34,11 @@ namespace ChangingMoney
             }
             else if (n > 10)
             {
-                countOf10s = n / 10;
-                countOf5sAnd1s = MinimumNumberOfCoinsToChangeMoney(n % 10);
+                countOf10S = n / 10;
+                countOf5SAnd1S = MinimumNumberOfCoinsToChangeMoney(n % 10);
             }
 
-            var coinCount = countOf10s + countOf5sAnd1s;
+            var coinCount = countOf10S + countOf5SAnd1S;
 
             return coinCount;
         }

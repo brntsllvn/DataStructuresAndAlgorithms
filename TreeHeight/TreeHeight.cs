@@ -4,24 +4,32 @@
 
 //namespace TreeHeight
 //{
-//    internal class TreeHeight
+//    public class Program
 //    {
-//        public int N { get; set; }
-//        public int[] Parent { get; set; }
-
-//        public TreeHeight(int n, int[] parent)
+//        public static void Main(string[] args)
 //        {
-//            N = n;
-//            Parent = parent;
+//            new Launcher().Run(args);
+//        }
+//    }
+
+//    public class Launcher
+//    {
+//        public void Run(string[] args)
+//        {
+//            var numVertices = Console.ReadLine().Split(' ').Select(n => Convert.ToInt32(n)).ToArray();
+//            var parentCoordinates = Console.ReadLine().Split(' ').Select(n => Convert.ToInt32(n)).ToArray();
+//            var tree = ConstructTreeFromArray(parentCoordinates);
+//            var root = tree.FirstOrDefault(node => node.Parent == null);
+//            Console.WriteLine(CalculateTreeHeight(root));
 //        }
 
-//        public int CalculateTreeHeight()
+//        public int CalculateTreeHeight(TreeNode node)
 //        {
-//            if (Parent.Length == 0)
+//            if (node == null)
 //                return 0;
 
-//            var q = new List<int>();
-//            q.Add(Array.IndexOf(Parent,-1));
+//            var q = new List<TreeNode>();
+//            q.Add(node);
 
 //            int height = 0;
 
@@ -38,39 +46,41 @@
 //                    var newnode = q.First();
 //                    q.RemoveAt(0);
 
-//                    q.AddRange(GetChildren(newnode));
+//                    q.AddRange(newnode.Children.Values.ToList());
 
 //                    nodeCount--;
 //                }
 //            }
 //        }
 
-//        public List<int> GetChildren(int index)
+//        public List<TreeNode> ConstructTreeFromArray(int[] parentCoordinates)
 //        {
-//            var childrenLocations = Enumerable
-//                .Range(0, Parent.Length)
-//                .Where(k => Parent[k] == index)
-//                .ToList();
-//            return childrenLocations;
-//        } 
-//    }
-//}
+//            var numNodes = parentCoordinates.Length;
 
-//public class Program
-//{
-//    public static void Main(string[] args)
-//    {
-//        new Launcher().Run(args);
-//    }
-//}
+//            var tree = new List<TreeNode>();
+//            for (var i = 0; i < numNodes; i++)
+//                tree.Add(new TreeNode(i));
 
-//public class Launcher
-//{
-//    public void Run(string[] args)
+//            for (var j = 0; j < numNodes; j++)
+//            {
+//                if (parentCoordinates[j] == -1) continue;
+//                tree[j].Parent = tree[parentCoordinates[j]];
+//                tree[parentCoordinates[j]].Children.Add(j, tree[j]);
+//            }
+
+//            return tree;
+//        }
+//    }
+
+//    public class TreeNode
 //    {
-//        var numVertices = Console.ReadLine().Split(' ').Select(n => Convert.ToInt32(n)).ToArray()[0];
-//        var parentCoordinates = Console.ReadLine().Split(' ').Select(n => Convert.ToInt32(n)).ToArray();
-//        var tree = new TreeHeight.TreeHeight(numVertices, parentCoordinates);
-//        Console.WriteLine(tree.CalculateTreeHeight());
+//        public Dictionary<int, TreeNode> Children = new Dictionary<int, TreeNode>();
+//        public int Id;
+//        public TreeNode Parent { get; set; }
+
+//        public TreeNode(int id)
+//        {
+//            Id = id;
+//        }
 //    }
 //}

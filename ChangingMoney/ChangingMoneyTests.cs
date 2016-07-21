@@ -6,7 +6,7 @@ using System.Diagnostics;
 namespace ChangingMoney
 {
     [TestFixture]
-    class CMTests
+    class CmTests
     {
         [TestCase(1, 1)]
         [TestCase(2, 2)]

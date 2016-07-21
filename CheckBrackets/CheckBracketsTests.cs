@@ -26,10 +26,10 @@ namespace CheckBrackets
         public void AAA_CheckingBrackets(string input, string expected)
         {
             var f0 = new Launcher();
-             f0.bracketsBalanced(input).ShouldBe(expected);
+             f0.BracketsBalanced(input).ShouldBe(expected);
 
             Should.CompleteIn(
-                () => f0.bracketsBalanced(input), TimeSpan.FromMilliseconds(1500));
+                () => f0.BracketsBalanced(input), TimeSpan.FromMilliseconds(1500));
 
             var proc = Process.GetCurrentProcess();
             proc.PrivateMemorySize64.ShouldBeLessThanOrEqualTo(512 * 1000 * 1000);

@@ -33,11 +33,11 @@ namespace MakingChange
                 {
                     if (m >= coinDenominations[i])
                     {
-                        var NumCoins = minNumberCoins[m-coinDenominations[i]] + 1;
+                        var numCoins = minNumberCoins[m-coinDenominations[i]] + 1;
 
-                        if (NumCoins < minNumberCoins[m])
+                        if (numCoins < minNumberCoins[m])
                         {
-                            minNumberCoins[m] = NumCoins;
+                            minNumberCoins[m] = numCoins;
                         }
                     }
                 }
