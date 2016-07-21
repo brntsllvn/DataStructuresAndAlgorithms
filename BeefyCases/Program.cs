@@ -19,15 +19,22 @@ namespace BeefyCases
             Console.WriteLine(AddSimpleType(input));
         }
 
-        public int AddSimpleType(int[] n)
+        public int AddSimpleType(int[] arrayOfIntegers)
         {
-            return n.Sum();
+            return arrayOfIntegers.Sum();
         }
 
-        public int AddComplicatedType(AwesomeObject[] n)
+        public decimal AddDecimalType(decimal[] arrayOfDecimals)
         {
-            return n.Sum(x => x.Payload);
+            return arrayOfDecimals.Sum(x => x);
         }
+
+        public int AddComplicatedType(AwesomeObject[] arrayOfAwesomeObjects)
+        {
+            return arrayOfAwesomeObjects.Sum(x => x.Payload);
+        }
+
+
     }
 
     public class AwesomeObject
