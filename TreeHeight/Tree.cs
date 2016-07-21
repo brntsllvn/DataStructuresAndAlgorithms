@@ -20,46 +20,46 @@ namespace TreeHeight
             var numVertices = Console.ReadLine().Split(' ').Select(n => Convert.ToInt32(n)).ToArray();
             var parent = Console.ReadLine().Split(' ').Select(n => Convert.ToInt32(n)).ToArray();
 
-            Console.WriteLine(solution.ComputeHeight(parent));
+            Console.WriteLine(solution.CalculateTreeHeight(parent));
         }
     }
 
     public class HeightOfTreeFromParentArray
     {
-        public void ComputeHeight(int i, int[] height, int[] parent)
+        public void CalculateNodeHeight(int i, int[] heightOfNode, int[] parentCoordinates)
         {
-            if (height[i] != -1)
+            if (heightOfNode[i] != -1)
                 return;
 
-            if (parent[i] == -1)
+            if (parentCoordinates[i] == -1)
             {
-                height[i] = 1;
+                heightOfNode[i] = 1;
                 return;
             }
 
-            if (height[parent[i]] == -1)
-                ComputeHeight(parent[i], height, parent);
+            // if the height of node i's parent has NOT been calculated, then calculate it
+            if (heightOfNode[parentCoordinates[i]] == -1)
+                CalculateNodeHeight(parentCoordinates[i], heightOfNode, parentCoordinates);
 
-            if (height[parent[i]] != -1) 
-                height[i] = 1 + height[parent[i]];
+            // if the height of node i's parent HAS been calculated, the height of i is 1 + parent's height
+            if (heightOfNode[parentCoordinates[i]] != -1) 
+                heightOfNode[i] = 1 + heightOfNode[parentCoordinates[i]];
         }
 
-        public int ComputeHeight(int[] parent)
+        public int CalculateTreeHeight(int[] parentCoordinates)
         {
-            var height = new int[parent.Length];
+            var heightOfNode = new int[parentCoordinates.Length];
 
-            for (var i = 0; i < height.Length; i++)
-                height[i] = -1;
+            for (var i = 0; i < heightOfNode.Length; i++)
+                heightOfNode[i] = -1;
 
-            for (var i = 0; i < height.Length; i++)
-                ComputeHeight(i, height, parent);
+            for (var i = 0; i < heightOfNode.Length; i++)
+                CalculateNodeHeight(i, heightOfNode, parentCoordinates);
 
             var maxHeight = -1;
-            for (var i = 0; i < height.Length; i++)
-            {
-                if (height[i] > maxHeight)
-                    maxHeight = height[i];
-            }
+            for (var i = 0; i < heightOfNode.Length; i++)
+                if (heightOfNode[i] > maxHeight)
+                    maxHeight = heightOfNode[i];
 
             return maxHeight;
         }

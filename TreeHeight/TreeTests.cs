@@ -17,7 +17,7 @@ namespace TreeHeight
         public void Test_1(string caseName, int numberVertices, int[] parent, int expected)
         {
             var f0 = new HeightOfTreeFromParentArray();
-            var tree = f0.ComputeHeight(parent);
+            var tree = f0.CalculateTreeHeight(parent);
             tree.ShouldBe(expected);
         }
 
@@ -32,7 +32,7 @@ namespace TreeHeight
                 large[i] = i - 1;
 
             var f0 = new HeightOfTreeFromParentArray();
-            var tree = f0.ComputeHeight(large);
+            var tree = f0.CalculateTreeHeight(large);
             tree.ShouldBe(expected);
         }
     }
