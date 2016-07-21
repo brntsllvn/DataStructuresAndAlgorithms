@@ -67,11 +67,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tree.cs" />
-    <Compile Include="TreeHeight.cs" />
-    <Compile Include="TreeHeightTests.cs" />
     <Compile Include="TreeTests.cs" />
   </ItemGroup>
   <ItemGroup>
