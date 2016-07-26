@@ -24,4 +24,16 @@ namespace ArrayToHeap
             return "hello";
         }
     }
+
+    public class Swap
+    {
+        public int i { get; set; }
+        public int j { get; set; }
+
+        public Swap(int passed_i, int passed_j)
+        {
+            i = passed_i;
+            j = passed_j;
+        }
+    }
 }
