@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ArrayToHeap
@@ -13,15 +14,23 @@ namespace ArrayToHeap
 
     public class Launcher
     {
+        public List<Swap> Swapollas { get; set; }
+
         public void Run(string[] args)
         {
             var input = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
-            Console.WriteLine(MyFunction(input));
+            GenerateSwaps(input);
+            PrintSwaps(Swapollas);
         }
 
-        public string MyFunction(long[] n)
+        public void GenerateSwaps(long[] n)
         {
-            return "hello";
+            // add swaps to list of swaps as we transform an array into a min heap
+        }
+
+        public void PrintSwaps(List<Swap> swapollas)
+        {
+            // print the list of swaps generated in GenerateSwaps in the desired format
         }
     }
 
