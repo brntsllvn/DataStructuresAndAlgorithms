@@ -16,6 +16,11 @@ namespace ArrayToHeap
     {
         public List<Swap> Swapollas { get; set; }
 
+        public Launcher()
+        {
+            Swapollas = new List<Swap>();
+        }
+
         public void Run(string[] args)
         {
             var input = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
