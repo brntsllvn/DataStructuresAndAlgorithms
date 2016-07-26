@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Algorithmic Toolbox", "Algorithmic Toolbox", "{8E284C18-A9E5-4FBD-86E5-D6F3E302B6FC}"
 EndProject
@@ -60,6 +60,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreeHeight", "TreeHeight\TreeHeight.csproj", "{7DE75C05-3C25-4251-BD43-D3B4222AFCA4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeefyCases", "BeefyCases\BeefyCases.csproj", "{01CBFD71-E623-4319-B04C-F57C6C8AD436}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{2F4EC789-0C4E-4CE6-8345-B6B15AB9DE18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleSortDemo", "BubbleSortDemo\BubbleSortDemo.csproj", "{5AA3DF71-3D5A-4F98-855B-4921D2D2341C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -237,6 +241,14 @@ Global
 		{01CBFD71-E623-4319-B04C-F57C6C8AD436}.Release|Any CPU.Build.0 = Release|Any CPU
 		{01CBFD71-E623-4319-B04C-F57C6C8AD436}.Release|x64.ActiveCfg = Release|Any CPU
 		{01CBFD71-E623-4319-B04C-F57C6C8AD436}.Release|x64.Build.0 = Release|Any CPU
+		{5AA3DF71-3D5A-4F98-855B-4921D2D2341C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AA3DF71-3D5A-4F98-855B-4921D2D2341C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AA3DF71-3D5A-4F98-855B-4921D2D2341C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5AA3DF71-3D5A-4F98-855B-4921D2D2341C}.Debug|x64.Build.0 = Debug|Any CPU
+		{5AA3DF71-3D5A-4F98-855B-4921D2D2341C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AA3DF71-3D5A-4F98-855B-4921D2D2341C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AA3DF71-3D5A-4F98-855B-4921D2D2341C}.Release|x64.ActiveCfg = Release|Any CPU
+		{5AA3DF71-3D5A-4F98-855B-4921D2D2341C}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -269,5 +281,6 @@ Global
 		{64E99DEE-DBED-48AB-B9E7-D572B4B702B0} = {8F1570FB-C576-4D02-B9B0-1808ECB679CD}
 		{7DE75C05-3C25-4251-BD43-D3B4222AFCA4} = {8F1570FB-C576-4D02-B9B0-1808ECB679CD}
 		{01CBFD71-E623-4319-B04C-F57C6C8AD436} = {8F1570FB-C576-4D02-B9B0-1808ECB679CD}
+		{5AA3DF71-3D5A-4F98-855B-4921D2D2341C} = {2F4EC789-0C4E-4CE6-8345-B6B15AB9DE18}
 	EndGlobalSection
 EndGlobal
