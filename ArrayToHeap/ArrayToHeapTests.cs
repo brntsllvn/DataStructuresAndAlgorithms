@@ -20,9 +20,19 @@ namespace LauncherTemplate
 
         private static readonly object[] ListOSwaps =
         {
-            new object[] { "A", new long[] { 0 }, new long[] { 0 }, new List<Swap>() },
-            new object[] { "B", new long[] { 1, 0 }, new long[] { 0, 1 }, new List<Swap>() { new Swap(1, 0) } }
+            new object[] { "A", new long[] { 0 }, new long[] { 0 },
+                new List<Swap>() },
+            new object[] { "B", new long[] { 1, 0 }, new long[] { 0, 1 },
+                new List<Swap>() { new Swap(1, 0) } }
         };
+
+        [TestCase("A", new long[] { 0 }, 1, new long[] { 0 })]
+        public void SiftDown_Works(string caseName, long[] input, long parentIndex, long[] expected)
+        {
+            var f0 = new Launcher();
+            f0.SiftDown(input, parentIndex);
+            input.ShouldBe(expected);
+        }
 
         [Test]
         public void Swap_Works()
