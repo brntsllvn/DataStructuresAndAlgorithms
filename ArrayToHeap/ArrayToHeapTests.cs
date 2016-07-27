@@ -12,18 +12,30 @@ namespace LauncherTemplate
         public void Array_To_Heap(string caseName, long[] input, long[] expected, List<Swap> swaps)
         {
             var f0 = new Launcher();
-            f0.GenerateSwaps(input);
+            f0.BuildHeap(input);
             input.ShouldBe(expected);
 
-            f0.Swapollas.ShouldBe(swaps);
+            var computedSwaps = f0.Swapollas;
+            var computedSwapsCount = f0.Swapollas.Count;
+            for (int i = 0; i < computedSwapsCount; i++)
+            {
+                computedSwaps[i].i.ShouldBe(swaps[i].i);
+                computedSwaps[i].j.ShouldBe(swaps[i].j);
+            }
         }
 
         private static readonly object[] ListOSwaps =
         {
             new object[] { "A", new long[] { 0 }, new long[] { 0 },
                 new List<Swap>() },
-            new object[] { "B", new long[] { 1, 0 }, new long[] { 0, 1 },
-                new List<Swap>() { new Swap(1, 0) } }
+            new object[] { "B", new long[] { 0, 1 }, new long[] { 0, 1 },
+                new List<Swap>() },
+            new object[] { "C", new long[] { 1, 0 }, new long[] { 0, 1 },
+                new List<Swap>() { new Swap(0, 1) } },
+            new object[] { "D", new long[] { 2, 0, 1, -5, -10 }, new long[] { -10, -5, 1, 2, 0 },
+                new List<Swap>() { new Swap(1, 4), new Swap(0, 1), new Swap(1, 3) } },
+            new object[] { "E", new long[] { 5, 4, 3, 2, 1 }, new long[] { 1, 2, 3, 5, 4 },
+                new List<Swap>() { new Swap(1, 4), new Swap(0, 1), new Swap(1, 3) } }
         };
 
         [TestCase("A", new long[] { 0 }, 1, new long[] { 0 })]

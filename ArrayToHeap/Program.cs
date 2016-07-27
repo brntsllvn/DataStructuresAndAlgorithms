@@ -23,14 +23,18 @@ namespace ArrayToHeap
 
         public void Run(string[] args)
         {
+            var dummy = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
             var input = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
-            GenerateSwaps(input);
+            BuildHeap(input);
             PrintSwaps(Swapollas);
+            Console.Read();
         }
 
-        public void GenerateSwaps(long[] n)
+        public void BuildHeap(long[] n)
         {
-            // add swaps to list of swaps as we transform an array into a min heap
+            var size = n.Length - 1;
+            for (int i = size / 2; i >= 0; i--)
+                SiftDown(n, i);
         }
 
         public void SiftDown(long[] H, long parentIndex)
@@ -48,6 +52,7 @@ namespace ArrayToHeap
 
             if (parentIndex != minElementIndex)
             {
+                Swapollas.Add(new Swap(parentIndex, minElementIndex));
                 SwapElements(H, parentIndex, minElementIndex);
                 SiftDown(H, minElementIndex);
             }
@@ -73,7 +78,9 @@ namespace ArrayToHeap
 
         public void PrintSwaps(List<Swap> swapollas)
         {
-            // print the list of swaps generated in GenerateSwaps in the desired format
+            Console.WriteLine(Swapollas.Count);
+            foreach (var swap in swapollas)
+                Console.WriteLine(swap.i + " " + swap.j);
         }
     }
 
