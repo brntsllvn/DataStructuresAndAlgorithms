@@ -27,6 +27,13 @@ namespace LauncherTemplate
         };
 
         [TestCase("A", new long[] { 0 }, 1, new long[] { 0 })]
+        [TestCase("B", new long[] { 0, 1 }, 0, new long[] { 0, 1 })]
+        [TestCase("C", new long[] { 0, 1 }, 1, new long[] { 0, 1 })]
+        [TestCase("D", new long[] { 0, 1, 2 }, 0, new long[] { 0, 1, 2 })]
+        [TestCase("E", new long[] { 2, 1, 0 }, 0, new long[] { 0, 1, 2 })]
+        [TestCase("F", new long[] { 2, 1, 0 }, 1, new long[] { 2, 1, 0 })]
+        [TestCase("G", new long[] { 2, 0, 1, -5, -10 }, 0, new long[] { 0, -10, 1, -5, 2 })]
+        [TestCase("H", new long[] { 2, 0, 1, -5, -10 }, 1, new long[] { 2, -10, 1, -5, 0 })]
         public void SiftDown_Works(string caseName, long[] input, long parentIndex, long[] expected)
         {
             var f0 = new Launcher();

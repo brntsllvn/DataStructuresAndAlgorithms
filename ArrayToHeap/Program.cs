@@ -35,21 +35,21 @@ namespace ArrayToHeap
 
         public void SiftDown(long[] H, long parentIndex)
         {
-            var size = H.Length;
-            var minIndex = parentIndex;
+            var size = H.Length - 1;
+            var minElementIndex = parentIndex;
 
             var leftChildIndex = GetLeftChildIndex(parentIndex);
-            if (leftChildIndex <= size && H[leftChildIndex] > H[minIndex])
-                minIndex = leftChildIndex;
+            if (leftChildIndex <= size && H[leftChildIndex] < H[minElementIndex])
+                minElementIndex = leftChildIndex;
 
             var rightChildIndex = GetRightChildIndex(parentIndex);
-            if (rightChildIndex <= size && H[rightChildIndex] > H[minIndex])
-                minIndex = rightChildIndex;
+            if (rightChildIndex <= size && H[rightChildIndex] < H[minElementIndex])
+                minElementIndex = rightChildIndex;
 
-            if (parentIndex != minIndex)
+            if (parentIndex != minElementIndex)
             {
-                SwapElements(H, H[parentIndex], H[minIndex]);
-                SiftDown(H, parentIndex);
+                SwapElements(H, parentIndex, minElementIndex);
+                SiftDown(H, minElementIndex);
             }
 
         }
@@ -63,12 +63,12 @@ namespace ArrayToHeap
 
         public long GetLeftChildIndex(long parentIndex)
         {
-            return 2 * parentIndex;
+            return 2 * parentIndex + 1; // "+1" makes the index math 0-based
         }
 
         public long GetRightChildIndex(long parentIndex)
         {
-            return 2 * parentIndex + 1;
+            return 2 * parentIndex + 2; // "+2" makes the index math 0 - based
         }
 
         public void PrintSwaps(List<Swap> swapollas)
