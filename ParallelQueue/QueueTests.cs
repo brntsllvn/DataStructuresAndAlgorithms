@@ -25,7 +25,17 @@ namespace ParallelQueue
         private static readonly object[] ResultList =
         {
             new object[] { "A", 1, 1, new long[] { 1 },
-                new List<ResultPair> { new ResultPair(0,0) } } 
+                new List<ResultPair> { new ResultPair(0,0) } },
+            new object[] { "B", 8, 1, new long[] { 1 },
+                new List<ResultPair> { new ResultPair(0,0) } },
+            new object[] { "C", 1, 2, new long[] { 1, 1 },
+                new List<ResultPair> { new ResultPair(0,0), new ResultPair(0,1) } },
+            new object[] { "D", 1, 2, new long[] { 2, 2 },
+                new List<ResultPair> { new ResultPair(0,0), new ResultPair(0,2) } },
+            new object[] { "E", 2, 2, new long[] { 1, 1 },
+                new List<ResultPair> { new ResultPair(0,0), new ResultPair(1,0) } },
+            new object[] { "F", 2, 3, new long[] { 1, 1, 2 },
+                new List<ResultPair> { new ResultPair(0,0), new ResultPair(1,0), new ResultPair(0, 1) } },
         };
     }
 }
