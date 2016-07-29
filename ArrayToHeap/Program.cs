@@ -56,6 +56,15 @@ namespace ArrayToHeap
                 SwapElements(H, parentIndex, minElementIndex);
                 SiftDown(H, minElementIndex);
             }
+        }
+
+        public long ExtractMin(long[] H)
+        {
+            return H[0];
+        }
+
+        public void ChangePriority()
+        {
 
         }
 

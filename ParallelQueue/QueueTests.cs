@@ -11,7 +11,7 @@ namespace ParallelQueue
         public void QueueTestCases(string caseName, long numWorkers, long numJobs, long[] jobs, List<ResultPair> expected)
         {
             var jobQueue = new JobQueue(numWorkers, numJobs, jobs);
-            jobQueue.AssignJobs();
+            jobQueue.AssignThreads();
             jobQueue.ConvertSolutionToResultPairs();
 
             var results = jobQueue.ResultPairs;
