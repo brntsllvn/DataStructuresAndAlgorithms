@@ -38,7 +38,7 @@ namespace LauncherTemplate
                 new List<Swap>() { new Swap(1, 4), new Swap(0, 1), new Swap(1, 3) } }
         };
 
-        [TestCase("A", new long[] { 0 }, 1, new long[] { 0 })]
+        [TestCase("A", new long[] { 0 }, 0, new long[] { 0 })]
         [TestCase("B", new long[] { 0, 1 }, 0, new long[] { 0, 1 })]
         [TestCase("C", new long[] { 0, 1 }, 1, new long[] { 0, 1 })]
         [TestCase("D", new long[] { 0, 1, 2 }, 0, new long[] { 0, 1, 2 })]
@@ -59,6 +59,42 @@ namespace LauncherTemplate
             var swapper = new Swap(1, 2);
             swapper.i.ShouldBe(1);
             swapper.j.ShouldBe(2);
+        }
+
+        [TestCase("A", new long[] { 5 }, 0, new long[] { 5 })]
+        [TestCase("B", new long[] { 5, 4 }, 0, new long[] { 5, 4 })]
+        [TestCase("C", new long[] { 5, 4 }, 1, new long[] { 4, 5 })]
+        [TestCase("D", new long[] { 5, 4, 3 }, 0, new long[] { 5, 4, 3 })]
+        [TestCase("D", new long[] { 5, 4, 3 }, 1, new long[] { 4, 5, 3 })]
+        [TestCase("E", new long[] { 5, 4, 3 }, 2, new long[] { 3, 4, 5 })]
+        [TestCase("F", new long[] { 5, 4, 3, 2, 1 }, 0, new long[] { 5, 4, 3, 2, 1 })]
+        [TestCase("G", new long[] { 5, 4, 3, 2, 1 }, 1, new long[] { 4, 5, 3, 2, 1 })]
+        [TestCase("H", new long[] { 5, 4, 3, 2, 1 }, 2, new long[] { 3, 4, 5, 2, 1 })]
+        [TestCase("I", new long[] { 5, 4, 3, 2, 1 }, 3, new long[] { 2, 5, 3, 4, 1 })]
+        [TestCase("J", new long[] { 5, 4, 3, 2, 1 }, 4, new long[] { 1, 5, 3, 2, 4})]
+        public void SiftUp_Works(string caseName, long[] input, long index, long[] expected)
+        {
+            var f0 = new Launcher();
+            f0.SiftUp(input, index);
+            input.ShouldBe(expected);
+        }
+
+        [TestCase("A", new long[] { 5 }, 0, new long[] { 5 })]
+        [TestCase("B", new long[] { 5, 4 }, 0, 5, new long[] { 5, 5 })]
+        //[TestCase("C", new long[] { 5, 4 }, 1, new long[] { 4, 5 })]
+        //[TestCase("D", new long[] { 5, 4, 3 }, 0, new long[] { 5, 4, 3 })]
+        //[TestCase("D", new long[] { 5, 4, 3 }, 1, new long[] { 4, 5, 3 })]
+        //[TestCase("E", new long[] { 5, 4, 3 }, 2, new long[] { 3, 4, 5 })]
+        //[TestCase("F", new long[] { 5, 4, 3, 2, 1 }, 0, new long[] { 5, 4, 3, 2, 1 })]
+        //[TestCase("G", new long[] { 5, 4, 3, 2, 1 }, 1, new long[] { 4, 5, 3, 2, 1 })]
+        //[TestCase("H", new long[] { 5, 4, 3, 2, 1 }, 2, new long[] { 3, 4, 5, 2, 1 })]
+        //[TestCase("I", new long[] { 5, 4, 3, 2, 1 }, 3, new long[] { 2, 5, 3, 4, 1 })]
+        //[TestCase("J", new long[] { 5, 4, 3, 2, 1 }, 4, new long[] { 1, 5, 3, 2, 4 })]
+        public void ChangePriority_Works(string caseName, long[] input, long index, long newPriority, long[] expected)
+        {
+            var f0 = new Launcher();
+            f0.ChangePriority(input, index, newPriority);
+            input.ShouldBe(expected);
         }
     }
 }

@@ -37,23 +37,23 @@ namespace ArrayToHeap
                 SiftDown(n, i);
         }
 
-        public void SiftDown(long[] H, long parentIndex)
+        public void SiftDown(long[] H, long index)
         {
             var size = H.Length - 1;
-            var minElementIndex = parentIndex;
+            var minElementIndex = index;
 
-            var leftChildIndex = GetLeftChildIndex(parentIndex);
+            var leftChildIndex = GetLeftChildIndex(index);
             if (leftChildIndex <= size && H[leftChildIndex] < H[minElementIndex])
                 minElementIndex = leftChildIndex;
 
-            var rightChildIndex = GetRightChildIndex(parentIndex);
+            var rightChildIndex = GetRightChildIndex(index);
             if (rightChildIndex <= size && H[rightChildIndex] < H[minElementIndex])
                 minElementIndex = rightChildIndex;
 
-            if (parentIndex != minElementIndex)
+            if (index != minElementIndex)
             {
-                Swapollas.Add(new Swap(parentIndex, minElementIndex));
-                SwapElements(H, parentIndex, minElementIndex);
+                Swapollas.Add(new Swap(index, minElementIndex));
+                SwapElements(H, index, minElementIndex);
                 SiftDown(H, minElementIndex);
             }
         }
@@ -63,9 +63,28 @@ namespace ArrayToHeap
             return H[0];
         }
 
-        public void ChangePriority()
+        public void ChangePriority(long[] H, long index, long newPriority)
         {
+            var oldPriority = H[index];
+            H[index] = newPriority;
+            if (newPriority > oldPriority)
+                SiftDown(H, index);
+            else
+                SiftUp(H, index);
+        }
 
+        public void SiftUp(long[] H, long index)
+        {
+            while (index >= 1 && H[GetParentIndexOf(index)] > H[index])
+            {
+                SwapElements(H, GetParentIndexOf(index), index);
+                index = GetParentIndexOf(index);
+            }
+        }
+
+        public long GetParentIndexOf(long index)
+        {
+            return (index - 1) / 2;
         }
 
         public void SwapElements(long[] H, long index1, long index2)

@@ -63,6 +63,7 @@ namespace ParallelQueue
 
                 // ChangePriority: O(tree height) <= O(logn) 
                 // implement ChangePriority
+                //// Thread with the nearest start time has the highest priority
                 // implament SiftUp (for MIN binary heap)
             }
         }
