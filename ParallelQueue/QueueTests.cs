@@ -8,9 +8,9 @@ namespace ParallelQueue
     class QueueTests
     {
         [Test, TestCaseSource(nameof(ResultList))]
-        public void QueueTestCases(string caseName, long numWorkers, long numJobs, long[] jobs, List<ResultPair> expected)
+        public void QueueTestCases(string caseName, long numThreads, long numJobs, long[] jobs, List<ResultPair> expected)
         {
-            var jobQueue = new JobQueue(numWorkers, numJobs, jobs);
+            var jobQueue = new JobQueue(numThreads, numJobs, jobs);
             jobQueue.AssignThreads();
 
             var results = jobQueue.ResultPairs;
@@ -31,19 +31,22 @@ namespace ParallelQueue
                 new List<ResultPair> { new ResultPair(0,0), new ResultPair(0,1) } },
             new object[] { "D", 1, 2, new long[] { 2, 2 },
                 new List<ResultPair> { new ResultPair(0,0), new ResultPair(0,2) } },
-            //new object[] { "E", 2, 2, new long[] { 1, 1 },
-            //    new List<ResultPair> { new ResultPair(0,0), new ResultPair(1,0) } },
-            //new object[] { "F", 2, 3, new long[] { 1, 1, 2 },
-            //    new List<ResultPair> { new ResultPair(0,0), new ResultPair(1,0), new ResultPair(0, 1) } },
+            new object[] { "E", 2, 2, new long[] { 1, 1 },
+                new List<ResultPair> { new ResultPair(0,0), new ResultPair(1,0) } },
+            new object[] { "F", 2, 3, new long[] { 1, 1, 2 },
+                new List<ResultPair> { new ResultPair(0,0), new ResultPair(1,0), new ResultPair(0, 1) } },
         };
 
-        // we'll always be reprioritizing the 0th element in the heap
         [TestCase("A", new long[] { 0          }, 0, new long[] { 0          }, new long[] { 0          })]
         [TestCase("B", new long[] { 0, 1       }, 0, new long[] { 1, 0       }, new long[] { 1, 0       })]
         [TestCase("C", new long[] { 0, 1, 2    }, 0, new long[] { 1, 0, 0    }, new long[] { 1, 0, 2    })]
         [TestCase("D", new long[] { 0, 1, 2    }, 0, new long[] { 1, 1, 0    }, new long[] { 2, 1, 0    })]
         [TestCase("E", new long[] { 0, 1, 2    }, 0, new long[] { 1, 1, 1    }, new long[] { 0, 1, 2    })]
         [TestCase("F", new long[] { 0, 1, 2, 3 }, 0, new long[] { 1, 0, 0, 0 }, new long[] { 1, 3, 2, 0 })]
+        [TestCase("G", new long[] { 0, 1, 2, 3 }, 0, new long[] { 1, 1, 0, 0 }, new long[] { 2, 1, 0, 3 })]
+        [TestCase("H", new long[] { 0, 1, 2, 3 }, 0, new long[] { 1, 0, 1, 0 }, new long[] { 1, 3, 2, 0 })]
+        [TestCase("I", new long[] { 0, 1, 2, 3 }, 0, new long[] { 1, 1, 1, 0 }, new long[] { 0, 1, 2, 3 })]
+        [TestCase("K", new long[] { 1, 0       }, 0, new long[] { 1, 1       }, new long[] { 0, 1       })]
         public void SiftDown_Works(string caseName, long[] heapOfThreads, long threadToReprioritize,
             long[] nextAvailableTimeForThread, long[] expected)
         {

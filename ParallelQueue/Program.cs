@@ -12,7 +12,7 @@ namespace ParallelQueue
         public long[] TimeRequiredToCompleteJob;
 
         // output
-        public long[] ThreadAssignedToJob;
+        public long[] threadHeap;
         public long[] JobStartTime;
 
         public List<ResultPair> ResultPairs { get; set; }
@@ -34,52 +34,62 @@ namespace ParallelQueue
         {
             var nextTimeThreadWillBeAvailable = new long[NumThreads];
 
-            var launcher = new ArrayToHeap.Launcher();
-            // O(n)
-            launcher.BuildHeap(nextTimeThreadWillBeAvailable);
+            threadHeap = new long[NumThreads];
+            for (int j = 0; j < threadHeap.Length; j++)
+                threadHeap[j] = j;
 
-            ThreadAssignedToJob = new long[NumJobs];
             JobStartTime = new long[NumJobs];
 
             for (var i = 0; i < NumJobs; i++)
             {
-                var threadSelectedForTheJob = 0L;
+                // 1) set default threadSelectedForTheJob = 0L;
+                var threadSelectedForTheJob = threadHeap[0];
 
-                // ExtractMin: O(1)
-                ThreadAssignedToJob[i] = launcher.ExtractMin(nextTimeThreadWillBeAvailable);
-
-                JobStartTime[i] = nextTimeThreadWillBeAvailable[threadSelectedForTheJob];
-
+                // 2) create result pair
                 ResultPairs.Add(new ResultPair(threadSelectedForTheJob, nextTimeThreadWillBeAvailable[threadSelectedForTheJob]));
 
-                // update nextTimeThreadWillBeAvailable[threadSelectedForTheJob]
+                //if (i == NumJobs - 1) // don't need to update values after last job is assigned
+                //    break;
+
+                // 3) update next available time for thread
                 nextTimeThreadWillBeAvailable[threadSelectedForTheJob] += TimeRequiredToCompleteJob[i];
 
-                // ChangePriority: O(tree height) <= O(logn) 
-                launcher.ChangePriority(nextTimeThreadWillBeAvailable, threadSelectedForTheJob, TimeRequiredToCompleteJob[i]);
+                // 4) SiftDown thread now based on next available time: O(tree height) <= O(logn)
+                //// Always SiftDown the 0th element...?
+                SiftDown(threadHeap, 0, nextTimeThreadWillBeAvailable);
             }
         }
 
         // modify this method to sift based on next available time
-        public void SiftDown(long[] H, long thread, long[] nextTimeThreadWillBeAvailable)
+        public void SiftDown(long[] threadHeap, long thread, long[] nextTimeThreadWillBeAvailable)
         {
-            var size = H.Length - 1;
+            var size = threadHeap.Length - 1;
             var minElementIndex = thread;
 
             var leftChildIndex = GetLeftChildIndex(thread);
             if (leftChildIndex <= size 
-                && nextTimeThreadWillBeAvailable[leftChildIndex] < nextTimeThreadWillBeAvailable[minElementIndex])
+                && (
+                    nextTimeThreadWillBeAvailable[leftChildIndex] < nextTimeThreadWillBeAvailable[threadHeap[minElementIndex]]
+                    || 
+                    nextTimeThreadWillBeAvailable[leftChildIndex] == nextTimeThreadWillBeAvailable[threadHeap[minElementIndex]] && threadHeap[leftChildIndex] < threadHeap[minElementIndex]
+                    )
+                )
                 minElementIndex = leftChildIndex;
 
             var rightChildIndex = GetRightChildIndex(thread);
-            if (rightChildIndex <= size 
-                && nextTimeThreadWillBeAvailable[rightChildIndex] < nextTimeThreadWillBeAvailable[minElementIndex])
+            if (rightChildIndex <= size
+                && (
+                    nextTimeThreadWillBeAvailable[rightChildIndex] < nextTimeThreadWillBeAvailable[threadHeap[minElementIndex]]
+                    ||
+                    nextTimeThreadWillBeAvailable[rightChildIndex] == nextTimeThreadWillBeAvailable[threadHeap[minElementIndex]] && threadHeap[rightChildIndex] < threadHeap[minElementIndex]
+                    )
+                )
                 minElementIndex = rightChildIndex;
 
             if (thread != minElementIndex)
             {
-                SwapElements(H, thread, minElementIndex);
-                SiftDown(H, minElementIndex, nextTimeThreadWillBeAvailable);
+                SwapElements(threadHeap, thread, minElementIndex);
+                SiftDown(threadHeap, minElementIndex, nextTimeThreadWillBeAvailable);
             }
         }
 
