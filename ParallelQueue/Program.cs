@@ -9,7 +9,7 @@ namespace ParallelQueue
         // input
         public long NumThreads;
         public long NumJobs;
-        public long[] TimeRequiredToCompleteEachJob;
+        public long[] TimeRequiredToCompleteJob;
 
         // output
         public long[] ThreadAssignedToJob;
@@ -26,7 +26,7 @@ namespace ParallelQueue
         {
             NumThreads = numThreads;
             NumJobs = numJobs;
-            TimeRequiredToCompleteEachJob = jobCompletionTimes;
+            TimeRequiredToCompleteJob = jobCompletionTimes;
             ResultPairs = new List<ResultPair>();
         }
 
@@ -43,8 +43,6 @@ namespace ParallelQueue
 
             for (var i = 0; i < NumJobs; i++)
             {
-                var duration = TimeRequiredToCompleteEachJob[i];
-
                 var threadSelectedForTheJob = 0L;
 
                 // ExtractMin: O(1)
@@ -52,67 +50,62 @@ namespace ParallelQueue
 
                 JobStartTime[i] = nextTimeThreadWillBeAvailable[threadSelectedForTheJob];
 
-                // update nextTimeThreadWillBeAvailable[threadSelectedForTheJob]
-                nextTimeThreadWillBeAvailable[threadSelectedForTheJob] += duration;
+                ResultPairs.Add(new ResultPair(threadSelectedForTheJob, nextTimeThreadWillBeAvailable[threadSelectedForTheJob]));
 
-                // ###################################################
-                // ###################################################
-                // #################TODO##############################
-                // ###################################################
-                // ###################################################
+                // update nextTimeThreadWillBeAvailable[threadSelectedForTheJob]
+                nextTimeThreadWillBeAvailable[threadSelectedForTheJob] += TimeRequiredToCompleteJob[i];
 
                 // ChangePriority: O(tree height) <= O(logn) 
-                // implement ChangePriority
-                //// Thread with the nearest start time has the highest priority
-                // implament SiftUp (for MIN binary heap)
+                launcher.ChangePriority(nextTimeThreadWillBeAvailable, threadSelectedForTheJob, TimeRequiredToCompleteJob[i]);
             }
         }
 
-        //public void AssignThreads()
-        //{
-        //    ThreadAssignedToJob = new long[NumJobs];
-        //    JobStartTime = new long[NumJobs];
+        // modify this method to sift based on next available time
+        public void SiftDown(long[] H, long thread, long[] nextTimeThreadWillBeAvailable)
+        {
+            var size = H.Length - 1;
+            var minElementIndex = thread;
 
-        //    var nextTimeThreadWillBeAvailable = new long[NumThreads];
-        //    for (var i = 0; i < NumJobs; i++)
-        //    {
-        //        long duration = TimeRequiredToCompletedEachJob[i];
-        //        long threadSelectedForTheJob = 0;
-        //        // This loop-check finds the minimum time another thread is available...
-        //        // ... and chooses that thread for the next job
-        //        for (var threadNumber = 0; threadNumber < NumThreads; ++threadNumber)
-        //        {
-        //            // Check when each thread (low up to high index) is available...
-        //            // Select the lowest-index thread with the minimum next available time
-        //            if (nextTimeThreadWillBeAvailable[threadNumber] 
-        //                    < nextTimeThreadWillBeAvailable[threadSelectedForTheJob]) 
-        //                threadSelectedForTheJob = threadNumber;
-        //        }
-        //        // Assign the thread to the job officially (this array is used to construct the solution)
-        //        ThreadAssignedToJob[i] = threadSelectedForTheJob;
-        //        // Note when the job starts given thread availability (this array is used to construct the solution)
-        //        JobStartTime[i] = nextTimeThreadWillBeAvailable[threadSelectedForTheJob];
-        //        // When a thread is selected for a job, add the time required to complete...
-        //        // ... the job to the next time the thread will become available
-        //        nextTimeThreadWillBeAvailable[threadSelectedForTheJob] += duration;
-        //    }
-        //}
+            var leftChildIndex = GetLeftChildIndex(thread);
+            if (leftChildIndex <= size 
+                && nextTimeThreadWillBeAvailable[leftChildIndex] < nextTimeThreadWillBeAvailable[minElementIndex])
+                minElementIndex = leftChildIndex;
+
+            var rightChildIndex = GetRightChildIndex(thread);
+            if (rightChildIndex <= size 
+                && nextTimeThreadWillBeAvailable[rightChildIndex] < nextTimeThreadWillBeAvailable[minElementIndex])
+                minElementIndex = rightChildIndex;
+
+            if (thread != minElementIndex)
+            {
+                SwapElements(H, thread, minElementIndex);
+                SiftDown(H, minElementIndex, nextTimeThreadWillBeAvailable);
+            }
+        }
+
+        public void SwapElements(long[] H, long index1, long index2)
+        {
+            var temp = H[index1];
+            H[index1] = H[index2];
+            H[index2] = temp;
+        }
+
+        public long GetLeftChildIndex(long parentIndex)
+        {
+            return 2 * parentIndex + 1; // "+1" makes the index math 0-based
+        }
+
+        public long GetRightChildIndex(long parentIndex)
+        {
+            return 2 * parentIndex + 2; // "+2" makes the index math 0 - based
+        }
 
         private void ReadData()
         {
             var input = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
             NumThreads = input[0];
             NumJobs = input[1];
-            TimeRequiredToCompleteEachJob = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
-        }
-
-        public void ConvertSolutionToResultPairs()
-        {
-            for (int i = 0; i < NumJobs; i++)
-            {
-                var newPair = new ResultPair(ThreadAssignedToJob[i], JobStartTime[i]);
-                ResultPairs.Add(newPair);
-            }
+            TimeRequiredToCompleteJob = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
         }
 
         private void WriteResponse()

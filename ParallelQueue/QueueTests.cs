@@ -12,13 +12,12 @@ namespace ParallelQueue
         {
             var jobQueue = new JobQueue(numWorkers, numJobs, jobs);
             jobQueue.AssignThreads();
-            jobQueue.ConvertSolutionToResultPairs();
 
             var results = jobQueue.ResultPairs;
             for (int i = 0; i < numJobs; i++)
             {
-                //results[i].ThreadNumber.ShouldBe(expected[i].ThreadNumber);
-                //results[i].StartTime.ShouldBe(expected[i].StartTime);
+                results[i].ThreadNumber.ShouldBe(expected[i].ThreadNumber, $"Job {i}, incorrect ThreadNumber");
+                results[i].StartTime.ShouldBe(expected[i].StartTime, $"Job {i}, incorrect StartTime");
             }
         }
 
@@ -32,10 +31,25 @@ namespace ParallelQueue
                 new List<ResultPair> { new ResultPair(0,0), new ResultPair(0,1) } },
             new object[] { "D", 1, 2, new long[] { 2, 2 },
                 new List<ResultPair> { new ResultPair(0,0), new ResultPair(0,2) } },
-            new object[] { "E", 2, 2, new long[] { 1, 1 },
-                new List<ResultPair> { new ResultPair(0,0), new ResultPair(1,0) } },
-            new object[] { "F", 2, 3, new long[] { 1, 1, 2 },
-                new List<ResultPair> { new ResultPair(0,0), new ResultPair(1,0), new ResultPair(0, 1) } },
+            //new object[] { "E", 2, 2, new long[] { 1, 1 },
+            //    new List<ResultPair> { new ResultPair(0,0), new ResultPair(1,0) } },
+            //new object[] { "F", 2, 3, new long[] { 1, 1, 2 },
+            //    new List<ResultPair> { new ResultPair(0,0), new ResultPair(1,0), new ResultPair(0, 1) } },
         };
+
+        // we'll always be reprioritizing the 0th element in the heap
+        [TestCase("A", new long[] { 0          }, 0, new long[] { 0          }, new long[] { 0          })]
+        [TestCase("B", new long[] { 0, 1       }, 0, new long[] { 1, 0       }, new long[] { 1, 0       })]
+        [TestCase("C", new long[] { 0, 1, 2    }, 0, new long[] { 1, 0, 0    }, new long[] { 1, 0, 2    })]
+        [TestCase("D", new long[] { 0, 1, 2    }, 0, new long[] { 1, 1, 0    }, new long[] { 2, 1, 0    })]
+        [TestCase("E", new long[] { 0, 1, 2    }, 0, new long[] { 1, 1, 1    }, new long[] { 0, 1, 2    })]
+        [TestCase("F", new long[] { 0, 1, 2, 3 }, 0, new long[] { 1, 0, 0, 0 }, new long[] { 1, 3, 2, 0 })]
+        public void SiftDown_Works(string caseName, long[] heapOfThreads, long threadToReprioritize,
+            long[] nextAvailableTimeForThread, long[] expected)
+        {
+            var f0 = new JobQueue();
+            f0.SiftDown(heapOfThreads, threadToReprioritize, nextAvailableTimeForThread);
+            heapOfThreads.ShouldBe(expected);
+        }
     }
 }
