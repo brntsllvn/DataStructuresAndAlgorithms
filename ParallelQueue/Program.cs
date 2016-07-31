@@ -69,9 +69,9 @@ namespace ParallelQueue
             var leftChildIndex = GetLeftChildIndex(thread);
             if (leftChildIndex <= size 
                 && (
-                    nextTimeThreadWillBeAvailable[leftChildIndex] < nextTimeThreadWillBeAvailable[threadHeap[minElementIndex]]
+                    nextTimeThreadWillBeAvailable[threadHeap[leftChildIndex]] < nextTimeThreadWillBeAvailable[threadHeap[minElementIndex]]
                     || 
-                    nextTimeThreadWillBeAvailable[leftChildIndex] == nextTimeThreadWillBeAvailable[threadHeap[minElementIndex]] && threadHeap[leftChildIndex] < threadHeap[minElementIndex]
+                    nextTimeThreadWillBeAvailable[threadHeap[leftChildIndex]] == nextTimeThreadWillBeAvailable[threadHeap[minElementIndex]] && threadHeap[leftChildIndex] < threadHeap[minElementIndex]
                     )
                 )
                 minElementIndex = leftChildIndex;
@@ -79,9 +79,9 @@ namespace ParallelQueue
             var rightChildIndex = GetRightChildIndex(thread);
             if (rightChildIndex <= size
                 && (
-                    nextTimeThreadWillBeAvailable[rightChildIndex] < nextTimeThreadWillBeAvailable[threadHeap[minElementIndex]]
+                    nextTimeThreadWillBeAvailable[threadHeap[rightChildIndex]] < nextTimeThreadWillBeAvailable[threadHeap[minElementIndex]]
                     ||
-                    nextTimeThreadWillBeAvailable[rightChildIndex] == nextTimeThreadWillBeAvailable[threadHeap[minElementIndex]] && threadHeap[rightChildIndex] < threadHeap[minElementIndex]
+                    nextTimeThreadWillBeAvailable[threadHeap[rightChildIndex]] == nextTimeThreadWillBeAvailable[threadHeap[minElementIndex]] && threadHeap[rightChildIndex] < threadHeap[minElementIndex]
                     )
                 )
                 minElementIndex = rightChildIndex;
@@ -120,7 +120,10 @@ namespace ParallelQueue
 
         private void WriteResponse()
         {
-
+            foreach (var resultPair in ResultPairs)
+            {
+                Console.WriteLine(string.Format("{0} {1}", resultPair.ThreadNumber, resultPair.StartTime));
+            }
         }
 
         public void Run(string[] args)
@@ -128,6 +131,7 @@ namespace ParallelQueue
             ReadData();
             AssignThreads();
             WriteResponse();
+            ReadData();
         }
 
         static void Main(string[] args)

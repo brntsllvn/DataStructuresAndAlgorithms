@@ -35,7 +35,41 @@ namespace ParallelQueue
                 new List<ResultPair> { new ResultPair(0,0), new ResultPair(1,0) } },
             new object[] { "F", 2, 3, new long[] { 1, 1, 2 },
                 new List<ResultPair> { new ResultPair(0,0), new ResultPair(1,0), new ResultPair(0, 1) } },
+            new object[] { "G", 2, 5, new long[] { 1, 2, 3, 4, 5 },
+                new List<ResultPair> { new ResultPair(0,0), new ResultPair(1,0), new ResultPair(0, 1), new ResultPair(1, 2), new ResultPair(0, 4) } },
+            new object[] { "Long A", 4, 4, new long[] { 1, 1, 1, 1 },
+                new List<ResultPair> {  new ResultPair(0,0),
+                                        new ResultPair(1,0),
+                                        new ResultPair(2,0),
+                                        new ResultPair(3,0)} },
+
         };
+
+        [Test]
+        public void QueueTestCases_Long()
+        {
+            var numThreads = 4L;
+            var numJobs = 20L;
+
+            var jobCompletionTimes = new long[numJobs];
+            for (int i = 0; i < numJobs; i++)
+                jobCompletionTimes[i] = 1;
+
+            var expectedResultPairs = new List<ResultPair>();
+            for (int i = 0; i < numJobs / numThreads; i++)
+                for (int j = 0; j < numThreads; j++)
+                    expectedResultPairs.Add(new ResultPair(i, j));
+
+            var jobQueue = new JobQueue(numThreads, numJobs, jobCompletionTimes);
+            jobQueue.AssignThreads();
+
+            var results = jobQueue.ResultPairs;
+            for (int i = 0; i < numJobs; i++)
+            {
+                results[i].ThreadNumber.ShouldBe(expectedResultPairs[i].ThreadNumber, $"Job {i}, incorrect ThreadNumber");
+                results[i].StartTime.ShouldBe(expectedResultPairs[i].StartTime, $"Job {i}, incorrect StartTime");
+            }
+        }
 
         [TestCase("A", new long[] { 0          }, 0, new long[] { 0          }, new long[] { 0          })]
         [TestCase("B", new long[] { 0, 1       }, 0, new long[] { 1, 0       }, new long[] { 1, 0       })]
@@ -47,6 +81,7 @@ namespace ParallelQueue
         [TestCase("H", new long[] { 0, 1, 2, 3 }, 0, new long[] { 1, 0, 1, 0 }, new long[] { 1, 3, 2, 0 })]
         [TestCase("I", new long[] { 0, 1, 2, 3 }, 0, new long[] { 1, 1, 1, 0 }, new long[] { 0, 1, 2, 3 })]
         [TestCase("K", new long[] { 1, 0       }, 0, new long[] { 1, 1       }, new long[] { 0, 1       })]
+        [TestCase("L", new long[] { 2, 3, 1, 0 }, 0, new long[] { 1, 1, 1, 0 }, new long[] { 3, 0, 1, 2 })]
         public void SiftDown_Works(string caseName, long[] heapOfThreads, long threadToReprioritize,
             long[] nextAvailableTimeForThread, long[] expected)
         {
