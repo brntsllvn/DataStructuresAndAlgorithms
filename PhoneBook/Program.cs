@@ -32,4 +32,18 @@ namespace PhoneBook
             new Program().Run();
         }
     }
+
+    public class InputTriple
+    {
+        public string Command { get; set; }
+        public string Number { get; set; }
+        public string Person { get; set; }
+
+        public InputTriple(string command, string number, string person)
+        {
+            Command = command;
+            Number = number;
+            Person = person;
+        }
+    }
 }
