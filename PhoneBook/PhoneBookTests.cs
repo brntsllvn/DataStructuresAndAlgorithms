@@ -1,9 +1,7 @@
-﻿using System;
-using System.Diagnostics;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Shouldly;
 
-namespace LauncherTemplate
+namespace PhoneBook
 {
     [TestFixture]
     class PhoneBookTests

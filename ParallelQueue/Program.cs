@@ -126,7 +126,7 @@ namespace ParallelQueue
             }
         }
 
-        public void Run(string[] args)
+        public void Run()
         {
             ReadData();
             AssignThreads();
@@ -136,7 +136,7 @@ namespace ParallelQueue
 
         static void Main(string[] args)
         {
-            new JobQueue().Run(args);
+            new JobQueue().Run();
         }
     }
 

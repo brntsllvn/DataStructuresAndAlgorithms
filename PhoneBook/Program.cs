@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace LauncherTemplate
+namespace PhoneBook
 {
     public class Program
     {
