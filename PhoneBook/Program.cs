@@ -7,13 +7,13 @@ namespace PhoneBook
     public class Program
     {
         public List<InputTriple> InputTriples { get; set; }
-        public List<string[]> LookupTable { get; set; }
+        public string[] Names { get; set; }
         public List<string> ResultList { get; set; }
 
         public Program()
         {
             InputTriples = new List<InputTriple>();
-            LookupTable = new List<string[]>();
+            Names = new string[10000000];
             ResultList = new List<string>();
         }
 
@@ -22,33 +22,36 @@ namespace PhoneBook
             foreach (var inputTriple in InputTriples)
             {
                 if (inputTriple.Command == "add")
-                {
-                    var alreadyExistsInLoopupTable = false;
-                    foreach (var t in LookupTable)
-                        if (t[0] == inputTriple.Number)
-                        {
-                            t[1] = inputTriple.Person;
-                            alreadyExistsInLoopupTable = true;
-                        }
-                    if (!alreadyExistsInLoopupTable)
-                        LookupTable.Add(new[] { inputTriple.Number, inputTriple.Person });   
-                }
+                    Add(inputTriple.Number, inputTriple.Person);
                 else if (inputTriple.Command == "find")
                 {
-                    var resultString = "not found";
-                    foreach (var t in LookupTable)
-                        if (t[0] == inputTriple.Number)
-                            resultString = t[1];
+                    Find(inputTriple.Number);
+                }
 
-                    ResultList.Add(resultString);
-                }
                 else if (inputTriple.Command == "del")
-                {
-                    for (var i = 0; i < LookupTable.Count; i++)
-                        if (LookupTable[i][0] == inputTriple.Number)
-                            LookupTable.Remove(LookupTable[i]);
-                }
+                    Delete(inputTriple.Number);
             }
+        }
+
+        internal string Find(int address)
+        {
+            var name = "not found";
+            if (Names[address] != null)
+            {
+                name = Names[address];
+            }
+            ResultList.Add(name);
+            return name;
+        }
+
+        internal void Delete(int address)
+        {
+            Names[address] = null;
+        }
+
+        internal void Add(int address, string name)
+        {
+            Names[address] = name;
         }
 
         public void ReadData()
@@ -60,7 +63,7 @@ namespace PhoneBook
             {
                 var rawInputTriple = Console.ReadLine().Split(' ').Select(n => Convert.ToString(n)).ToArray();
                 var command = rawInputTriple[0];
-                var number = rawInputTriple[1];
+                var number = Int32.Parse(rawInputTriple[1]);
                 string person = null;
                 if (command == "add")
                     person = rawInputTriple[2];
@@ -91,10 +94,10 @@ namespace PhoneBook
     public class InputTriple
     {
         public string Command { get; set; }
-        public string Number { get; set; }
+        public int Number { get; set; }
         public string Person { get; set; }
 
-        public InputTriple(string command, string number, string person)
+        public InputTriple(string command, int number, string person)
         {
             Command = command;
             Number = number;
