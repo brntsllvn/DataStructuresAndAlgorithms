@@ -7,8 +7,7 @@ namespace zChainHashing
 {
     public class Program
     {
-        // return ASCII code for a given character
-        // compute hash function value
+
         // create array of lists
         //// append new items to the front of each list
 

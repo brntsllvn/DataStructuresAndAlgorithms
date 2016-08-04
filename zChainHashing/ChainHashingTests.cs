@@ -6,6 +6,29 @@ namespace zChainHashing
     [TestFixture]
     class ChainHashingTests
     {
+        [TestCase()]
+        public void Add_Command()
+        {
+
+        }
+
+        [TestCase()]
+        public void Del_Command()
+        {
+
+        }
+
+        [TestCase()]
+        public void Find_Command()
+        {
+
+        }
+
+        [TestCase()]
+        public void Check_Command()
+        {
+
+        }
 
         [TestCase("a", 3, 1)]
         [TestCase("a", 12, 1)]
