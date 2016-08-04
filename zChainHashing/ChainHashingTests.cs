@@ -7,11 +7,12 @@ namespace zChainHashing
     [TestFixture]
     class ChainHashingTests
     {
-        [TestCase("HellO", 3)]
-        public void Add(string input, int numBuckets)
+        [Test]
+        public void Add()
         {
+            var input = "HellO";
             var f0 = new Program();
-            f0.NumberOfBuckets = numBuckets;
+            f0.NumberOfBuckets = 3;
             f0.NumberOfQueries = 1;
             f0.BucketList = new List<string>[f0.NumberOfBuckets];
 
@@ -21,11 +22,12 @@ namespace zChainHashing
             f0.BucketList[bucketNumber].ShouldContain(input);
         }
 
-        [TestCase("HellO", 3)]
-        public void AddDuplicate(string input, int numBuckets)
+        [Test]
+        public void AddDuplicate()
         {
+            var input = "HellO";
             var f0 = new Program();
-            f0.NumberOfBuckets = numBuckets;
+            f0.NumberOfBuckets = 3;
             f0.NumberOfQueries = 1;
             f0.BucketList = new List<string>[f0.NumberOfBuckets];
             var bucketNumber = f0.MapStringToBucket(input);
@@ -52,10 +54,34 @@ namespace zChainHashing
             f0.BucketList[bucketNumber][1].ShouldBe("HellO");
         }
 
-        [TestCase()]
-        public void Del_Command()
+        [Test]
+        public void DeleteNothing()
         {
+            var input = "HellO";
+            var f0 = new Program();
+            f0.NumberOfBuckets = 3;
+            f0.NumberOfQueries = 1;
+            f0.BucketList = new List<string>[f0.NumberOfBuckets];
+            var bucketNumber = f0.MapStringToBucket(input);
 
+            f0.Delete(input, bucketNumber);
+            f0.BucketList[bucketNumber].ShouldBeNull();
+        }
+
+        [Test]
+        public void DeleteCommand()
+        {
+            var input = "HellO";
+            var f0 = new Program();
+            f0.NumberOfBuckets = 3;
+            f0.NumberOfQueries = 1;
+            f0.BucketList = new List<string>[f0.NumberOfBuckets];
+            var bucketNumber = f0.MapStringToBucket(input);
+            f0.Add(input, bucketNumber);
+
+            f0.Delete(input, bucketNumber);
+            f0.BucketList[bucketNumber].Count.ShouldBe(0);
+            f0.BucketList[bucketNumber].ShouldNotContain(input);
         }
 
         [TestCase()]

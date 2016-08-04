@@ -13,6 +13,7 @@ namespace zChainHashing
         public int MagicMultiplier { get; set; }
         public List<string>[] BucketList { get; set; }
         public List<InputPair> Queries { get; set; }
+        public List<string> QueryResults { get; set; }
 
         public Program()
         {
@@ -32,6 +33,16 @@ namespace zChainHashing
 
             if (!alreadyInBucket)
                 BucketList[bucketNumber].Insert(0, input);
+        }
+
+        internal void Delete(string input, int bucketNumber)
+        {
+            if (BucketList[bucketNumber] == null)
+                return;
+
+            for (int i = 0; i < BucketList[bucketNumber].Count; i++)
+                if (input == BucketList[bucketNumber][i])
+                    BucketList[bucketNumber].Remove(BucketList[bucketNumber][i]);
         }
 
         public string MagicFunctionThatSolvesAllProblems()
