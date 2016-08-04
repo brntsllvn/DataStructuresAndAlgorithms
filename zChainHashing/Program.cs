@@ -7,21 +7,31 @@ namespace zChainHashing
 {
     public class Program
     {
-
-        // create array of lists
-        //// append new items to the front of each list
-
         public int NumberOfBuckets { get; set; }
         public int NumberOfQueries { get; set; }
         public int BigPrime { get; set; }
         public int MagicMultiplier { get; set; }
-        public List<string>[] ArrayOfLists { get; set; }
+        public List<string>[] BucketList { get; set; }
         public List<InputPair> Queries { get; set; }
 
         public Program()
         {
             BigPrime = 1000000007;
             MagicMultiplier = 263;
+        }
+
+        internal void Add(string input, int bucketNumber)
+        {
+            if (BucketList[bucketNumber] == null)
+                BucketList[bucketNumber] = new List<string>();
+
+            var alreadyInBucket = false;
+            foreach (var bucketMember in BucketList[bucketNumber])
+                if (input == bucketMember)
+                    alreadyInBucket = true;
+
+            if (!alreadyInBucket)
+                BucketList[bucketNumber].Insert(0, input);
         }
 
         public string MagicFunctionThatSolvesAllProblems()
@@ -32,7 +42,7 @@ namespace zChainHashing
         public void ReadData()
         {
             NumberOfBuckets = Console.ReadLine().Split(' ').Select(n => Convert.ToInt32(n)).ToArray()[0];
-            ArrayOfLists = new List<string>[NumberOfBuckets];
+            BucketList = new List<string>[NumberOfBuckets];
 
             NumberOfQueries = Console.ReadLine().Split(' ').Select(n => Convert.ToInt32(n)).ToArray()[0];
             for (int i = 0; i < NumberOfQueries; i++)
@@ -50,6 +60,7 @@ namespace zChainHashing
         public void Run()
         {
             ReadData();
+            BucketList = new List<string>[NumberOfBuckets];
             var result = MagicFunctionThatSolvesAllProblems();
             WriteResponse(result);
         }
@@ -64,7 +75,7 @@ namespace zChainHashing
             return Encoding.ASCII.GetBytes(something);
         }
 
-        internal int MapStringToBucket(string inputString, int bigPrime, int numBuckets)
+        internal int MapStringToBucket(string inputString)
         {
             var ascii = GetAscii(inputString);
 
@@ -78,7 +89,7 @@ namespace zChainHashing
             }
 
             var modPrime = asciiSum % BigPrime;
-            return (int)modPrime % numBuckets;
+            return (int)modPrime % NumberOfBuckets;
         }
     }
 }

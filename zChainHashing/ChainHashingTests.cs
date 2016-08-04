@@ -1,15 +1,55 @@
 ﻿using NUnit.Framework;
 using Shouldly;
+using System.Collections.Generic;
 
 namespace zChainHashing
 {
     [TestFixture]
     class ChainHashingTests
     {
-        [TestCase()]
-        public void Add_Command()
+        [TestCase("HellO", 3)]
+        public void Add(string input, int numBuckets)
         {
+            var f0 = new Program();
+            f0.NumberOfBuckets = numBuckets;
+            f0.NumberOfQueries = 1;
+            f0.BucketList = new List<string>[f0.NumberOfBuckets];
 
+            var bucketNumber = f0.MapStringToBucket(input);
+
+            f0.Add(input, bucketNumber);
+            f0.BucketList[bucketNumber].ShouldContain(input);
+        }
+
+        [TestCase("HellO", 3)]
+        public void AddDuplicate(string input, int numBuckets)
+        {
+            var f0 = new Program();
+            f0.NumberOfBuckets = numBuckets;
+            f0.NumberOfQueries = 1;
+            f0.BucketList = new List<string>[f0.NumberOfBuckets];
+            var bucketNumber = f0.MapStringToBucket(input);
+            f0.Add(input, bucketNumber);
+
+            f0.Add(input, bucketNumber);
+            f0.BucketList[bucketNumber].Count.ShouldBe(1);
+            f0.BucketList[bucketNumber].ShouldContain(input);
+        }
+
+        [Test]
+        public void AddNonDuplicateInProperOrder()
+        {
+            var f0 = new Program();
+            f0.NumberOfBuckets = 5;
+            f0.NumberOfQueries = 1;
+            f0.BucketList = new List<string>[f0.NumberOfBuckets];
+            var bucketNumber = f0.MapStringToBucket("HellO");
+            f0.Add("HellO", bucketNumber);
+
+            f0.Add("world", bucketNumber);
+            f0.BucketList[bucketNumber].Count.ShouldBe(2);
+            f0.BucketList[bucketNumber][0].ShouldBe("world");
+            f0.BucketList[bucketNumber][1].ShouldBe("HellO");
         }
 
         [TestCase()]
@@ -36,11 +76,14 @@ namespace zChainHashing
         [TestCase("`", 7, 5)]
         [TestCase("cd", 7, 2)]
         [TestCase("world", 7, 1)]
+        [TestCase("world", 5, 4)]
+        [TestCase("HellO", 5, 4)]
         [TestCase("HellO", 13, 3)]
-        public void Calculate_Hash_Fn(string inputString, int numBuckets, int expectedBucket)
+        public void DetermineBucket(string inputString, int numBuckets, int expectedBucket)
         {
             var f0 = new Program();
-            var bucketNum = f0.MapStringToBucket(inputString, f0.BigPrime, numBuckets);
+            f0.NumberOfBuckets = numBuckets;
+            var bucketNum = f0.MapStringToBucket(inputString);
             bucketNum.ShouldBe(expectedBucket);
         }
 
