@@ -7,6 +7,103 @@ namespace zChainHashing
     [TestFixture]
     class ChainHashingTests
     {
+        [Test, TestCaseSource(nameof(ResultList))]
+        public void QueryToBucket(string caseName, List<InputPair> queries, List<string> expectedQueryResults)
+        {
+            var f0 = new Program();
+            f0.NumberOfQueries = queries.Count;
+            f0.Queries = queries;
+            f0.NumberOfBuckets = 5;
+            f0.BucketList = new List<string>[f0.NumberOfBuckets];
+
+            f0.MagicFunctionThatSolvesAllProblems();
+
+            for (int i = 0; i < expectedQueryResults.Count; i++)
+            {
+                if (f0.QueryResults.Count == 0)
+                    continue;
+
+                var act = f0.QueryResults[i];
+                var exp = expectedQueryResults[i];
+                act.ShouldBe(exp);
+            }
+        }
+
+        private static readonly object[] ResultList =
+        { 
+                new object[] { "A",     new List<InputPair> {
+                                            new InputPair("add","HellO")
+                                        },
+                                        new List<string> {
+                                        }
+                },
+                new object[] { "B",     new List<InputPair> {
+                                            new InputPair("add","HellO"),
+                                            new InputPair("find","HellO"),
+                                        },
+                                        new List<string> {
+                                            "yes",
+                                        }
+                },
+                new object[] { "C",     new List<InputPair> {
+                                            new InputPair("find","HellO"),
+                                            new InputPair("add","HellO"),
+                                            new InputPair("find","HellO"),
+                                            new InputPair("add","world"),
+                                            new InputPair("check","0"),
+                                            new InputPair("check","1"),
+                                            new InputPair("del","HellO"),
+                                            new InputPair("check","0"),
+                                       },
+                                        new List<string> {
+                                            "no",
+                                            "yes",
+                                            "world HellO",
+                                            "",
+                                            "world"
+                                        }
+                },
+                new object[] { "D",     new List<InputPair> {
+                                            new InputPair("add","world"),
+                                            new InputPair("add","HellO"),
+                                            new InputPair("check","4"),
+                                            new InputPair("find","World"),
+                                            new InputPair("find","world"),
+                                            new InputPair("del","world"),
+                                            new InputPair("check","4"),
+                                            new InputPair("del","HellO"),
+                                            new InputPair("add","luck"),
+                                            new InputPair("add","GooD"),
+                                            new InputPair("check","2"),
+                                            new InputPair("del","good"),
+                },
+                                        new List<string> {
+                                            "HellO world",
+                                            "no",
+                                            "yes",
+                                            "HellO",
+                                            "GooD luck"
+                                        }
+                },
+                new object[] { "E",     new List<InputPair> {
+                                            new InputPair("add","test"),
+                                            new InputPair("add","test"),
+                                            new InputPair("find","test"),
+                                            new InputPair("del","test"),
+                                            new InputPair("find","test"),
+                                            new InputPair("find","test"),
+                                            new InputPair("add","test"),
+                                            new InputPair("find","test"),
+                },
+                                        new List<string> {
+                                            "yes",
+                                            "no",
+                                            "no",
+                                            "yes",
+                                        }
+                },
+        };
+
         [Test]
         public void Add()
         {
@@ -201,33 +298,5 @@ namespace zChainHashing
             var f0 = new Program();
             f0.GetAscii(something).ShouldBe(new byte[] { expected });
         }
-
-        [TestCase("A", new long[] { 0 }, "hello")]
-        public void Test_1(string caseName, long[] input, string expected)
-        {
-            var f0 = new Program();
-            var result = f0.MagicFunctionThatSolvesAllProblems();
-            result.ShouldBe(expected);
-        }
-
-        //[TestCase("A", "hi", "hi")]
-        //public void PhoneBook_Cases(string caseName, string input, string expected)
-        //{
-        //    input.ShouldBe(expected);
-        //}
-
-        //[Test, TestCaseSource(nameof(ResultList))]
-        //public void A_Test(string caseName, List<InputTriple> input)
-        //{
-        //    var firstInput = input[0];
-        //    firstInput.Command.ShouldBe("add");
-        //    firstInput.Number.ShouldBe("911");
-        //    firstInput.Person.ShouldBe("police");
-        //}
-
-        //private static readonly object[] ResultList =
-        //{
-        //        new object[] { "A", new List<InputTriple> { new InputTriple("add","911","police") } },
-        //};
     }
 }

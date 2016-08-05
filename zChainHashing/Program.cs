@@ -20,6 +20,7 @@ namespace zChainHashing
             BigPrime = 1000000007;
             MagicMultiplier = 263;
             QueryResults = new List<string>();
+            Queries = new List<InputPair>();
         }
 
         internal void Add(string input, int bucketNumber)
@@ -85,9 +86,31 @@ namespace zChainHashing
             QueryResults.Add(chainedString.ToString().TrimEnd(' '));
         }
 
-        public string MagicFunctionThatSolvesAllProblems()
+        public void MagicFunctionThatSolvesAllProblems()
         {
-            return "hello";
+            for (int i = 0; i < Queries.Count; i++)
+            {
+                var command = Queries[i].Command;
+                var payload = Queries[i].Value;
+
+                var bucketNumber = MapStringToBucket(payload);
+
+                switch (command)
+                {
+                    case "add":
+                        Add(payload, bucketNumber);
+                        break;
+                    case "del":
+                        Delete(payload, bucketNumber);
+                        break;
+                    case "find":
+                        Find(payload, bucketNumber);
+                        break;
+                    case "check":
+                        Check(int.Parse(payload));
+                        break;
+                }
+            }
         }
         
         public void ReadData()
@@ -99,21 +122,25 @@ namespace zChainHashing
             for (int i = 0; i < NumberOfQueries; i++)
             {
                 var inputString = Console.ReadLine().Split(' ').Select(n => Convert.ToString(n)).ToArray();
-                Queries.Add(new InputPair(inputString[0], inputString[1]));
+                var command = inputString[0];
+                var value = inputString[1];
+                Queries.Add(new InputPair(command, value));
             }
         }
 
-        public void WriteResponse(string result)
+        public void WriteResponse()
         {
-            Console.WriteLine(result);
+            foreach (var qResult in QueryResults)
+                Console.WriteLine(qResult);
         }
 
         public void Run()
         {
             ReadData();
             BucketList = new List<string>[NumberOfBuckets];
-            var result = MagicFunctionThatSolvesAllProblems();
-            WriteResponse(result);
+            MagicFunctionThatSolvesAllProblems();
+            WriteResponse();
+            Console.ReadLine();
         }
 
         static void Main(string[] args)
@@ -141,6 +168,18 @@ namespace zChainHashing
 
             var modPrime = asciiSum % BigPrime;
             return (int)modPrime % NumberOfBuckets;
+        }
+    }
+
+    public class InputPair
+    {
+        public string Command { get; set; }
+        public string Value { get; set; }
+
+        public InputPair(string command, string value)
+        {
+            Command = command;
+            Value = value;
         }
     }
 }
