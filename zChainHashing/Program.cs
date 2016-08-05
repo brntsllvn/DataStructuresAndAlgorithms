@@ -19,6 +19,7 @@ namespace zChainHashing
         {
             BigPrime = 1000000007;
             MagicMultiplier = 263;
+            QueryResults = new List<string>();
         }
 
         internal void Add(string input, int bucketNumber)
@@ -43,6 +44,45 @@ namespace zChainHashing
             for (int i = 0; i < BucketList[bucketNumber].Count; i++)
                 if (input == BucketList[bucketNumber][i])
                     BucketList[bucketNumber].Remove(BucketList[bucketNumber][i]);
+        }
+
+        internal void Find(string input, int bucketNumber)
+        {
+            var notFoundMsg = "no";
+            var foundMsg = "yes";
+
+            if (BucketList[bucketNumber] == null)
+            {
+                QueryResults.Add(notFoundMsg);
+                return;
+            }
+
+            for (int i = 0; i < BucketList[bucketNumber].Count; i++)
+                if (input == BucketList[bucketNumber][i])
+                {
+                    QueryResults.Add(foundMsg);
+                    return;
+                }
+
+            QueryResults.Add(notFoundMsg);
+        }
+
+        internal void Check(int bucketNumber)
+        {
+            if (BucketList[bucketNumber] == null)
+            {
+                QueryResults.Add("");
+                return;
+            };
+
+            var chainedString = new StringBuilder();
+            for (int i = 0; i < BucketList[bucketNumber].Count; i++)
+            {
+                chainedString.Append(BucketList[bucketNumber][i]);
+                chainedString.Append(" ");
+            }
+
+            QueryResults.Add(chainedString.ToString().TrimEnd(' '));
         }
 
         public string MagicFunctionThatSolvesAllProblems()

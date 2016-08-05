@@ -84,16 +84,95 @@ namespace zChainHashing
             f0.BucketList[bucketNumber].ShouldNotContain(input);
         }
 
-        [TestCase()]
-        public void Find_Command()
+        [Test]
+        public void FindNothing()
         {
+            var f0 = new Program();
+            f0.NumberOfBuckets = 5;
+            f0.NumberOfQueries = 1;
+            f0.BucketList = new List<string>[f0.NumberOfBuckets];
+            var bucketNumber = f0.MapStringToBucket("HellO");
 
+            f0.Find("HellO", bucketNumber);
+            f0.QueryResults.ShouldContain("no");
+        }
+
+        [Test]
+        public void FindEntry()
+        {
+            var f0 = new Program();
+            f0.NumberOfBuckets = 5;
+            f0.NumberOfQueries = 1;
+            f0.BucketList = new List<string>[f0.NumberOfBuckets];
+            var bucketNumber = f0.MapStringToBucket("HellO");
+            f0.Add("HellO", bucketNumber);
+
+            f0.Find("HellO", bucketNumber);
+            f0.QueryResults.ShouldContain("yes");
+        }
+
+        [Test]
+        public void FindNothingInPopulatedList()
+        {
+            var f0 = new Program();
+            f0.NumberOfBuckets = 5;
+            f0.NumberOfQueries = 1;
+            f0.BucketList = new List<string>[f0.NumberOfBuckets];
+            var bucketNumber = f0.MapStringToBucket("HellO");
+            f0.Add("HellO", bucketNumber);
+
+            f0.Find("world", bucketNumber);
+            f0.QueryResults.ShouldContain("no");
         }
 
         [TestCase()]
-        public void Check_Command()
+        public void CheckEmptyBucket()
         {
+            var f0 = new Program();
+            f0.NumberOfBuckets = 5;
+            f0.NumberOfQueries = 1;
+            f0.BucketList = new List<string>[f0.NumberOfBuckets];
 
+            f0.Check(1);
+            f0.BucketList[1].ShouldBeNull();
+            f0.QueryResults.ShouldContain("");
+        }
+
+        [Test]
+        public void CheckBucketWithOneItem()
+        {
+            var inputString = "HellO";
+
+            var f0 = new Program();
+            f0.NumberOfBuckets = 5;
+            f0.NumberOfQueries = 1;
+            f0.BucketList = new List<string>[f0.NumberOfBuckets];
+            var bucketNum = f0.MapStringToBucket(inputString);
+            f0.Add(inputString, bucketNum);
+
+            f0.Check(bucketNum);
+            f0.QueryResults.ShouldContain(inputString);
+        }
+
+        [Test]
+        public void CheckBucketWithMultipleItems()
+        {
+            var inputString1 = "HellO";
+            var inputString2 = "world";
+
+            var f0 = new Program();
+            f0.NumberOfBuckets = 5;
+            f0.NumberOfQueries = 1;
+            f0.BucketList = new List<string>[f0.NumberOfBuckets];
+            var bucketNum1 = f0.MapStringToBucket(inputString1);
+            f0.Add(inputString1, bucketNum1);
+            var bucketNum2 = f0.MapStringToBucket(inputString2);
+            f0.Add(inputString2, bucketNum2);
+
+            bucketNum1.ShouldBe(bucketNum2);
+
+            f0.Check(bucketNum1);
+            f0.QueryResults.ShouldContain(inputString2 + ' ' + inputString1);
         }
 
         [TestCase("a", 3, 1)]
