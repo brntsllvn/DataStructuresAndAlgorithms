@@ -7,10 +7,10 @@ namespace zChainHashing
 {
     public class Program
     {
-        public int NumberOfBuckets { get; set; }
-        public int NumberOfQueries { get; set; }
-        public int BigPrime { get; set; }
-        public int MagicMultiplier { get; set; }
+        public long NumberOfBuckets { get; set; }
+        public long NumberOfQueries { get; set; }
+        public long BigPrime { get; set; }
+        public long MagicMultiplier { get; set; }
         public List<string>[] BucketList { get; set; }
         public List<InputPair> Queries { get; set; }
         public List<string> QueryResults { get; set; }
@@ -23,10 +23,10 @@ namespace zChainHashing
             Queries = new List<InputPair>();
         }
 
-        internal void Add(string input, int bucketNumber)
+        internal void Add(string input, long bucketNumber)
         {
-            if (BucketList[bucketNumber] == null)
-                BucketList[bucketNumber] = new List<string>();
+            //if (BucketList[bucketNumber] == null)
+            //    BucketList[bucketNumber] = new List<string>();
 
             var alreadyInBucket = false;
             foreach (var bucketMember in BucketList[bucketNumber])
@@ -37,17 +37,17 @@ namespace zChainHashing
                 BucketList[bucketNumber].Insert(0, input);
         }
 
-        internal void Delete(string input, int bucketNumber)
+        internal void Delete(string input, long bucketNumber)
         {
             if (BucketList[bucketNumber] == null)
                 return;
 
-            for (int i = 0; i < BucketList[bucketNumber].Count; i++)
+            for (var i = 0; i < BucketList[bucketNumber].Count; i++)
                 if (input == BucketList[bucketNumber][i])
                     BucketList[bucketNumber].Remove(BucketList[bucketNumber][i]);
         }
 
-        internal void Find(string input, int bucketNumber)
+        internal void Find(string input, long bucketNumber)
         {
             var notFoundMsg = "no";
             var foundMsg = "yes";
@@ -58,7 +58,7 @@ namespace zChainHashing
                 return;
             }
 
-            for (int i = 0; i < BucketList[bucketNumber].Count; i++)
+            for (var i = 0; i < BucketList[bucketNumber].Count; i++)
                 if (input == BucketList[bucketNumber][i])
                 {
                     QueryResults.Add(foundMsg);
@@ -68,7 +68,7 @@ namespace zChainHashing
             QueryResults.Add(notFoundMsg);
         }
 
-        internal void Check(int bucketNumber)
+        internal void Check(long bucketNumber)
         {
             if (BucketList[bucketNumber] == null)
             {
@@ -77,7 +77,7 @@ namespace zChainHashing
             };
 
             var chainedString = new StringBuilder();
-            for (int i = 0; i < BucketList[bucketNumber].Count; i++)
+            for (var i = 0; i < BucketList[bucketNumber].Count; i++)
             {
                 chainedString.Append(BucketList[bucketNumber][i]);
                 chainedString.Append(" ");
@@ -88,7 +88,7 @@ namespace zChainHashing
 
         public void MagicFunctionThatSolvesAllProblems()
         {
-            for (int i = 0; i < Queries.Count; i++)
+            for (var i = 0; i < Queries.Count; i++)
             {
                 var command = Queries[i].Command;
                 var payload = Queries[i].Value;
@@ -107,7 +107,7 @@ namespace zChainHashing
                         Find(payload, bucketNumber);
                         break;
                     case "check":
-                        Check(int.Parse(payload));
+                        Check(long.Parse(payload));
                         break;
                 }
             }
@@ -115,11 +115,11 @@ namespace zChainHashing
         
         public void ReadData()
         {
-            NumberOfBuckets = Console.ReadLine().Split(' ').Select(n => Convert.ToInt32(n)).ToArray()[0];
+            NumberOfBuckets = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray()[0];
             BucketList = new List<string>[NumberOfBuckets];
 
-            NumberOfQueries = Console.ReadLine().Split(' ').Select(n => Convert.ToInt32(n)).ToArray()[0];
-            for (int i = 0; i < NumberOfQueries; i++)
+            NumberOfQueries = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray()[0];
+            for (long i = 0; i < NumberOfQueries; i++)
             {
                 var inputString = Console.ReadLine().Split(' ').Select(n => Convert.ToString(n)).ToArray();
                 var command = inputString[0];
@@ -138,9 +138,17 @@ namespace zChainHashing
         {
             ReadData();
             BucketList = new List<string>[NumberOfBuckets];
+            InitializeBuckets();
             MagicFunctionThatSolvesAllProblems();
             WriteResponse();
             Console.ReadLine();
+        }
+
+        public void InitializeBuckets()
+        {
+
+            for (int i = 0; i < NumberOfBuckets; i++)
+                BucketList[i] = new List<string>();
         }
 
         static void Main(string[] args)
@@ -153,21 +161,21 @@ namespace zChainHashing
             return Encoding.ASCII.GetBytes(something);
         }
 
-        internal int MapStringToBucket(string inputString)
+        internal long MapStringToBucket(string inputString)
         {
             var ascii = GetAscii(inputString);
 
             long asciiSum = 0;
-            for (int i = 0; i < inputString.Length; i++)
+            for (long i = 0; i < inputString.Length; i++)
             {
-                var asciiMap = (int)ascii[i];
+                var asciiMap = (long)ascii[i];
                 var powMagicMultiplier = (long)Math.Pow(MagicMultiplier, i);
                 long asciiProd = asciiMap * powMagicMultiplier;
                 asciiSum += asciiProd;
             }
 
             var modPrime = asciiSum % BigPrime;
-            return (int)modPrime % NumberOfBuckets;
+            return (long)modPrime % NumberOfBuckets;
         }
     }
 

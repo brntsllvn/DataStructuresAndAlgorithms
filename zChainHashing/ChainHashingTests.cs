@@ -8,17 +8,19 @@ namespace zChainHashing
     class ChainHashingTests
     {
         [Test, TestCaseSource(nameof(ResultList))]
-        public void QueryToBucket(string caseName, List<InputPair> queries, List<string> expectedQueryResults)
+        public void QueryToBucket(string caseName, long numberBuckets,
+            List<InputPair> queries, List<string> expectedQueryResults)
         {
             var f0 = new Program();
             f0.NumberOfQueries = queries.Count;
             f0.Queries = queries;
-            f0.NumberOfBuckets = 5;
+            f0.NumberOfBuckets = numberBuckets;
             f0.BucketList = new List<string>[f0.NumberOfBuckets];
+            f0.InitializeBuckets();
 
             f0.MagicFunctionThatSolvesAllProblems();
 
-            for (int i = 0; i < expectedQueryResults.Count; i++)
+            for (var i = 0; i < expectedQueryResults.Count; i++)
             {
                 if (f0.QueryResults.Count == 0)
                     continue;
@@ -31,13 +33,13 @@ namespace zChainHashing
 
         private static readonly object[] ResultList =
         { 
-                new object[] { "A",     new List<InputPair> {
+                new object[] { "A", 5, new List<InputPair> {
                                             new InputPair("add","HellO")
                                         },
                                         new List<string> {
                                         }
                 },
-                new object[] { "B",     new List<InputPair> {
+                new object[] { "B", 5, new List<InputPair> {
                                             new InputPair("add","HellO"),
                                             new InputPair("find","HellO"),
                                         },
@@ -45,25 +47,27 @@ namespace zChainHashing
                                             "yes",
                                         }
                 },
-                new object[] { "C",     new List<InputPair> {
+                new object[] { "C", 5, new List<InputPair> {
                                             new InputPair("find","HellO"),
                                             new InputPair("add","HellO"),
                                             new InputPair("find","HellO"),
                                             new InputPair("add","world"),
-                                            new InputPair("check","0"),
+                                            new InputPair("check","4"),
                                             new InputPair("check","1"),
                                             new InputPair("del","HellO"),
-                                            new InputPair("check","0"),
+                                            new InputPair("check","4"),
+                                            new InputPair("check","3"),
                                        },
                                         new List<string> {
                                             "no",
                                             "yes",
                                             "world HellO",
                                             "",
-                                            "world"
+                                            "world",
+                                            ""
                                         }
                 },
-                new object[] { "D",     new List<InputPair> {
+                new object[] { "D", 5, new List<InputPair> {
                                             new InputPair("add","world"),
                                             new InputPair("add","HellO"),
                                             new InputPair("check","4"),
@@ -75,31 +79,76 @@ namespace zChainHashing
                                             new InputPair("add","luck"),
                                             new InputPair("add","GooD"),
                                             new InputPair("check","2"),
-                                            new InputPair("del","good"),
+                                            new InputPair("del","GooD"),
+                                            new InputPair("check","2"),
+                                            new InputPair("del","luck"),
+                                            new InputPair("check","2"),
                 },
                                         new List<string> {
                                             "HellO world",
                                             "no",
                                             "yes",
                                             "HellO",
-                                            "GooD luck"
+                                            "GooD luck",
+                                            "luck",
+                                            ""
                                         }
                 },
-                new object[] { "E",     new List<InputPair> {
+                new object[] { "E", 4, new List<InputPair> {
                                             new InputPair("add","test"),
                                             new InputPair("add","test"),
                                             new InputPair("find","test"),
                                             new InputPair("del","test"),
                                             new InputPair("find","test"),
-                                            new InputPair("find","test"),
-                                            new InputPair("add","test"),
-                                            new InputPair("find","test"),
+                                            new InputPair("find","Test"),
+                                            new InputPair("add","Test"),
+                                            new InputPair("find","Test"),
                 },
                                         new List<string> {
                                             "yes",
                                             "no",
                                             "no",
                                             "yes",
+                                        }
+                },
+                new object[] { "F", 5, new List<InputPair> {
+                                            new InputPair("check","0"),
+                                            new InputPair("check","1"),
+                                            new InputPair("check","2"),
+                                            new InputPair("find","world"),
+                                            new InputPair("find","world"),
+                                       },
+                                        new List<string> {
+                                            "",
+                                            "",
+                                            "",
+                                            "no",
+                                            "no"
+                                        }
+                },
+                new object[] { "G", 5, new List<InputPair> {
+                                            new InputPair("add","stuff"),
+                                            new InputPair("add","otherStuff"),
+                                       },
+                                        new List<string> {
+                                        }
+                },
+                new object[] { "H", 5, new List<InputPair> {
+                                            new InputPair("add","world"),
+                                            new InputPair("add","HellO"),
+                                            new InputPair("del","world"),
+                                            new InputPair("del","world"),
+                                            new InputPair("check","4"),
+                                       },
+                                        new List<string> {
+                                            "HellO",
+                                        }
+                },
+                new object[] { "I", 5, new List<InputPair> {
+                                            new InputPair("check","0"),
+                                       },
+                                        new List<string> {
+                                            "",
                                         }
                 },
         };
@@ -112,6 +161,7 @@ namespace zChainHashing
             f0.NumberOfBuckets = 3;
             f0.NumberOfQueries = 1;
             f0.BucketList = new List<string>[f0.NumberOfBuckets];
+            f0.InitializeBuckets();
 
             var bucketNumber = f0.MapStringToBucket(input);
 
@@ -127,6 +177,7 @@ namespace zChainHashing
             f0.NumberOfBuckets = 3;
             f0.NumberOfQueries = 1;
             f0.BucketList = new List<string>[f0.NumberOfBuckets];
+            f0.InitializeBuckets();
             var bucketNumber = f0.MapStringToBucket(input);
             f0.Add(input, bucketNumber);
 
@@ -143,6 +194,7 @@ namespace zChainHashing
             f0.NumberOfQueries = 1;
             f0.BucketList = new List<string>[f0.NumberOfBuckets];
             var bucketNumber = f0.MapStringToBucket("HellO");
+            f0.InitializeBuckets();
             f0.Add("HellO", bucketNumber);
 
             f0.Add("world", bucketNumber);
@@ -173,6 +225,7 @@ namespace zChainHashing
             f0.NumberOfBuckets = 3;
             f0.NumberOfQueries = 1;
             f0.BucketList = new List<string>[f0.NumberOfBuckets];
+            f0.InitializeBuckets();
             var bucketNumber = f0.MapStringToBucket(input);
             f0.Add(input, bucketNumber);
 
@@ -201,6 +254,7 @@ namespace zChainHashing
             f0.NumberOfBuckets = 5;
             f0.NumberOfQueries = 1;
             f0.BucketList = new List<string>[f0.NumberOfBuckets];
+            f0.InitializeBuckets();
             var bucketNumber = f0.MapStringToBucket("HellO");
             f0.Add("HellO", bucketNumber);
 
@@ -215,6 +269,7 @@ namespace zChainHashing
             f0.NumberOfBuckets = 5;
             f0.NumberOfQueries = 1;
             f0.BucketList = new List<string>[f0.NumberOfBuckets];
+            f0.InitializeBuckets();
             var bucketNumber = f0.MapStringToBucket("HellO");
             f0.Add("HellO", bucketNumber);
 
@@ -244,6 +299,7 @@ namespace zChainHashing
             f0.NumberOfBuckets = 5;
             f0.NumberOfQueries = 1;
             f0.BucketList = new List<string>[f0.NumberOfBuckets];
+            f0.InitializeBuckets();
             var bucketNum = f0.MapStringToBucket(inputString);
             f0.Add(inputString, bucketNum);
 
@@ -261,6 +317,7 @@ namespace zChainHashing
             f0.NumberOfBuckets = 5;
             f0.NumberOfQueries = 1;
             f0.BucketList = new List<string>[f0.NumberOfBuckets];
+            f0.InitializeBuckets();
             var bucketNum1 = f0.MapStringToBucket(inputString1);
             f0.Add(inputString1, bucketNum1);
             var bucketNum2 = f0.MapStringToBucket(inputString2);
@@ -281,7 +338,7 @@ namespace zChainHashing
         [TestCase("world", 5, 4)]
         [TestCase("HellO", 5, 4)]
         [TestCase("HellO", 13, 3)]
-        public void DetermineBucket(string inputString, int numBuckets, int expectedBucket)
+        public void DetermineBucket(string inputString, long numBuckets, long expectedBucket)
         {
             var f0 = new Program();
             f0.NumberOfBuckets = numBuckets;
