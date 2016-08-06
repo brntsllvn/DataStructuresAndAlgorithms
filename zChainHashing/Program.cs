@@ -25,9 +25,6 @@ namespace zChainHashing
 
         internal void Add(string input, long bucketNumber)
         {
-            //if (BucketList[bucketNumber] == null)
-            //    BucketList[bucketNumber] = new List<string>();
-
             var alreadyInBucket = false;
             foreach (var bucketMember in BucketList[bucketNumber])
                 if (input == bucketMember)
@@ -166,16 +163,30 @@ namespace zChainHashing
             var ascii = GetAscii(inputString);
 
             long asciiSum = 0;
-            for (long i = 0; i < inputString.Length; i++)
+            for (int i = 0; i < inputString.Length; i++)
             {
-                var asciiMap = (long)ascii[i];
-                var powMagicMultiplier = (long)Math.Pow(MagicMultiplier, i);
-                long asciiProd = asciiMap * powMagicMultiplier;
-                asciiSum += asciiProd;
+                var asciiMap = ascii[i];
+                var asciiMapMod = asciiMap % BigPrime;
+                var powMagicMultiplier = CalculateExponentMod(MagicMultiplier, i, BigPrime);
+                var productMod = asciiMapMod * powMagicMultiplier;
+                long modMod = productMod % BigPrime;
+                asciiSum += modMod;
             }
 
-            var modPrime = asciiSum % BigPrime;
-            return (long)modPrime % NumberOfBuckets;
+            var sumModPrime = asciiSum % BigPrime;
+            return sumModPrime % NumberOfBuckets;
+        }
+
+        internal long CalculateExponentMod(long baseNum, long exponent, long mod)
+        {
+            if (mod == 1)
+                return 0;
+
+            long c = 1;
+            for (int e = 1; e <= exponent; e++)
+                c = (c * baseNum) % mod;
+
+            return c;
         }
     }
 

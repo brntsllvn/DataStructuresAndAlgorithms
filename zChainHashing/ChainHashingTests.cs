@@ -337,7 +337,8 @@ namespace zChainHashing
         [TestCase("world", 7, 1)]
         [TestCase("world", 5, 4)]
         [TestCase("HellO", 5, 4)]
-        [TestCase("HellO", 13, 3)]
+        [TestCase("aabaab", 5, 1)]
+        [TestCase("aabaabaab", 5, 0)]
         public void DetermineBucket(string inputString, long numBuckets, long expectedBucket)
         {
             var f0 = new Program();
@@ -354,6 +355,28 @@ namespace zChainHashing
         {
             var f0 = new Program();
             f0.GetAscii(something).ShouldBe(new byte[] { expected });
+        }
+
+        [TestCase(263, 0, 1000000007, 1)]
+        [TestCase(263, 1, 1000000007, 263)]
+        [TestCase(263, 2, 1000000007, 69169)]
+        [TestCase(263, 3, 1000000007, 18191447)]
+        [TestCase(263, 4, 1000000007, 784350533)]
+        [TestCase(263, 5, 1000000007, 284188737)]
+        [TestCase(263, 6, 1000000007, 741637313)]
+        [TestCase(263, 7, 1000000007, 50611954)]
+        [TestCase(263, 8, 1000000007, 310943811)]
+        [TestCase(263, 9, 1000000007, 778221726)]
+        [TestCase(263, 10, 1000000007, 672312510)]
+        [TestCase(263, 11, 1000000007, 818188898)]
+        [TestCase(263, 12, 1000000007, 183678669)]
+        [TestCase(263, 13, 1000000007, 307489611)]
+        [TestCase(263, 14, 1000000007, 869767133)]
+        public void Calculate_Giant_Mod_Exponent(int baseNum, int exponent, long mod, long expected)
+        {
+            var f0 = new Program();
+            var soln = f0.CalculateExponentMod(baseNum, exponent, mod);
+            soln.ShouldBe(expected);
         }
     }
 }
