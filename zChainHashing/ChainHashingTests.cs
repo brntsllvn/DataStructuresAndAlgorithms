@@ -338,7 +338,7 @@ namespace zChainHashing
         [TestCase("world", 5, 4)]
         [TestCase("HellO", 5, 4)]
         [TestCase("aabaab", 5, 1)]
-        [TestCase("aabaabaab", 5, 0)]
+        [TestCase("aabaabaab", 5, 2)]
         public void DetermineBucket(string inputString, long numBuckets, long expectedBucket)
         {
             var f0 = new Program();
