@@ -9,12 +9,14 @@ namespace BinarySeachTree
         public List<TreeNode> TreeNodes { get; set; }
         public List<long?> InOrderTraversalResult { get; set; }
         public List<long?> PreOrderTraversalResult { get; set; }
+        public List<long?> PostOrderTraversalResult { get; set; }
 
         public Program()
         {
             TreeNodes = new List<TreeNode>();
             InOrderTraversalResult = new List<long?>();
             PreOrderTraversalResult = new List<long?>();
+            PostOrderTraversalResult = new List<long?>();
         }
 
         public void InOrderTraversal(TreeNode root)
@@ -42,6 +44,20 @@ namespace BinarySeachTree
 
             var rightChildNode = GetRightChildNode(root.RightChildIndex);
             PreOrderTraversal(rightChildNode);
+        }
+
+        public void PostOrderTraversal(TreeNode root)
+        {
+            if (root.Key == null)
+                return;
+
+            var leftChildNode = GetLeftChildNode(root.LeftChildIndex);
+            PostOrderTraversal(leftChildNode);
+
+            var rightChildNode = GetRightChildNode(root.RightChildIndex);
+            PostOrderTraversal(rightChildNode);
+
+            PostOrderTraversalResult.Add(root.Key);
         }
 
         private TreeNode GetRightChildNode(int rightChildIndex)
