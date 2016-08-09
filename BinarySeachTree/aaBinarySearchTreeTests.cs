@@ -31,18 +31,70 @@ namespace BinarySearchTree
             var root = program.TreeNodes[0];
             program.InOrderTraversal(root);
 
-            program.InOrderTraversalResult.ShouldBe(expectedArray);
+            if (expectedArray.Length == 0)
+            {
+                program.Result.ShouldBeEmpty();
+                return;
+            }
+
+            for (int i = 0; i < inputTreeNodes.Count; i++)
+                program.Result[i].ShouldBe(expectedArray[i]);
         }
 
         private static readonly object[] InputOutput =
         {
-            new object[] 
+            new object[]
             { "A",
+                new List<TreeNode> {
+                    new TreeNode()
+                },
+                new long[] {}
+            },
+            new object[]
+            { "B",
                 new List<TreeNode> {
                     new TreeNode(10,-1,-1)
                 },
                 new long[] {10}
-            }
+            },
+            new object[]
+            { "C",
+                new List<TreeNode> {
+                    new TreeNode(10,1,-1),
+                    new TreeNode(11,-1,-1),
+                },
+                new long[] {11,10}
+            },
+            new object[]
+            { "D",
+                new List<TreeNode> {
+                    new TreeNode(10,1,2),
+                    new TreeNode(11,-1,-1),
+                    new TreeNode(12,-1,-1),
+                },
+                new long[] {11,10,12}
+            },
+            new object[]
+            { "E",
+                new List<TreeNode> {
+                    new TreeNode(10,1,2),
+                    new TreeNode(11,3,-1),
+                    new TreeNode(12,-1,-1),
+                    new TreeNode(13,-1,-1),
+                },
+                new long[] {13,11,10,12}
+            },
+            new object[]
+            { "F",
+                new List<TreeNode> {
+                    new TreeNode(10,1,2),
+                    new TreeNode(11,3,4),
+                    new TreeNode(12,-1,-1),
+                    new TreeNode(13,-1,-1),
+                    new TreeNode(14,-1,-1),
+                },
+                new long[] {13,11,14,10,12}
+            },
         };
     }
 }
