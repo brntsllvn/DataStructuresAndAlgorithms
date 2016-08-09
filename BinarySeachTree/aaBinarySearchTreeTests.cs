@@ -1,6 +1,7 @@
 ﻿using BinarySeachTree;
 using NUnit.Framework;
 using Shouldly;
+using System.Collections.Generic;
 
 namespace BinarySearchTree
 {
@@ -20,12 +21,28 @@ namespace BinarySearchTree
             newTreeNode.RightChildIndex.ShouldBe(3);
         }
 
-        [TestCase("A", new long[] { 0 }, "hello")]
-        public void Test_1(string caseName, long[] input, string expected)
+        [Test, TestCaseSource(nameof(InputOutput))]
+        public void InOrderTraversal_Tests(string caseName, List<TreeNode> inputTreeNodes, long[] expectedArray)
         {
-            var f0 = new Program();
-            var result = f0.MagicFunctionThatSolvesAllProblems();
-            result.ShouldBe(expected);
+            var program = new Program();
+            foreach (var treeNode in inputTreeNodes)
+                program.TreeNodes.Add(treeNode);
+
+            var root = program.TreeNodes[0];
+            program.InOrderTraversal(root);
+
+            program.InOrderTraversalResult.ShouldBe(expectedArray);
         }
+
+        private static readonly object[] InputOutput =
+        {
+            new object[] 
+            { "A",
+                new List<TreeNode> {
+                    new TreeNode(10,-1,-1)
+                },
+                new long[] {10}
+            }
+        };
     }
 }

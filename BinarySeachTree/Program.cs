@@ -7,15 +7,17 @@ namespace BinarySeachTree
     public class Program
     {
         public List<TreeNode> TreeNodes { get; set; }
+        public long[] InOrderTraversalResult { get; set; }
 
         public Program()
         {
             TreeNodes = new List<TreeNode>();
+            InOrderTraversalResult = new long[TreeNodes.Count];
         }
 
-        public string MagicFunctionThatSolvesAllProblems()
+        public void InOrderTraversal(TreeNode root)
         {
-            return "hello";
+
         }
 
         public void ReadData()
@@ -36,16 +38,17 @@ namespace BinarySeachTree
             TreeNodes.Add(new TreeNode(key, leftChildIndex, rightChildIndex));
         }
 
-        public void WriteResponse(string result)
+        public void WriteResponse()
         {
-            Console.WriteLine(result);
+            Console.WriteLine();
         }
 
         public void Run()
         {
             ReadData();
-            var result = MagicFunctionThatSolvesAllProblems();
-            WriteResponse(result);
+            var root = TreeNodes[0];
+            InOrderTraversal(root);
+            WriteResponse();
         }
 
         static void Main(string[] args)
