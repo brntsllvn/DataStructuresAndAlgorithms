@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace BinarySeachTree
 {
@@ -17,6 +18,18 @@ namespace BinarySeachTree
             InOrderTraversalResult = new List<long?>();
             PreOrderTraversalResult = new List<long?>();
             PostOrderTraversalResult = new List<long?>();
+        }
+
+        public string ToSpecialString(List<long?> input)
+        {
+            var appender = new StringBuilder();
+            for (int i = 0; i < input.Count; i++)
+            {
+                appender.Append(input[i]);
+                appender.Append(" ");
+            }
+
+            return appender.ToString().Trim();
         }
 
         public void InOrderTraversal(TreeNode root)
@@ -96,14 +109,19 @@ namespace BinarySeachTree
 
         public void WriteResponse()
         {
-            Console.WriteLine();
+            Console.WriteLine(ToSpecialString(InOrderTraversalResult));
+            Console.WriteLine(ToSpecialString(PreOrderTraversalResult));
+            Console.WriteLine(ToSpecialString(PostOrderTraversalResult));
+            Console.Read();
         }
 
         public void Run()
         {
             ReadData();
             var root = TreeNodes[0];
+            InOrderTraversal(root);
             PreOrderTraversal(root);
+            PostOrderTraversal(root);
             WriteResponse();
         }
 

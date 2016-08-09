@@ -8,6 +8,20 @@ namespace BinarySearchTree
     [TestFixture]
     class aaBinarySearchTreeTests
     {
+        [Test, TestCaseSource(nameof(Convert))]
+        public void ConvertArrayToSingleLineString(string caseName, List<long?> input, string expected)
+        {
+            var program = new Program();
+            var output = program.ToSpecialString(input);
+            output.ShouldBe(expected);
+        }
+
+        private static readonly object[] Convert =
+        {
+            new object[]
+            { "A",new List<long?> {1,2,3},"1 2 3"}
+        };
+
         [TestCase("A", new long[] { 1, 2, 3 })]
         public void ConvertRawDataToTreeNode(string caseName, long[] inputArr)
         {
