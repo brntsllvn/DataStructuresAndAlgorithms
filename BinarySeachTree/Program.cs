@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BinarySeachTree
 {
     public class Program
     {
+        public List<TreeNode> TreeNodes { get; set; }
+
+        public Program()
+        {
+            TreeNodes = new List<TreeNode>();
+        }
+
         public string MagicFunctionThatSolvesAllProblems()
         {
             return "hello";
@@ -15,7 +20,20 @@ namespace BinarySeachTree
 
         public void ReadData()
         {
-            var input = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
+            var numberOfVertices = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray()[0];
+            for (int i = 0; i < numberOfVertices; i++)
+            {
+                var rawData = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
+                AddTreeNode(rawData);
+            }
+        }
+
+        public void AddTreeNode(long[] inputArray)
+        {
+            var key = inputArray[0];
+            var leftChildIndex = inputArray[1];
+            var rightChildIndex = inputArray[2];
+            TreeNodes.Add(new TreeNode(key, leftChildIndex, rightChildIndex));
         }
 
         public void WriteResponse(string result)
@@ -33,6 +51,20 @@ namespace BinarySeachTree
         static void Main(string[] args)
         {
             new Program().Run();
+        }
+    }
+
+    public class TreeNode
+    {
+        public long Key { get; set; }
+        public long LeftChildIndex { get; set; }
+        public long RightChildIndex { get; set; }
+
+        public TreeNode(long key, long leftChildIndex, long rightChildIndex)
+        {
+            Key = key;
+            LeftChildIndex = leftChildIndex;
+            RightChildIndex = rightChildIndex;
         }
     }
 }
