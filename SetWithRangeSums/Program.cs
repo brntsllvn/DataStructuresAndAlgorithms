@@ -1,16 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SetWithRangeSums
 {
     public class Program
     {
+        public List<InputTriple> InputTriples { get; set; }
+
+        public Program()
+        {
+            InputTriples = new List<InputTriple>();
+        }
+
         public string MagicFunctionThatSolvesAllProblems()
         {
             return "hello";
+        }
+
+        internal void AddRawInputToList(object[] input)
+        {
+            var operation = (string)input[0];
+            var low = (int)input[1];
+            //var high = (int)input[2]. ?? -1;
+
+            InputTriples.Add(new InputTriple(operation, low, high));
         }
 
         public void ReadData()
@@ -33,6 +47,27 @@ namespace SetWithRangeSums
         static void Main(string[] args)
         {
             new Program().Run();
+        }
+    }
+
+    public class InputTriple
+    {
+        public string Operation { get; set; }
+        public int Low { get; set; }
+        public int High { get; set; }
+        
+        public InputTriple(string op, int val)
+        {
+            Operation = op;
+            Low = val;
+            High = -1;
+        }
+
+        public InputTriple(string op, int low, int high)
+        {
+            Operation = op;
+            Low = low;
+            High = high;
         }
     }
 }
