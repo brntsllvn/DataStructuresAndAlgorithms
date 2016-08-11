@@ -7,15 +7,16 @@ namespace SetWithRangeSums
     public class Program
     {
         public List<InputTriple> InputTriples { get; set; }
+        public List<string> QueryResults { get; set; }
 
         public Program()
         {
             InputTriples = new List<InputTriple>();
         }
 
-        public string MagicFunctionThatSolvesAllProblems()
+        public void MagicFunctionThatSolvesAllProblems()
         {
-            return "hello";
+            return;
         }
 
         internal void AddRawInputToList(object[] input)

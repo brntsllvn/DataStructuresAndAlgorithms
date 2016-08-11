@@ -1,14 +1,31 @@
 ﻿using NUnit.Framework;
 using Shouldly;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace SetWithRangeSums
 {
     [TestFixture]
     class aaaSetWithRangeSums
     {
-        [Test, TestCaseSource(nameof(Data))]
+        [Test, TestCaseSource(nameof(Add))]
+        public void AddQuery(string caseName)
+        {
+
+        }
+
+        #region
+        private static readonly object[] Add =
+        {
+                new object[] { "A", new List<InputTriple>
+                                    {
+                                        new InputTriple("+", 1, -1)
+                                    },
+                                    new List<string>{}
+                }
+        };
+        #endregion
+
+        [Test, TestCaseSource(nameof(Raw))]
         public void TransformArrayIntoInputTriple_Tests(string caseName, object[] input, 
             List<InputTriple> expected)
         {
@@ -27,7 +44,8 @@ namespace SetWithRangeSums
             triple.High.ShouldBe(high);
         }
 
-        private static readonly object[] Data =
+        #region
+        private static readonly object[] Raw =
         {
                 new object[] { "A", new object[] {"+",1},  new List<InputTriple> {
                         new InputTriple("+", 1, -1)
@@ -45,6 +63,11 @@ namespace SetWithRangeSums
                         new InputTriple("-", 1, -1)
                     }
                 },
+                new object[] { "E", new object[] {"s",999999999,1000000000},  new List<InputTriple> {
+                        new InputTriple("s",999999999,1000000000)
+                    }
+                },
         };
+        #endregion
     }
 }
