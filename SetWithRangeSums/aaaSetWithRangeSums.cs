@@ -8,21 +8,41 @@ namespace SetWithRangeSums
     class aaaSetWithRangeSums
     {
         [Test, TestCaseSource(nameof(Splay))]
-        public void SplayNode_Test(string caseName, TreeNode inputNode, TreeNode expectedNode)
+        public void SplayNode_Test(string caseName, List<TreeNode> inputNode, List<TreeNode> expectedNode)
         {
             var program = new Program();
-            program.Splay(inputNode);
+            // add nodes to tree
 
-            inputNode.Value.ShouldBe(expectedNode.Value);
-            inputNode.LeftChildIndex.ShouldBe(expectedNode.LeftChildIndex);
-            inputNode.RightChildIndex.ShouldBe(expectedNode.RightChildIndex);
-            inputNode.ParentIndex.ShouldBe(expectedNode.ParentIndex);
+
+            program.Splay(inputNode[0]);
+
+            inputNode[0].Value.ShouldBe(expectedNode[0].Value);
+            inputNode[0].LeftChildIndex.ShouldBe(expectedNode[0].LeftChildIndex);
+            inputNode[0].RightChildIndex.ShouldBe(expectedNode[0].RightChildIndex);
+            inputNode[0].ParentIndex.ShouldBe(expectedNode[0].ParentIndex);
         }
 
         #region
         public static object[] Splay =
         {
-            new object[] { "A", new TreeNode(1,-1,-1,-1), new TreeNode(1,-1,-1,-1) }
+            new object[] { "base",
+                    new List<TreeNode> {
+                        new TreeNode(1,-1,-1,-1)
+                },
+                    new List<TreeNode> {
+                        new TreeNode(1,-1,-1,-1),
+                }
+            },
+            new object[] { "zig",
+                    new List<TreeNode> {
+                        new TreeNode(1,1,-1,-1),
+                        new TreeNode(2,-1,-1,1)
+                },
+                    new List<TreeNode> {
+                        new TreeNode(2,1,-1,-1),
+                        new TreeNode(1,-1,-1,1)
+                }
+            },
         };
         #endregion
 
