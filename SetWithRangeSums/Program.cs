@@ -22,7 +22,10 @@ namespace SetWithRangeSums
         {
             var operation = (string)input[0];
             var low = (int)input[1];
-            //var high = (int)input[2]. ?? -1;
+            var high = -1;
+
+            if (input.Length == 3)
+                high = (int)input[2];
 
             InputTriples.Add(new InputTriple(operation, low, high));
         }
