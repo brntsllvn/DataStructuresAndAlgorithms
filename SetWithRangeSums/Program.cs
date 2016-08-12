@@ -19,13 +19,13 @@ namespace SetWithRangeSums
 
         public void Splay(TreeNode inputNode)
         {
-            if (inputNode.ParentIndex == -1)
+            if (inputNode.ParentValue == -1)
                 return;
 
             switch (DetermineZigZigZag(inputNode))
             {
                 case "zig left":
-                    Zig(inputNode);
+                    ZigLeft(inputNode);
                     break;
                 case "zigzig":
                     // don't forget to reassign great-gransparent pointers
@@ -38,25 +38,25 @@ namespace SetWithRangeSums
             }
         }
 
-        internal void Zig(TreeNode nodeToSplay)
+        internal void ZigLeft(TreeNode nodeToSplay)
         {
             // left case
-            var parentNode = TreeNodes[nodeToSplay.ParentIndex ?? -1];
+            var parentNode = TreeNodes[nodeToSplay.ParentValue ?? -1];
             var tempParentValue = parentNode.Value;
-            var tempParentLeftChildIndex = parentNode.LeftChildIndex;
-            var tempParentRightChildIndex = parentNode.RightChildIndex;
-            var tempParentParentIndex = parentNode.ParentIndex;
+            var tempParentLeftChildIndex = parentNode.LeftChildValue;
+            var tempParentRightChildIndex = parentNode.RightChildValue;
+            var tempParentParentIndex = parentNode.ParentValue;
 
-            var formerParent = TreeNodes[nodeToSplay.ParentIndex ?? -1];
+            var formerParent = TreeNodes[nodeToSplay.ParentValue ?? -1];
             formerParent.Value = nodeToSplay.Value;
-            formerParent.LeftChildIndex = nodeToSplay.LeftChildIndex;
-            formerParent.RightChildIndex = nodeToSplay.RightChildIndex;
-            formerParent.ParentIndex = nodeToSplay.ParentIndex;
+            formerParent.LeftChildValue = nodeToSplay.LeftChildValue;
+            formerParent.RightChildValue = nodeToSplay.RightChildValue;
+            formerParent.ParentValue = nodeToSplay.ParentValue;
 
             nodeToSplay.Value = tempParentValue;
-            nodeToSplay.LeftChildIndex = tempParentLeftChildIndex;
-            nodeToSplay.RightChildIndex = tempParentRightChildIndex;
-            nodeToSplay.ParentIndex = tempParentParentIndex;
+            nodeToSplay.LeftChildValue = tempParentLeftChildIndex;
+            nodeToSplay.RightChildValue = tempParentRightChildIndex;
+            nodeToSplay.ParentValue = tempParentParentIndex;
 
             // place subtrees in the right places
             return;
@@ -116,28 +116,28 @@ namespace SetWithRangeSums
 
         internal TreeNode GetGrandparentNode(TreeNode splayNode)
         {
-            if (splayNode.ParentIndex == -1)
+            if (splayNode.ParentValue == -1)
                 return new TreeNode();
 
-            var parentNode = TreeNodes[splayNode.ParentIndex ?? -1];
-            if (parentNode.ParentIndex == -1)
+            var parentNode = TreeNodes[splayNode.ParentValue ?? -1];
+            if (parentNode.ParentValue == -1)
                 return new TreeNode();
 
-            var grandparentNode = TreeNodes[parentNode.ParentIndex ?? -1];
+            var grandparentNode = TreeNodes[parentNode.ParentValue ?? -1];
             return grandparentNode;
         }
 
         internal string DetermineZigZigZag(TreeNode splayNode)
         {
-            if (splayNode.ParentIndex == -1)
+            if (splayNode.ParentValue == -1)
                 return "none";
 
             var splayNodeGrandparent = GetGrandparentNode(splayNode);
-            var parentNode = TreeNodes[splayNode.ParentIndex ?? -1];
+            var parentNode = TreeNodes[splayNode.ParentValue ?? -1];
             if (!splayNodeGrandparent.Value.HasValue)
             {
-                if (parentNode.LeftChildIndex != -1 && 
-                    TreeNodes[parentNode.LeftChildIndex ?? -1] == splayNode)
+                if (parentNode.LeftChildValue != -1 && 
+                    TreeNodes[parentNode.LeftChildValue ?? -1] == splayNode)
                     return "zig left";
                 else
                     return "zig right";
@@ -148,13 +148,13 @@ namespace SetWithRangeSums
             if (splayNodeGrandparent.Value.HasValue)
             {
                 var parentLeftRight = "left";
-                if (parentNode.RightChildIndex != -1
-                    && TreeNodes[parentNode.RightChildIndex ?? -1] == splayNode)
+                if (parentNode.RightChildValue != -1
+                    && TreeNodes[parentNode.RightChildValue ?? -1] == splayNode)
                     parentLeftRight = "right";
 
                 var grandparentLeftRight = "left";
-                if (splayNodeGrandparent.RightChildIndex != -1
-                    && TreeNodes[splayNodeGrandparent.RightChildIndex ?? -1] == parentNode)
+                if (splayNodeGrandparent.RightChildValue != -1
+                    && TreeNodes[splayNodeGrandparent.RightChildValue ?? -1] == parentNode)
                     grandparentLeftRight = "right";
 
                 if (parentLeftRight == "left" && grandparentLeftRight == "left")
@@ -174,24 +174,24 @@ namespace SetWithRangeSums
     public class TreeNode
     {
         public int? Value { get; set; }
-        public int? LeftChildIndex { get; set; }
-        public int? RightChildIndex { get; set; }
-        public int? ParentIndex { get; set; }
+        public int? LeftChildValue { get; set; }
+        public int? RightChildValue { get; set; }
+        public int? ParentValue { get; set; }
 
         public TreeNode()
         {
             Value = null;
-            LeftChildIndex = null;
-            RightChildIndex = null;
-            ParentIndex = null;
+            LeftChildValue = null;
+            RightChildValue = null;
+            ParentValue = null;
         }
 
         public TreeNode(int val, int left, int right, int parent)
         {
             Value = val;
-            LeftChildIndex = left;
-            RightChildIndex = right;
-            ParentIndex = parent;
+            LeftChildValue = left;
+            RightChildValue = right;
+            ParentValue = parent;
         }
     }
 
