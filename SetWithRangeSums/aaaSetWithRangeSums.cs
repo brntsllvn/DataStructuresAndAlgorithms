@@ -111,6 +111,28 @@ namespace SetWithRangeSums
                 2,
                 "zigzag"
             },
+            new object[]
+            { "E",
+                new List<TreeNode>
+                {
+                    new TreeNode(0,-1,1,-1),
+                    new TreeNode(1,2,-1,0),
+                    new TreeNode(2,-1,-1,1),
+                },
+                2,
+                "zigzag"
+            },
+            new object[]
+            { "F",
+                new List<TreeNode>
+                {
+                    new TreeNode(0,-1,1,-1),
+                    new TreeNode(1,-1,2,0),
+                    new TreeNode(2,-1,-1,1),
+                },
+                2,
+                "zigzig"
+            },
         };
         #endregion
 
