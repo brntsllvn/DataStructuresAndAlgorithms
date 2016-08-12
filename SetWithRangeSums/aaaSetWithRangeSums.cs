@@ -22,9 +22,9 @@ namespace SetWithRangeSums
             for (int i = 0; i < expectedNodes.Count; i++)
             {
                 inputNodes[i].Value.ShouldBe(expectedNodes[i].Value);
-                inputNodes[i].LeftChildValue.ShouldBe(expectedNodes[i].LeftChildValue);
-                inputNodes[i].RightChildValue.ShouldBe(expectedNodes[i].RightChildValue);
-                inputNodes[i].ParentValue.ShouldBe(expectedNodes[i].ParentValue);
+                inputNodes[i].LeftChild.ShouldBe(expectedNodes[i].LeftChild);
+                inputNodes[i].RightChild.ShouldBe(expectedNodes[i].RightChild);
+                inputNodes[i].Parent.ShouldBe(expectedNodes[i].Parent);
             }
         }
 
@@ -68,8 +68,8 @@ namespace SetWithRangeSums
             program.ZigLeft(nodeToSplay);
 
             nodeToSplay.Value.ShouldBe(1);
-            nodeToSplay.LeftChildValue.ShouldBe(-1);
-            nodeToSplay.RightChildValue.ShouldBe(0);
+            nodeToSplay.LeftChild.ShouldBe(-1);
+            nodeToSplay.RightChild.ShouldBe(0);
         }
 
         [Test, TestCaseSource(nameof(DetermineZigZigZag))]
@@ -225,9 +225,9 @@ namespace SetWithRangeSums
 
             var treeNode = program.TreeNodes[0];
             treeNode.Value.ShouldBe(expected[0].Value);
-            treeNode.LeftChildValue.ShouldBe(expected[0].LeftChildValue);
-            treeNode.RightChildValue.ShouldBe(expected[0].RightChildValue);
-            treeNode.ParentValue.ShouldBe(expected[0].ParentValue);
+            treeNode.LeftChild.ShouldBe(expected[0].LeftChild);
+            treeNode.RightChild.ShouldBe(expected[0].RightChild);
+            treeNode.Parent.ShouldBe(expected[0].Parent);
         }
 
         #region
