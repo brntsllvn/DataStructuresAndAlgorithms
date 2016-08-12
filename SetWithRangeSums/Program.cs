@@ -19,7 +19,7 @@ namespace SetWithRangeSums
 
         public void Splay(TreeNode inputNode)
         {
-            if (inputNode.Parent == -1)
+            if (inputNode.Parent.Value == -1)
                 return;
 
             switch (DetermineZigZigZag(inputNode))
@@ -41,13 +41,13 @@ namespace SetWithRangeSums
         internal void ZigLeft(TreeNode nodeToSplay)
         {
             // left case
-            var parentNode = TreeNodes[nodeToSplay.Parent ?? -1];
+            var parentNode = nodeToSplay.Parent;
             var tempParentValue = parentNode.Value;
             var tempParentLeftChildIndex = parentNode.LeftChild;
             var tempParentRightChildIndex = parentNode.RightChild;
             var tempParentParentIndex = parentNode.Parent;
 
-            var formerParent = TreeNodes[nodeToSplay.Parent ?? -1];
+            var formerParent = nodeToSplay.Parent;
             formerParent.Value = nodeToSplay.Value;
             formerParent.LeftChild = nodeToSplay.LeftChild;
             formerParent.RightChild = nodeToSplay.RightChild;
@@ -77,7 +77,6 @@ namespace SetWithRangeSums
 
         private void AddNode(int value)
         {
-            TreeNodes.Add(new TreeNode(value, -1, -1, -1));
         }
 
         internal void AddRawInputToList(object[] input)
@@ -114,47 +113,31 @@ namespace SetWithRangeSums
             new Program().Run();
         }
 
-        internal TreeNode GetGrandparentNode(TreeNode splayNode)
+        public string DetermineZigZigZag(TreeNode splayNode)
         {
-            if (splayNode.Parent == -1)
-                return new TreeNode();
-
-            var parentNode = TreeNodes[splayNode.Parent ?? -1];
-            if (parentNode.Parent == -1)
-                return new TreeNode();
-
-            var grandparentNode = TreeNodes[parentNode.Parent ?? -1];
-            return grandparentNode;
-        }
-
-        internal string DetermineZigZigZag(TreeNode splayNode)
-        {
-            if (splayNode.Parent == -1)
+            if (splayNode.Parent == null)
                 return "none";
 
-            var splayNodeGrandparent = GetGrandparentNode(splayNode);
-            var parentNode = TreeNodes[splayNode.Parent ?? -1];
-            if (!splayNodeGrandparent.Value.HasValue)
+            var zigZigZag = "hi, something went wrong";
+
+            var parentNode = splayNode.Parent;
+            if (!NodeHasGrandparent(splayNode))
             {
-                if (parentNode.LeftChild != -1 && 
-                    TreeNodes[parentNode.LeftChild ?? -1] == splayNode)
+                if (parentNode.LeftChild == splayNode)
                     return "zig left";
                 else
                     return "zig right";
             }
-
-            var zigZigZag = "Hi. Something went wrong.";
-
-            if (splayNodeGrandparent.Value.HasValue)
+            else
             {
+                var grandparentNode = GetGrandparentNode(splayNode);
+
                 var parentLeftRight = "left";
-                if (parentNode.RightChild != -1
-                    && TreeNodes[parentNode.RightChild ?? -1] == splayNode)
+                if (parentNode.RightChild == splayNode)
                     parentLeftRight = "right";
 
                 var grandparentLeftRight = "left";
-                if (splayNodeGrandparent.RightChild != -1
-                    && TreeNodes[splayNodeGrandparent.RightChild ?? -1] == parentNode)
+                if (grandparentNode.RightChild == parentNode)
                     grandparentLeftRight = "right";
 
                 if (parentLeftRight == "left" && grandparentLeftRight == "left")
@@ -164,16 +147,26 @@ namespace SetWithRangeSums
                 else if (parentLeftRight == "left" && grandparentLeftRight == "right")
                     zigZigZag = "zigzag left";
                 else
-                    zigZigZag = "zigzag right"; 
+                    zigZigZag = "zigzag right";
             }
 
             return zigZigZag;
+        }
+
+        private static TreeNode GetGrandparentNode(TreeNode parentNode)
+        {
+            return parentNode.Parent.Parent;
+        }
+
+        public bool NodeHasGrandparent(TreeNode node)
+        {
+            return node.Parent != null && node.Parent.Parent != null;
         }
     }
 
     public class TreeNode
     {
-        public int Value { get; set; }
+        public int? Value { get; set; }
         public TreeNode LeftChild { get; set; }
         public TreeNode RightChild { get; set; }
         public TreeNode Parent { get; set; }

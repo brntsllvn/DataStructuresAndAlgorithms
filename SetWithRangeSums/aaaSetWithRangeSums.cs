@@ -7,243 +7,115 @@ namespace SetWithRangeSums
     [TestFixture]
     class aaaSetWithRangeSums
     {
-        [Test, TestCaseSource(nameof(Splay))]
-        public void SplayNode_Test(string caseName, List<TreeNode> inputNodes,
-            int indexOfNodeToSplay, List<TreeNode> expectedNodes)
-        {
-            var program = new Program();
-
-            foreach (var node in inputNodes)
-                program.TreeNodes.Add(node);
-
-            var nodeToSplay = inputNodes[indexOfNodeToSplay];
-            program.Splay(nodeToSplay);
-
-            for (int i = 0; i < expectedNodes.Count; i++)
-            {
-                inputNodes[i].Value.ShouldBe(expectedNodes[i].Value);
-                inputNodes[i].LeftChild.ShouldBe(expectedNodes[i].LeftChild);
-                inputNodes[i].RightChild.ShouldBe(expectedNodes[i].RightChild);
-                inputNodes[i].Parent.ShouldBe(expectedNodes[i].Parent);
-            }
-        }
-
-        #region
-        public static object[] Splay =
-        {
-            new object[] { "base",
-                    new List<TreeNode> {
-                        new TreeNode(1,-1,-1,-1)
-                },
-                0,
-                    new List<TreeNode> {
-                        new TreeNode(1,-1,-1,-1),
-                }
-            },
-            new object[] { "zig A",
-                    new List<TreeNode> {
-                        new TreeNode(1,1,-1,-1),
-                        new TreeNode(2,-1,-1,1)
-                },
-                0,
-                    new List<TreeNode> {
-                        new TreeNode(2,1,-1,-1),
-                        new TreeNode(1,-1,-1,1)
-                }
-            },
-        };
-        #endregion
-
         [Test]
         public void ZigLeft_A()
         {
             var program = new Program();
-            program.TreeNodes.AddRange(
-                new List<TreeNode> {
-                    new TreeNode(0,1,-1,-1),
-                    new TreeNode(1,-1,-1,0)
-            });
+            var splayNode = new TreeNode(1, null, null, null);
+            var parentNode = new TreeNode(0, splayNode, null, null);
+            splayNode.Parent = parentNode;
 
-            var nodeToSplay = program.TreeNodes[1];
-            program.ZigLeft(nodeToSplay);
+            program.ZigLeft(splayNode);
 
-            nodeToSplay.Value.ShouldBe(1);
-            nodeToSplay.LeftChild.ShouldBe(-1);
-            nodeToSplay.RightChild.ShouldBe(0);
+            splayNode.Value.ShouldBe(1);
+            splayNode.LeftChild.ShouldBe(parentNode);
+            splayNode.RightChild.ShouldBeNull();
+            splayNode.Parent.ShouldBeNull();
+
+            parentNode.Value.ShouldBe(0);
+            parentNode.LeftChild.ShouldBeNull();
+            parentNode.RightChild.ShouldBeNull();
+            parentNode.Parent.ShouldBe(splayNode);
         }
 
-        [Test, TestCaseSource(nameof(DetermineZigZigZag))]
-        public void FDetermineZigZigZag_Test(string caseName, List<TreeNode> treeNodes,
-            int indexOfNodeToSplay, string expectedCase)
+        [Test]
+        public void DetermineZigZag_None()
         {
             var program = new Program();
-            program.TreeNodes.AddRange(treeNodes);
-            var splayNode = treeNodes[indexOfNodeToSplay];
-
-            var zigcase = program.DetermineZigZigZag(splayNode);
-
-            zigcase.ShouldBe(expectedCase);
+            var splayNode = new TreeNode(0, null, null, null);
+            var zigZag = program.DetermineZigZigZag(splayNode);
+            zigZag.ShouldBe("none");
         }
 
-        #region
-        public static object[] DetermineZigZigZag =
-        {
-            new object[]
-            { "A",
-                new List<TreeNode>
-                {
-                    new TreeNode(0,-1,-1,-1)
-                },
-                0,
-                "none"
-            },
-            new object[]
-            { "zig left",
-                new List<TreeNode>
-                {
-                    new TreeNode(0,1,-1,-1),
-                    new TreeNode(1,-1,-1,0),
-                },
-                1,
-                "zig left"
-            },
-            new object[]
-            { "zig right",
-                new List<TreeNode>
-                {
-                    new TreeNode(0,-1,1,-1),
-                    new TreeNode(1,-1,-1,0),
-                },
-                1,
-                "zig right"
-            },
-            new object[]
-            { "zigzig left",
-                new List<TreeNode>
-                {
-                    new TreeNode(0,1,-1,-1),
-                    new TreeNode(1,2,-1,0),
-                    new TreeNode(2,-1,-1,1),
-                },
-                2,
-                "zigzig left"
-            },
-            new object[]
-            { "zigzig right",
-                new List<TreeNode>
-                {
-                    new TreeNode(0,-1,1,-1),
-                    new TreeNode(1,-1,2,0),
-                    new TreeNode(2,-1,-1,1),
-                },
-                2,
-                "zigzig right"
-            },
-            new object[]
-            { "zigzag right",
-                new List<TreeNode>
-                {
-                    new TreeNode(0,1,-1,-1),
-                    new TreeNode(1,-1,2,0),
-                    new TreeNode(2,-1,-1,1),
-                },
-                2,
-                "zigzag right"
-            },
-            new object[]
-            { "zigzag left",
-                new List<TreeNode>
-                {
-                    new TreeNode(0,-1,1,-1),
-                    new TreeNode(1,2,-1,0),
-                    new TreeNode(2,-1,-1,1),
-                },
-                2,
-                "zigzag left"
-            },
-        };
-        #endregion
-
-        [Test, TestCaseSource(nameof(FindGrandparentData))]
-        public void FindGrandparent_Test(string caseName, List<TreeNode> treeNodes,
-            int indexOfNodeToSplay, TreeNode expectedGrandparent)
+        [Test]
+        public void DetermineZigZag_Zig_Left()
         {
             var program = new Program();
-            program.TreeNodes.AddRange(treeNodes);
+            var splayNode = new TreeNode(0, null, null, null);
+            var parentNode = new TreeNode(1, splayNode, null, null);
+            splayNode.Parent = parentNode;
 
-            var splayNode = treeNodes[indexOfNodeToSplay];
-
-            var grandparent = program.GetGrandparentNode(splayNode);
-
-            var grandparentValue = grandparent.Value;
-            grandparentValue.ShouldBe(expectedGrandparent.Value);
+            var zigZag = program.DetermineZigZigZag(splayNode);
+            zigZag.ShouldBe("zig left");
         }
 
-        #region
-        public static object[] FindGrandparentData =
-        {
-            new object[]
-            { "A",
-                new List<TreeNode>
-                {
-                    new TreeNode(0,-1,-1,-1)
-                },
-                0,
-                new TreeNode()
-            },
-            new object[]
-            { "B",
-                new List<TreeNode>
-                {
-                    new TreeNode(0,1,-1,-1),
-                    new TreeNode(1,-1,-1,0),
-                },
-                1,
-                new TreeNode()
-            },
-            new object[]
-            { "C",
-                new List<TreeNode>
-                {
-                    new TreeNode(0,1,-1,-1),
-                    new TreeNode(1,2,-1,0),
-                    new TreeNode(2,-1,-1,1),
-                },
-                2,
-                new TreeNode(0,1,-1,-1)
-            },
-        };
-        #endregion
-
-
-        [Test, TestCaseSource(nameof(Add))]
-        public void AddNewTreeNode(string caseName, List<object[]> input, List<TreeNode> expected)
+        [Test]
+        public void DetermineZigZag_Zig_Right()
         {
             var program = new Program();
-            program.AddRawInputToList(input[0]);
-            program.ExecuteQueries();
+            var splayNode = new TreeNode(0, null, null, null);
+            var parentNode = new TreeNode(1, null, splayNode, null);
+            splayNode.Parent = parentNode;
 
-            var treeNode = program.TreeNodes[0];
-            treeNode.Value.ShouldBe(expected[0].Value);
-            treeNode.LeftChild.ShouldBe(expected[0].LeftChild);
-            treeNode.RightChild.ShouldBe(expected[0].RightChild);
-            treeNode.Parent.ShouldBe(expected[0].Parent);
+            var zigZag = program.DetermineZigZigZag(splayNode);
+            zigZag.ShouldBe("zig right");
         }
 
-        #region
-        private static readonly object[] Add =
+        [Test]
+        public void DetermineZigZag_ZigZig_Left()
         {
-                new object[] { "A", new List<object[]>
-                                    {
-                                        new object[] { "+", 1, -1 }
-                                    },
-                                    new List<TreeNode>
-                                    {
-                                        new TreeNode(1,-1,-1,-1)
-                                    }
-                }
-        };
-        #endregion
+            var program = new Program();
+            var splayNode = new TreeNode(0, null, null, null);
+            var parentNode = new TreeNode(1, splayNode, null, null);
+            splayNode.Parent = parentNode;
+            var grandparentNode = new TreeNode(2, parentNode, null, null);
+            parentNode.Parent = grandparentNode;
+
+            var zigZag = program.DetermineZigZigZag(splayNode);
+            zigZag.ShouldBe("zigzig left");
+        }
+
+        [Test]
+        public void DetermineZigZag_ZigZig_Right()
+        {
+            var program = new Program();
+            var splayNode = new TreeNode(0, null, null, null);
+            var parentNode = new TreeNode(1, null, splayNode, null);
+            splayNode.Parent = parentNode;
+            var grandparentNode = new TreeNode(2, null, parentNode, null);
+            parentNode.Parent = grandparentNode;
+
+            var zigZag = program.DetermineZigZigZag(splayNode);
+            zigZag.ShouldBe("zigzig right");
+        }
+
+        [Test]
+        public void DetermineZigZag_Zig_Zag_Right()
+        {
+            var program = new Program();
+            var splayNode = new TreeNode(0, null, null, null);
+            var parentNode = new TreeNode(1, null, splayNode, null);
+            splayNode.Parent = parentNode;
+            var grandparentNode = new TreeNode(2, parentNode, null, null);
+            parentNode.Parent = grandparentNode;
+
+            var zigZag = program.DetermineZigZigZag(splayNode);
+            zigZag.ShouldBe("zigzag right");
+        }
+
+        [Test]
+        public void DetermineZigZag_Zig_Zag_Left()
+        {
+            var program = new Program();
+            var splayNode = new TreeNode(0, null, null, null);
+            var parentNode = new TreeNode(1, splayNode, null, null);
+            splayNode.Parent = parentNode;
+            var grandparentNode = new TreeNode(2, null, parentNode, null);
+            parentNode.Parent = grandparentNode;
+
+            var zigZag = program.DetermineZigZigZag(splayNode);
+            zigZag.ShouldBe("zigzag left");
+        }
 
         [Test, TestCaseSource(nameof(Raw))]
         public void TransformArrayIntoInputTriple_Tests(string caseName, object[] input,
