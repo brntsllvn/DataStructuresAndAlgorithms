@@ -54,9 +54,69 @@ namespace SetWithRangeSums
         };
         #endregion
 
+        [Test, TestCaseSource(nameof(DetermineZigZigZag))]
+        public void FDetermineZigZigZag_Test(string caseName, List<TreeNode> treeNodes,
+            int indexOfNodeToSplay, string expectedCase)
+        {
+            var program = new Program();
+            program.TreeNodes.AddRange(treeNodes);
+            var splayNode = treeNodes[indexOfNodeToSplay];
+
+            var zigcase = program.DetermineZigZigZag(splayNode);
+
+            zigcase.ShouldBe(expectedCase);
+        }
+
+        #region
+        public static object[] DetermineZigZigZag =
+        {
+            new object[]
+            { "A",
+                new List<TreeNode>
+                {
+                    new TreeNode(0,-1,-1,-1)
+                },
+                0,
+                "none"
+            },
+            new object[]
+            { "B",
+                new List<TreeNode>
+                {
+                    new TreeNode(0,1,-1,-1),
+                    new TreeNode(1,-1,-1,0),
+                },
+                1,
+                "zig"
+            },
+            new object[]
+            { "C",
+                new List<TreeNode>
+                {
+                    new TreeNode(0,1,-1,-1),
+                    new TreeNode(1,2,-1,0),
+                    new TreeNode(2,-1,-1,1),
+                },
+                2,
+                "zigzig"
+            },
+            new object[]
+            { "D",
+                new List<TreeNode>
+                {
+                    new TreeNode(0,1,-1,-1),
+                    new TreeNode(1,-1,2,0),
+                    new TreeNode(2,-1,-1,1),
+                },
+                2,
+                "zigzag"
+            },
+        };
+        #endregion
+
         [Test, TestCaseSource(nameof(FindGrandparentData))]
         public void FindGrandparent_Test(string caseName, List<TreeNode> treeNodes, 
-            int indexOfNodeToSplay, TreeNode expectedGrandparentValue)
+            int indexOfNodeToSplay, TreeNode expectedGrandparent)
         {
             var program = new Program();
             program.TreeNodes.AddRange(treeNodes);
@@ -65,7 +125,8 @@ namespace SetWithRangeSums
 
             var grandparent = program.GetGrandparentNode(splayNode);
 
-            grandparent.Value.ShouldBe(expectedGrandparentValue.Value);
+            var grandparentValue = grandparent.Value;
+            grandparentValue.ShouldBe(expectedGrandparent.Value);
         }
 
         #region
@@ -78,7 +139,7 @@ namespace SetWithRangeSums
                     new TreeNode(0,-1,-1,-1)
                 },
                 0,
-                null
+                new TreeNode()
             },
             new object[]
             { "B",
@@ -88,7 +149,7 @@ namespace SetWithRangeSums
                     new TreeNode(1,-1,-1,0),
                 },
                 1,
-                null
+                new TreeNode()
             },
             new object[]
             { "C",

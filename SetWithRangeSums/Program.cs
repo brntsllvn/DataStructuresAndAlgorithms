@@ -94,6 +94,39 @@ namespace SetWithRangeSums
             var grandparentNode = TreeNodes[parentNode.ParentIndex ?? -1];
             return grandparentNode;
         }
+
+        internal string DetermineZigZigZag(TreeNode splayNode)
+        {
+            if (splayNode.ParentIndex == -1)
+                return "none";
+
+            var splayNodeGrandparent = GetGrandparentNode(splayNode);
+            if (!splayNodeGrandparent.Value.HasValue)
+                return "zig";
+
+            var zigZigZag = "hi";
+            var parentNode = TreeNodes[splayNode.ParentIndex ?? -1];
+            if (splayNodeGrandparent.Value.HasValue)
+            {
+                var parentLeftRight = "left";
+                if (parentNode.RightChildIndex != -1 
+                    && TreeNodes[parentNode.RightChildIndex ?? -1] == splayNode)
+                    parentLeftRight = "right";
+
+                var grandparentLeftRight = "left";
+                if (splayNodeGrandparent.RightChildIndex != -1 
+                    && TreeNodes[splayNodeGrandparent.RightChildIndex ?? -1] == parentNode)
+                    grandparentLeftRight = "right";
+
+                if (parentLeftRight == "left" && grandparentLeftRight == "left" 
+                    || parentLeftRight == "right" && grandparentLeftRight == "right")
+                    zigZigZag = "zigzig";
+                else
+                    zigZigZag = "zigzag";
+            }
+                
+            return zigZigZag;
+        }
     }
 
     public class TreeNode
