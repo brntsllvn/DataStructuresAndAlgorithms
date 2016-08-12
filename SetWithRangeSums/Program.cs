@@ -22,6 +22,11 @@ namespace SetWithRangeSums
             if (inputNode.ParentIndex == -1)
                 return;
 
+            // Determine case: zig, zig-zag, zig-zig
+
+            // zig
+            // if nodeToSplay does not have a grandparent, then zig
+
 
         }
 
@@ -76,14 +81,35 @@ namespace SetWithRangeSums
         {
             new Program().Run();
         }
+
+        internal TreeNode GetGrandparentNode(TreeNode splayNode)
+        {
+            if (splayNode.ParentIndex == -1)
+                return new TreeNode();
+
+            var parentNode = TreeNodes[splayNode.ParentIndex ?? -1];
+            if (parentNode.ParentIndex == -1)
+                return new TreeNode();
+
+            var grandparentNode = TreeNodes[parentNode.ParentIndex ?? -1];
+            return grandparentNode;
+        }
     }
 
     public class TreeNode
     {
-        public int Value { get; set; }
-        public int LeftChildIndex { get; set; }
-        public int RightChildIndex { get; set; }
-        public int ParentIndex { get; set; }
+        public int? Value { get; set; }
+        public int? LeftChildIndex { get; set; }
+        public int? RightChildIndex { get; set; }
+        public int? ParentIndex { get; set; }
+
+        public TreeNode()
+        {
+            Value = null;
+            LeftChildIndex = null;
+            RightChildIndex = null;
+            ParentIndex = null;
+        }
 
         public TreeNode(int val, int left, int right, int parent)
         {

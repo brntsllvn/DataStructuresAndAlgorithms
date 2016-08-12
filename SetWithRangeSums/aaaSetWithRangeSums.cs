@@ -8,18 +8,24 @@ namespace SetWithRangeSums
     class aaaSetWithRangeSums
     {
         [Test, TestCaseSource(nameof(Splay))]
-        public void SplayNode_Test(string caseName, List<TreeNode> inputNode, List<TreeNode> expectedNode)
+        public void SplayNode_Test(string caseName, List<TreeNode> inputNodes, 
+            int indexOfNodeToSplay, List<TreeNode> expectedNodes)
         {
             var program = new Program();
-            // add nodes to tree
 
+            foreach (var node in inputNodes)
+                program.TreeNodes.Add(node);
 
-            program.Splay(inputNode[0]);
+            var nodeToSplay = inputNodes[indexOfNodeToSplay];
+            program.Splay(nodeToSplay);
 
-            inputNode[0].Value.ShouldBe(expectedNode[0].Value);
-            inputNode[0].LeftChildIndex.ShouldBe(expectedNode[0].LeftChildIndex);
-            inputNode[0].RightChildIndex.ShouldBe(expectedNode[0].RightChildIndex);
-            inputNode[0].ParentIndex.ShouldBe(expectedNode[0].ParentIndex);
+            for (int i = 0; i < expectedNodes.Count; i++)
+            {
+                inputNodes[i].Value.ShouldBe(expectedNodes[i].Value);
+                inputNodes[i].LeftChildIndex.ShouldBe(expectedNodes[i].LeftChildIndex);
+                inputNodes[i].RightChildIndex.ShouldBe(expectedNodes[i].RightChildIndex);
+                inputNodes[i].ParentIndex.ShouldBe(expectedNodes[i].ParentIndex);
+            }
         }
 
         #region
@@ -29,15 +35,17 @@ namespace SetWithRangeSums
                     new List<TreeNode> {
                         new TreeNode(1,-1,-1,-1)
                 },
+                0,
                     new List<TreeNode> {
                         new TreeNode(1,-1,-1,-1),
                 }
             },
-            new object[] { "zig",
+            new object[] { "zig A",
                     new List<TreeNode> {
                         new TreeNode(1,1,-1,-1),
                         new TreeNode(2,-1,-1,1)
                 },
+                0,
                     new List<TreeNode> {
                         new TreeNode(2,1,-1,-1),
                         new TreeNode(1,-1,-1,1)
@@ -45,6 +53,57 @@ namespace SetWithRangeSums
             },
         };
         #endregion
+
+        [Test, TestCaseSource(nameof(FindGrandparentData))]
+        public void FindGrandparent_Test(string caseName, List<TreeNode> treeNodes, 
+            int indexOfNodeToSplay, TreeNode expectedGrandparentValue)
+        {
+            var program = new Program();
+            program.TreeNodes.AddRange(treeNodes);
+
+            var splayNode = treeNodes[indexOfNodeToSplay];
+
+            var grandparent = program.GetGrandparentNode(splayNode);
+
+            grandparent.Value.ShouldBe(expectedGrandparentValue.Value);
+        }
+
+        #region
+        public static object[] FindGrandparentData =
+        {
+            new object[]
+            { "A",
+                new List<TreeNode>
+                {
+                    new TreeNode(0,-1,-1,-1)
+                },
+                0,
+                null
+            },
+            new object[]
+            { "B",
+                new List<TreeNode>
+                {
+                    new TreeNode(0,1,-1,-1),
+                    new TreeNode(1,-1,-1,0),
+                },
+                1,
+                null
+            },
+            new object[]
+            { "C",
+                new List<TreeNode>
+                {
+                    new TreeNode(0,1,-1,-1),
+                    new TreeNode(1,2,-1,0),
+                    new TreeNode(2,-1,-1,1),
+                },
+                2,
+                new TreeNode(0,1,-1,-1)
+            },
+        };
+        #endregion
+
 
         [Test, TestCaseSource(nameof(Add))]
         public void AddNewTreeNode(string caseName, List<object[]> input, List<TreeNode> expected)
