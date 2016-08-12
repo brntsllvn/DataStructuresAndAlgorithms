@@ -22,12 +22,46 @@ namespace SetWithRangeSums
             if (inputNode.ParentIndex == -1)
                 return;
 
-            // Determine case: zig, zig-zag, zig-zig
+            switch (DetermineZigZigZag(inputNode))
+            {
+                case "zig":
+                    Zig(inputNode);
+                    break;
+                case "zigzig":
+                    // don't forget to reassign great-gransparent pointers
+                    break;
+                case "zigzag":
+                    // don't forget to reassign great-gransparent pointers
+                    break;
+                default:
+                    break;
+            }
+        }
 
-            // zig
-            // if nodeToSplay does not have a grandparent, then zig
+        internal void Zig(TreeNode nodeToSplay)
+        {
+            // left case
 
+            // right case
+            var parentNode = TreeNodes[nodeToSplay.ParentIndex ?? -1];
+            var tempParentValue = parentNode.Value;
+            var tempParentLeftChildIndex = parentNode.LeftChildIndex;
+            var tempParentRightChildIndex = parentNode.RightChildIndex;
+            var tempParentParentIndex = parentNode.ParentIndex;
 
+            var formerParent = TreeNodes[nodeToSplay.ParentIndex ?? -1];
+            formerParent.Value = nodeToSplay.Value;
+            formerParent.LeftChildIndex = nodeToSplay.LeftChildIndex;
+            formerParent.RightChildIndex = nodeToSplay.RightChildIndex;
+            formerParent.ParentIndex = nodeToSplay.ParentIndex;
+
+            nodeToSplay.Value = tempParentValue;
+            nodeToSplay.LeftChildIndex = tempParentLeftChildIndex;
+            nodeToSplay.RightChildIndex = tempParentRightChildIndex;
+            nodeToSplay.ParentIndex = tempParentParentIndex;
+
+            // place subtrees in the right places
+            return;
         }
 
         internal void ExecuteQueries()
@@ -37,7 +71,7 @@ namespace SetWithRangeSums
 
             switch (operation)
             {
-                case "+" :
+                case "+":
                     AddNode(low);
                     break;
             }
@@ -45,7 +79,7 @@ namespace SetWithRangeSums
 
         private void AddNode(int value)
         {
-            TreeNodes.Add(new TreeNode(value,-1,-1,-1));
+            TreeNodes.Add(new TreeNode(value, -1, -1, -1));
         }
 
         internal void AddRawInputToList(object[] input)
@@ -101,30 +135,40 @@ namespace SetWithRangeSums
                 return "none";
 
             var splayNodeGrandparent = GetGrandparentNode(splayNode);
+            var parentNode = TreeNodes[splayNode.ParentIndex ?? -1];
             if (!splayNodeGrandparent.Value.HasValue)
-                return "zig";
+            {
+                if (parentNode.LeftChildIndex != -1 && 
+                    TreeNodes[parentNode.LeftChildIndex ?? -1] == splayNode)
+                    return "zig left";
+                else
+                    return "zig right";
+            }
 
             var zigZigZag = "hi";
-            var parentNode = TreeNodes[splayNode.ParentIndex ?? -1];
+
             if (splayNodeGrandparent.Value.HasValue)
             {
                 var parentLeftRight = "left";
-                if (parentNode.RightChildIndex != -1 
+                if (parentNode.RightChildIndex != -1
                     && TreeNodes[parentNode.RightChildIndex ?? -1] == splayNode)
                     parentLeftRight = "right";
 
                 var grandparentLeftRight = "left";
-                if (splayNodeGrandparent.RightChildIndex != -1 
+                if (splayNodeGrandparent.RightChildIndex != -1
                     && TreeNodes[splayNodeGrandparent.RightChildIndex ?? -1] == parentNode)
                     grandparentLeftRight = "right";
 
-                if (parentLeftRight == "left" && grandparentLeftRight == "left" 
-                    || parentLeftRight == "right" && grandparentLeftRight == "right")
-                    zigZigZag = "zigzig";
+                if (parentLeftRight == "left" && grandparentLeftRight == "left")
+                    zigZigZag = "zigzig left";
+                else if (parentLeftRight == "right" && grandparentLeftRight == "right")
+                    zigZigZag = "zigzig right";
+                else if (parentLeftRight == "left" && grandparentLeftRight == "right")
+                    zigZigZag = "zigzag left";
                 else
-                    zigZigZag = "zigzag";
+                    zigZigZag = "zigzag right"; 
             }
-                
+
             return zigZigZag;
         }
     }
@@ -158,7 +202,7 @@ namespace SetWithRangeSums
         public string Operation { get; set; }
         public int Low { get; set; }
         public int High { get; set; }
-        
+
         public InputTriple(string op, int val)
         {
             Operation = op;

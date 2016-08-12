@@ -8,7 +8,7 @@ namespace SetWithRangeSums
     class aaaSetWithRangeSums
     {
         [Test, TestCaseSource(nameof(Splay))]
-        public void SplayNode_Test(string caseName, List<TreeNode> inputNodes, 
+        public void SplayNode_Test(string caseName, List<TreeNode> inputNodes,
             int indexOfNodeToSplay, List<TreeNode> expectedNodes)
         {
             var program = new Program();
@@ -54,6 +54,44 @@ namespace SetWithRangeSums
         };
         #endregion
 
+        [Test, TestCaseSource(nameof(ZigData))]
+        public void Zig_Test(string caseName, List<TreeNode> inputNodes,
+    int indexOfNodeToSplay, List<TreeNode> expectedNodes)
+        {
+            var program = new Program();
+
+            foreach (var node in inputNodes)
+                program.TreeNodes.Add(node);
+
+            var nodeToSplay = inputNodes[indexOfNodeToSplay];
+            program.Zig(nodeToSplay);
+
+            for (int i = 0; i < expectedNodes.Count; i++)
+            {
+                inputNodes[i].Value.ShouldBe(expectedNodes[i].Value);
+                inputNodes[i].LeftChildIndex.ShouldBe(expectedNodes[i].LeftChildIndex);
+                inputNodes[i].RightChildIndex.ShouldBe(expectedNodes[i].RightChildIndex);
+                inputNodes[i].ParentIndex.ShouldBe(expectedNodes[i].ParentIndex);
+            }
+        }
+
+        #region
+        public static object[] ZigData =
+        {
+            new object[] { "zig A",
+                    new List<TreeNode> {
+                        new TreeNode(0,1,-1,-1),
+                        new TreeNode(1,-1,-1,0)
+                },
+                1,
+                    new List<TreeNode> {
+                        new TreeNode(1,1,-1,-1),
+                        new TreeNode(0,-1,-1,0)
+                }
+            },
+        };
+        #endregion
+
         [Test, TestCaseSource(nameof(DetermineZigZigZag))]
         public void FDetermineZigZigZag_Test(string caseName, List<TreeNode> treeNodes,
             int indexOfNodeToSplay, string expectedCase)
@@ -80,17 +118,27 @@ namespace SetWithRangeSums
                 "none"
             },
             new object[]
-            { "B",
+            { "zig left",
                 new List<TreeNode>
                 {
                     new TreeNode(0,1,-1,-1),
                     new TreeNode(1,-1,-1,0),
                 },
                 1,
-                "zig"
+                "zig left"
             },
             new object[]
-            { "C",
+            { "zig right",
+                new List<TreeNode>
+                {
+                    new TreeNode(0,-1,1,-1),
+                    new TreeNode(1,-1,-1,0),
+                },
+                1,
+                "zig right"
+            },
+            new object[]
+            { "zigzig left",
                 new List<TreeNode>
                 {
                     new TreeNode(0,1,-1,-1),
@@ -98,10 +146,21 @@ namespace SetWithRangeSums
                     new TreeNode(2,-1,-1,1),
                 },
                 2,
-                "zigzig"
+                "zigzig left"
             },
             new object[]
-            { "D",
+            { "zigzig right",
+                new List<TreeNode>
+                {
+                    new TreeNode(0,-1,1,-1),
+                    new TreeNode(1,-1,2,0),
+                    new TreeNode(2,-1,-1,1),
+                },
+                2,
+                "zigzig right"
+            },
+            new object[]
+            { "zigzag right",
                 new List<TreeNode>
                 {
                     new TreeNode(0,1,-1,-1),
@@ -109,10 +168,10 @@ namespace SetWithRangeSums
                     new TreeNode(2,-1,-1,1),
                 },
                 2,
-                "zigzag"
+                "zigzag right"
             },
             new object[]
-            { "E",
+            { "zigzag left",
                 new List<TreeNode>
                 {
                     new TreeNode(0,-1,1,-1),
@@ -120,24 +179,13 @@ namespace SetWithRangeSums
                     new TreeNode(2,-1,-1,1),
                 },
                 2,
-                "zigzag"
-            },
-            new object[]
-            { "F",
-                new List<TreeNode>
-                {
-                    new TreeNode(0,-1,1,-1),
-                    new TreeNode(1,-1,2,0),
-                    new TreeNode(2,-1,-1,1),
-                },
-                2,
-                "zigzig"
+                "zigzag left"
             },
         };
         #endregion
 
         [Test, TestCaseSource(nameof(FindGrandparentData))]
-        public void FindGrandparent_Test(string caseName, List<TreeNode> treeNodes, 
+        public void FindGrandparent_Test(string caseName, List<TreeNode> treeNodes,
             int indexOfNodeToSplay, TreeNode expectedGrandparent)
         {
             var program = new Program();
@@ -218,7 +266,7 @@ namespace SetWithRangeSums
         #endregion
 
         [Test, TestCaseSource(nameof(Raw))]
-        public void TransformArrayIntoInputTriple_Tests(string caseName, object[] input, 
+        public void TransformArrayIntoInputTriple_Tests(string caseName, object[] input,
             List<InputTriple> expected)
         {
             var program = new Program();
