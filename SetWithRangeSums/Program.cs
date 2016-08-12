@@ -24,7 +24,7 @@ namespace SetWithRangeSums
 
             switch (DetermineZigZigZag(inputNode))
             {
-                case "zig":
+                case "zig left":
                     Zig(inputNode);
                     break;
                 case "zigzig":
@@ -41,8 +41,6 @@ namespace SetWithRangeSums
         internal void Zig(TreeNode nodeToSplay)
         {
             // left case
-
-            // right case
             var parentNode = TreeNodes[nodeToSplay.ParentIndex ?? -1];
             var tempParentValue = parentNode.Value;
             var tempParentLeftChildIndex = parentNode.LeftChildIndex;
@@ -145,7 +143,7 @@ namespace SetWithRangeSums
                     return "zig right";
             }
 
-            var zigZigZag = "hi";
+            var zigZigZag = "Hi. Something went wrong.";
 
             if (splayNodeGrandparent.Value.HasValue)
             {

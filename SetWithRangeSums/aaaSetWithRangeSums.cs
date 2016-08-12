@@ -54,43 +54,23 @@ namespace SetWithRangeSums
         };
         #endregion
 
-        [Test, TestCaseSource(nameof(ZigData))]
-        public void Zig_Test(string caseName, List<TreeNode> inputNodes,
-    int indexOfNodeToSplay, List<TreeNode> expectedNodes)
+        [Test]
+        public void ZigLeft_A()
         {
             var program = new Program();
+            program.TreeNodes.AddRange(
+                new List<TreeNode> {
+                    new TreeNode(0,1,-1,-1),
+                    new TreeNode(1,-1,-1,0)
+            });
 
-            foreach (var node in inputNodes)
-                program.TreeNodes.Add(node);
+            var nodeToSplay = program.TreeNodes[1];
+            //program.ZigLeft(nodeToSplay);
 
-            var nodeToSplay = inputNodes[indexOfNodeToSplay];
-            program.Zig(nodeToSplay);
-
-            for (int i = 0; i < expectedNodes.Count; i++)
-            {
-                inputNodes[i].Value.ShouldBe(expectedNodes[i].Value);
-                inputNodes[i].LeftChildIndex.ShouldBe(expectedNodes[i].LeftChildIndex);
-                inputNodes[i].RightChildIndex.ShouldBe(expectedNodes[i].RightChildIndex);
-                inputNodes[i].ParentIndex.ShouldBe(expectedNodes[i].ParentIndex);
-            }
+            nodeToSplay.Value.ShouldBe(1);
+            nodeToSplay.LeftChildIndex.ShouldBe(-1);
+            nodeToSplay.RightChildIndex.ShouldBe(1);
         }
-
-        #region
-        public static object[] ZigData =
-        {
-            new object[] { "zig A",
-                    new List<TreeNode> {
-                        new TreeNode(0,1,-1,-1),
-                        new TreeNode(1,-1,-1,0)
-                },
-                1,
-                    new List<TreeNode> {
-                        new TreeNode(1,1,-1,-1),
-                        new TreeNode(0,-1,-1,0)
-                }
-            },
-        };
-        #endregion
 
         [Test, TestCaseSource(nameof(DetermineZigZigZag))]
         public void FDetermineZigZigZag_Test(string caseName, List<TreeNode> treeNodes,
