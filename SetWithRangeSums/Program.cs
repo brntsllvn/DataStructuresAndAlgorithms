@@ -52,6 +52,20 @@ namespace SetWithRangeSums
             splayNode.Parent = null;
         }
 
+        internal void ZigRight(TreeNode splayNode)
+        {
+            var parentNode = splayNode.Parent;
+            parentNode.RightChild = splayNode.LeftChild;
+            parentNode.Parent = splayNode;
+
+            var splayNodeLeftChild = splayNode.LeftChild;
+            if (splayNodeLeftChild != null)
+                splayNodeLeftChild.Parent = parentNode;
+
+            splayNode.LeftChild = parentNode;
+            splayNode.Parent = null;
+        }
+
         internal void ExecuteQueries()
         {
             var operation = Queries[0].Operation;
