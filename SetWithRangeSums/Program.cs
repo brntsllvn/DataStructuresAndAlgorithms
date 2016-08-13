@@ -38,28 +38,18 @@ namespace SetWithRangeSums
             }
         }
 
-        internal void ZigLeft(TreeNode nodeToSplay)
+        internal void ZigLeft(TreeNode splayNode)
         {
-            // left case
-            var parentNode = nodeToSplay.Parent;
-            var tempParentValue = parentNode.Value;
-            var tempParentLeftChildIndex = parentNode.LeftChild;
-            var tempParentRightChildIndex = parentNode.RightChild;
-            var tempParentParentIndex = parentNode.Parent;
+            var parentNode = splayNode.Parent;
+            parentNode.LeftChild = splayNode.RightChild;
+            parentNode.Parent = splayNode;
 
-            var formerParent = nodeToSplay.Parent;
-            formerParent.Value = nodeToSplay.Value;
-            formerParent.LeftChild = nodeToSplay.LeftChild;
-            formerParent.RightChild = nodeToSplay.RightChild;
-            formerParent.Parent = nodeToSplay.Parent;
+            var splayNodeRightChild = splayNode.RightChild;
+            if (splayNodeRightChild != null)
+                splayNodeRightChild.Parent = parentNode;
 
-            nodeToSplay.Value = tempParentValue;
-            nodeToSplay.LeftChild = tempParentLeftChildIndex;
-            nodeToSplay.RightChild = tempParentRightChildIndex;
-            nodeToSplay.Parent = tempParentParentIndex;
-
-            // place subtrees in the right places
-            return;
+            splayNode.RightChild = parentNode;
+            splayNode.Parent = null;
         }
 
         internal void ExecuteQueries()

@@ -8,7 +8,7 @@ namespace SetWithRangeSums
     class aaaSetWithRangeSums
     {
         [Test]
-        public void ZigLeft_A()
+        public void ZigLeft_NoSubTrees()
         {
             var program = new Program();
             var splayNode = new TreeNode(1, null, null, null);
@@ -18,14 +18,178 @@ namespace SetWithRangeSums
             program.ZigLeft(splayNode);
 
             splayNode.Value.ShouldBe(1);
-            splayNode.LeftChild.ShouldBe(parentNode);
-            splayNode.RightChild.ShouldBeNull();
+            splayNode.LeftChild.ShouldBeNull();
+            splayNode.RightChild.Value.ShouldBe(parentNode.Value);
             splayNode.Parent.ShouldBeNull();
 
             parentNode.Value.ShouldBe(0);
             parentNode.LeftChild.ShouldBeNull();
             parentNode.RightChild.ShouldBeNull();
-            parentNode.Parent.ShouldBe(splayNode);
+            parentNode.Parent.Value.ShouldBe(splayNode.Value);
+        }
+
+        [Test]
+        public void ZigLeft_RightNodeOnParent()
+        {
+            var program = new Program();
+            var splayNode = new TreeNode(1, null, null, null);
+            var otherNode = new TreeNode(2, null, null, null);
+            var parentNode = new TreeNode(0, splayNode, otherNode, null);
+            splayNode.Parent = parentNode;
+            otherNode.Parent = parentNode;
+
+            program.ZigLeft(splayNode);
+
+            splayNode.Value.ShouldBe(1);
+            splayNode.LeftChild.ShouldBeNull();
+            splayNode.RightChild.Value.ShouldBe(parentNode.Value);
+            splayNode.Parent.ShouldBeNull();
+
+            parentNode.Value.ShouldBe(0);
+            parentNode.LeftChild.ShouldBeNull();
+            parentNode.RightChild.Value.ShouldBe(otherNode.Value);
+            parentNode.Parent.Value.ShouldBe(splayNode.Value);
+
+            otherNode.Value.ShouldBe(2);
+            otherNode.LeftChild.ShouldBeNull();
+            otherNode.RightChild.ShouldBeNull();
+            otherNode.Parent.Value.ShouldBe(parentNode.Value);
+        }
+
+
+        [Test]
+        public void ZigLeft_LeftNodeOnSplayNode()
+        {
+            var program = new Program();
+            var splayNode = new TreeNode(1, null, null, null);
+            var splayChildNode = new TreeNode(3, null, null, splayNode);
+            var parentNode = new TreeNode(0, splayNode, null, null);
+            splayNode.Parent = parentNode;
+            splayNode.LeftChild = splayChildNode;
+
+            program.ZigLeft(splayNode);
+
+            splayNode.Value.ShouldBe(1);
+            splayNode.LeftChild.Value.ShouldBe(splayChildNode.Value);
+            splayNode.RightChild.Value.ShouldBe(parentNode.Value);
+            splayNode.Parent.ShouldBeNull();
+
+            splayChildNode.Value.ShouldBe(3);
+            splayChildNode.LeftChild.ShouldBeNull();
+            splayChildNode.RightChild.ShouldBeNull();
+            splayChildNode.Parent.Value.ShouldBe(splayNode.Value);
+
+            parentNode.Value.ShouldBe(0);
+            parentNode.LeftChild.ShouldBeNull();
+            parentNode.RightChild.ShouldBeNull();
+            parentNode.Parent.Value.ShouldBe(splayNode.Value);
+        }
+
+        [Test]
+        public void ZigLeft_RightNodeOnSplayNode()
+        {
+            var program = new Program();
+            var splayNode = new TreeNode(1, null, null, null);
+            var splayNodeRightChild = new TreeNode(3, null, null, splayNode);
+            splayNode.RightChild = splayNodeRightChild;
+            var parentNode = new TreeNode(0, splayNode, null, null);
+            splayNode.Parent = parentNode;
+
+            program.ZigLeft(splayNode);
+
+            splayNode.Value.ShouldBe(1);
+            splayNode.LeftChild.ShouldBeNull();
+            splayNode.RightChild.Value.ShouldBe(parentNode.Value);
+            splayNode.Parent.ShouldBeNull();
+
+            splayNodeRightChild.Value.ShouldBe(3);
+            splayNodeRightChild.LeftChild.ShouldBeNull();
+            splayNodeRightChild.RightChild.ShouldBeNull();
+            splayNodeRightChild.Parent.Value.ShouldBe(parentNode.Value);
+
+            parentNode.Value.ShouldBe(0);
+            parentNode.LeftChild.Value.ShouldBe(splayNodeRightChild.Value);
+            parentNode.RightChild.ShouldBeNull();
+            parentNode.Parent.Value.ShouldBe(splayNode.Value);
+        }
+
+        [Test]
+        public void ZigLeft_RightNodeOnSplayNode_RightNodeOnParent()
+        {
+            var program = new Program();
+            var splayNode = new TreeNode(1, null, null, null);
+            var splayRightChildNode = new TreeNode(3, null, null, splayNode);
+            splayNode.RightChild = splayRightChildNode;
+            var parentNode = new TreeNode(0, splayNode, null, null);
+            splayNode.Parent = parentNode;
+            var parentRightChildNode = new TreeNode(4, null, null, parentNode);
+            parentNode.RightChild = parentRightChildNode;
+
+            program.ZigLeft(splayNode);
+
+            splayNode.Value.ShouldBe(1);
+            splayNode.LeftChild.ShouldBeNull();
+            splayNode.RightChild.Value.ShouldBe(parentNode.Value);
+            splayNode.Parent.ShouldBeNull();
+
+            splayRightChildNode.Value.ShouldBe(3);
+            splayRightChildNode.LeftChild.ShouldBeNull();
+            splayRightChildNode.RightChild.ShouldBeNull();
+            splayRightChildNode.Parent.Value.ShouldBe(parentNode.Value);
+
+            parentNode.Value.ShouldBe(0);
+            parentNode.LeftChild.Value.ShouldBe(splayRightChildNode.Value);
+            parentNode.RightChild.Value.ShouldBe(parentRightChildNode.Value);
+            parentNode.Parent.Value.ShouldBe(splayNode.Value);
+
+            parentRightChildNode.Value.ShouldBe(4);
+            parentRightChildNode.LeftChild.ShouldBeNull();
+            parentRightChildNode.RightChild.ShouldBeNull();
+            parentRightChildNode.Parent.Value.ShouldBe(parentNode.Value);
+        }
+
+        [Test]
+        public void ZigLeft_RightAndLeftNodesOnSplayNode_RightNodeOnParent()
+        {
+            var program = new Program();
+
+            var splayNode = new TreeNode(1, null, null, null);
+            var splayRightChildNode = new TreeNode(3, null, null, splayNode);
+            splayNode.RightChild = splayRightChildNode;
+            var splayLeftChildNode = new TreeNode(5, null, null, splayNode);
+            splayNode.LeftChild = splayLeftChildNode;
+
+            var parentNode = new TreeNode(0, splayNode, null, null);
+            splayNode.Parent = parentNode;
+            var parentRightChildNode = new TreeNode(4, null, null, parentNode);
+            parentNode.RightChild = parentRightChildNode;
+
+            program.ZigLeft(splayNode);
+
+            splayNode.Value.ShouldBe(1);
+            splayNode.LeftChild.Value.ShouldBe(splayLeftChildNode.Value);
+            splayNode.RightChild.Value.ShouldBe(parentNode.Value);
+            splayNode.Parent.ShouldBeNull();
+
+            splayRightChildNode.Value.ShouldBe(3);
+            splayRightChildNode.LeftChild.ShouldBeNull();
+            splayRightChildNode.RightChild.ShouldBeNull();
+            splayRightChildNode.Parent.Value.ShouldBe(parentNode.Value);
+
+            splayLeftChildNode.Value.ShouldBe(5);
+            splayLeftChildNode.LeftChild.ShouldBeNull();
+            splayLeftChildNode.RightChild.ShouldBeNull();
+            splayLeftChildNode.Parent.Value.ShouldBe(splayNode.Value);
+
+            parentNode.Value.ShouldBe(0);
+            parentNode.LeftChild.Value.ShouldBe(splayRightChildNode.Value);
+            parentNode.RightChild.Value.ShouldBe(parentRightChildNode.Value);
+            parentNode.Parent.Value.ShouldBe(splayNode.Value);
+
+            parentRightChildNode.Value.ShouldBe(4);
+            parentRightChildNode.LeftChild.ShouldBeNull();
+            parentRightChildNode.RightChild.ShouldBeNull();
+            parentRightChildNode.Parent.Value.ShouldBe(parentNode.Value);
         }
 
         [Test]
