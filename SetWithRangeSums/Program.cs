@@ -27,6 +27,9 @@ namespace SetWithRangeSums
                 case "zig left":
                     ZigLeft(inputNode);
                     break;
+                case "zig right":
+                    ZigRight(inputNode);
+                    break;
                 case "zigzig":
                     // don't forget to reassign great-gransparent pointers
                     break;
@@ -36,6 +39,22 @@ namespace SetWithRangeSums
                 default:
                     break;
             }
+        }
+
+        internal void ZigZigLeft(TreeNode splayNode)
+        {
+            var parent = splayNode.Parent;
+            var grandparent = parent.Parent;
+
+            splayNode.RightChild = parent;
+            splayNode.Parent = null;
+
+            parent.LeftChild = null;
+            parent.RightChild = grandparent;
+            parent.Parent = splayNode;
+
+            grandparent.LeftChild = null;
+            grandparent.Parent = parent;
         }
 
         internal void ZigLeft(TreeNode splayNode)

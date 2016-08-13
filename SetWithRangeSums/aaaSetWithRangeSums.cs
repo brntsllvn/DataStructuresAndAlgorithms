@@ -8,6 +8,36 @@ namespace SetWithRangeSums
     class aaaSetWithRangeSums
     {
         [Test]
+        public void Zig_Zig_Left_GrandparentIsRoot_NoSubtrees()
+        {
+            var program = new Program();
+
+            var splay = new TreeNode(3, null, null, null);
+            var parent = new TreeNode(1, splay, null, null);
+            splay.Parent = parent;
+
+            var grandparent = new TreeNode(0, parent, null, null);
+            parent.Parent = grandparent;
+
+            program.ZigZigLeft(splay);
+
+            splay.Value.ShouldBe(3);
+            splay.LeftChild.ShouldBeNull();
+            splay.RightChild.Value.ShouldBe(parent.Value);
+            splay.Parent.ShouldBeNull();
+
+            parent.Value.ShouldBe(1);
+            parent.LeftChild.ShouldBeNull();
+            parent.RightChild.Value.ShouldBe(grandparent.Value);
+            parent.Parent.Value.ShouldBe(splay.Value);
+
+            grandparent.Value.ShouldBe(0);
+            grandparent.LeftChild.ShouldBeNull();
+            grandparent.RightChild.ShouldBeNull();
+            grandparent.Parent.Value.ShouldBe(parent.Value);
+        }
+
+        [Test]
         public void ZigLeft_NoSubTrees()
         {
             var program = new Program();
