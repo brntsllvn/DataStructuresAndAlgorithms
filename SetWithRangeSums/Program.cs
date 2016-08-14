@@ -59,6 +59,10 @@ namespace SetWithRangeSums
                 parentRightChild.Parent = grandparent;
                 grandparent.LeftChild = parentRightChild;
             }
+            else
+            {
+                grandparent.LeftChild = null;
+            }
 
             parent.RightChild = grandparent;
             parent.Parent = splayNode;
@@ -68,9 +72,51 @@ namespace SetWithRangeSums
 
             grandparent.Parent = parent;
 
+            if (greatGrandparent != null)
+            {
+                greatGrandparent.LeftChild = splayNode;
+                splayNode.Parent = greatGrandparent;
+            }
+
+        }
+
+        internal void ZigZigRight(TreeNode splayNode)
+        {
+            var splayNodeLeftChild = splayNode.LeftChild;
+            var parent = splayNode.Parent;
+            var parentLeftChild = parent.LeftChild;
+            var grandparent = parent.Parent;
+            var greatGrandparent = grandparent.Parent;
+
+            splayNode.LeftChild = parent;
+            splayNode.Parent = null;
+
+            parent.RightChild = splayNodeLeftChild;
+
+            if (parentLeftChild != null)
+            {
+                parentLeftChild.Parent = grandparent;
+                grandparent.LeftChild = parentLeftChild;
+            }
+            else
+            {
+                grandparent.LeftChild = null;
+            }
+
+            parent.LeftChild = grandparent;
+            parent.Parent = splayNode;
+
+            if (splayNodeLeftChild != null)
+                splayNodeLeftChild.Parent = parent;
+
+            grandparent.Parent = parent;
+            grandparent.RightChild = null;
 
             if (greatGrandparent != null)
-                greatGrandparent.LeftChild = splayNode;
+            {
+                greatGrandparent.RightChild = splayNode;
+                splayNode.Parent = greatGrandparent;
+            }
         }
 
         internal void ZigLeft(TreeNode splayNode)

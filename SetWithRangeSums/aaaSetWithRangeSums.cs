@@ -38,6 +38,36 @@ namespace SetWithRangeSums
         }
 
         [Test]
+        public void Zig_Zig_Right_GrandparentIsRoot_NoSubtrees()
+        {
+            var program = new Program();
+
+            var splay = new TreeNode(3, null, null, null);
+            var parent = new TreeNode(1, null, splay, null);
+            splay.Parent = parent;
+
+            var grandparent = new TreeNode(0, null, parent, null);
+            parent.Parent = grandparent;
+
+            program.ZigZigRight(splay);
+
+            splay.Value.ShouldBe(3);
+            splay.LeftChild.Value.ShouldBe(parent.Value);
+            splay.RightChild.ShouldBeNull();
+            splay.Parent.ShouldBeNull();
+
+            parent.Value.ShouldBe(1);
+            parent.LeftChild.Value.ShouldBe(grandparent.Value);
+            parent.RightChild.ShouldBeNull();
+            parent.Parent.Value.ShouldBe(splay.Value);
+
+            grandparent.Value.ShouldBe(0);
+            grandparent.LeftChild.ShouldBeNull();
+            grandparent.RightChild.ShouldBeNull();
+            grandparent.Parent.Value.ShouldBe(parent.Value);
+        }
+
+        [Test]
         public void Zig_Zig_Left_GrandparentIsNotRoot_NoSubtrees()
         {
             var program = new Program();
@@ -57,7 +87,7 @@ namespace SetWithRangeSums
             splay.Value.ShouldBe(3);
             splay.LeftChild.ShouldBeNull();
             splay.RightChild.Value.ShouldBe(parent.Value);
-            splay.Parent.ShouldBeNull();
+            splay.Parent.Value.ShouldBe(greatGrandparent.Value);
 
             parent.Value.ShouldBe(1);
             parent.LeftChild.ShouldBeNull();
@@ -72,6 +102,45 @@ namespace SetWithRangeSums
             greatGrandparent.Value.ShouldBe(-1);
             greatGrandparent.LeftChild.Value.ShouldBe(splay.Value);
             greatGrandparent.RightChild.ShouldBeNull();
+            greatGrandparent.Parent.ShouldBeNull();
+        }
+
+
+        [Test]
+        public void Zig_Zig_Right_GrandparentIsNotRoot_NoSubtrees()
+        {
+            var program = new Program();
+
+            var splay = new TreeNode(3, null, null, null);
+            var parent = new TreeNode(1, null, splay, null);
+            splay.Parent = parent;
+
+            var grandparent = new TreeNode(0, null, parent, null);
+            parent.Parent = grandparent;
+
+            var greatGrandparent = new TreeNode(-1, null, grandparent, null);
+            grandparent.Parent = greatGrandparent;
+
+            program.ZigZigRight(splay);
+
+            splay.Value.ShouldBe(3);
+            splay.LeftChild.Value.ShouldBe(parent.Value);
+            splay.RightChild.ShouldBeNull();
+            splay.Parent.Value.ShouldBe(greatGrandparent.Value);
+
+            parent.Value.ShouldBe(1);
+            parent.LeftChild.Value.ShouldBe(grandparent.Value);
+            parent.RightChild.ShouldBeNull();
+            parent.Parent.Value.ShouldBe(splay.Value);
+
+            grandparent.Value.ShouldBe(0);
+            grandparent.LeftChild.ShouldBeNull();
+            grandparent.RightChild.ShouldBeNull();
+            grandparent.Parent.Value.ShouldBe(parent.Value);
+
+            greatGrandparent.Value.ShouldBe(-1);
+            greatGrandparent.LeftChild.ShouldBeNull();
+            greatGrandparent.RightChild.Value.ShouldBe(splay.Value);
             greatGrandparent.Parent.ShouldBeNull();
         }
 
@@ -93,9 +162,6 @@ namespace SetWithRangeSums
 
             var grandparent = new TreeNode(0, parent, null, null);
             parent.Parent = grandparent;
-
-            var greatGrandparent = new TreeNode(-1, grandparent, null, null);
-            grandparent.Parent = greatGrandparent;
 
             program.ZigZigLeft(splay);
 
@@ -123,13 +189,55 @@ namespace SetWithRangeSums
             grandparent.LeftChild.ShouldBeNull();
             grandparent.RightChild.ShouldBeNull();
             grandparent.Parent.Value.ShouldBe(parent.Value);
-
-            greatGrandparent.Value.ShouldBe(-1);
-            greatGrandparent.LeftChild.Value.ShouldBe(splay.Value);
-            greatGrandparent.RightChild.ShouldBeNull();
-            greatGrandparent.Parent.ShouldBeNull();
         }
 
+
+        [Test]
+        public void Zig_Zig_Right_GrandparentIsRoot_SplayWithLeftAndRightChildren()
+        {
+            var program = new Program();
+
+            var splay = new TreeNode(3, null, null, null);
+
+            var splayLeftChild = new TreeNode(5, null, null, splay);
+            splay.LeftChild = splayLeftChild;
+
+            var splayRightChild = new TreeNode(6, null, null, splay);
+            splay.RightChild = splayRightChild;
+
+            var parent = new TreeNode(1, null, splay, null);
+            splay.Parent = parent;
+
+            var grandparent = new TreeNode(0, null, parent, null);
+            parent.Parent = grandparent;
+
+            program.ZigZigRight(splay);
+
+            splay.Value.ShouldBe(3);
+            splay.LeftChild.Value.ShouldBe(parent.Value);
+            splay.RightChild.Value.ShouldBe(splayRightChild.Value);
+            splay.Parent.ShouldBeNull();
+
+            splayLeftChild.Value.ShouldBe(5);
+            splayLeftChild.LeftChild.ShouldBeNull();
+            splayLeftChild.RightChild.ShouldBeNull();
+            splayLeftChild.Parent.Value.ShouldBe(parent.Value);
+
+            splayRightChild.Value.ShouldBe(6);
+            splayRightChild.LeftChild.ShouldBeNull();
+            splayRightChild.RightChild.ShouldBeNull();
+            splayRightChild.Parent.Value.ShouldBe(splay.Value);
+
+            parent.Value.ShouldBe(1);
+            parent.LeftChild.Value.ShouldBe(grandparent.Value);
+            parent.RightChild.Value.ShouldBe(splayLeftChild.Value);
+            parent.Parent.Value.ShouldBe(splay.Value);
+
+            grandparent.Value.ShouldBe(0);
+            grandparent.LeftChild.ShouldBeNull();
+            grandparent.RightChild.ShouldBeNull();
+            grandparent.Parent.Value.ShouldBe(parent.Value);
+        }
 
         [Test]
         public void Zig_Zig_Left_GrandparentIsNotRoot_SplayWithLeftAndRightChildren_ParentWithChild_Grandparent_WithChild()
@@ -164,7 +272,7 @@ namespace SetWithRangeSums
             splay.Value.ShouldBe(3);
             splay.LeftChild.Value.ShouldBe(splayLeftChild.Value);
             splay.RightChild.Value.ShouldBe(parent.Value);
-            splay.Parent.ShouldBeNull();
+            splay.Parent.Value.ShouldBe(greatGrandparent.Value);
 
             splayLeftChild.Value.ShouldBe(5);
             splayLeftChild.LeftChild.ShouldBeNull();
