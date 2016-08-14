@@ -43,21 +43,34 @@ namespace SetWithRangeSums
 
         internal void ZigZigLeft(TreeNode splayNode)
         {
+            var splayNodeRightChild = splayNode.RightChild;
             var parent = splayNode.Parent;
+            var parentRightChild = parent.RightChild;
             var grandparent = parent.Parent;
-            var greatGrandparent = grandparent?.Parent;
+            var greatGrandparent = grandparent.Parent;
 
             splayNode.RightChild = parent;
             splayNode.Parent = null;
 
-            parent.LeftChild = null;
+            parent.LeftChild = splayNodeRightChild;
+
+            if (parentRightChild != null)
+            {
+                parentRightChild.Parent = grandparent;
+                grandparent.LeftChild = parentRightChild;
+            }
+
             parent.RightChild = grandparent;
             parent.Parent = splayNode;
 
-            grandparent.LeftChild = null;
+            if (splayNodeRightChild != null)
+                splayNodeRightChild.Parent = parent;
+
             grandparent.Parent = parent;
 
-            greatGrandparent.LeftChild = splayNode;
+
+            if (greatGrandparent != null)
+                greatGrandparent.LeftChild = splayNode;
         }
 
         internal void ZigLeft(TreeNode splayNode)
