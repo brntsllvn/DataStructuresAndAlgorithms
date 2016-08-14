@@ -45,6 +45,7 @@ namespace SetWithRangeSums
         {
             var parent = splayNode.Parent;
             var grandparent = parent.Parent;
+            var greatGrandparent = grandparent?.Parent;
 
             splayNode.RightChild = parent;
             splayNode.Parent = null;
@@ -55,6 +56,8 @@ namespace SetWithRangeSums
 
             grandparent.LeftChild = null;
             grandparent.Parent = parent;
+
+            greatGrandparent.LeftChild = splayNode;
         }
 
         internal void ZigLeft(TreeNode splayNode)

@@ -38,6 +38,44 @@ namespace SetWithRangeSums
         }
 
         [Test]
+        public void Zig_Zig_Left_GrandparentIsNotRoot_NoSubtrees()
+        {
+            var program = new Program();
+
+            var splay = new TreeNode(3, null, null, null);
+            var parent = new TreeNode(1, splay, null, null);
+            splay.Parent = parent;
+
+            var grandparent = new TreeNode(0, parent, null, null);
+            parent.Parent = grandparent;
+
+            var greatGrandparent = new TreeNode(-1,grandparent,null,null);
+            grandparent.Parent = greatGrandparent;
+
+            program.ZigZigLeft(splay);
+
+            splay.Value.ShouldBe(3);
+            splay.LeftChild.ShouldBeNull();
+            splay.RightChild.Value.ShouldBe(parent.Value);
+            splay.Parent.ShouldBeNull();
+
+            parent.Value.ShouldBe(1);
+            parent.LeftChild.ShouldBeNull();
+            parent.RightChild.Value.ShouldBe(grandparent.Value);
+            parent.Parent.Value.ShouldBe(splay.Value);
+
+            grandparent.Value.ShouldBe(0);
+            grandparent.LeftChild.ShouldBeNull();
+            grandparent.RightChild.ShouldBeNull();
+            grandparent.Parent.Value.ShouldBe(parent.Value);
+
+            greatGrandparent.Value.ShouldBe(-1);
+            greatGrandparent.LeftChild.Value.ShouldBe(splay.Value);
+            greatGrandparent.RightChild.ShouldBeNull();
+            greatGrandparent.Parent.ShouldBeNull();
+        }
+
+        [Test]
         public void ZigLeft_NoSubTrees()
         {
             var program = new Program();
