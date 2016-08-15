@@ -45,6 +45,47 @@ namespace SetWithRangeSums
             }
         }
 
+        internal void ZigZagLeft(TreeNode splayNode)
+        {
+            var splayLeftChild = splayNode.LeftChild;
+            var splayRightChild = splayNode.RightChild;
+            var parent = splayNode.Parent;
+            var parentLeftChild = parent.LeftChild;
+            var grandparent = parent.Parent;
+            var grandparentRightChild = grandparent.RightChild;
+            var greatGrandparent = grandparent.Parent;
+
+            splayNode.Parent = null;
+            if (greatGrandparent != null)
+            {
+                splayNode.Parent = greatGrandparent;
+
+                if (greatGrandparent.LeftChild == grandparent)
+                    greatGrandparent.LeftChild = splayNode;
+                else
+                    greatGrandparent.RightChild = splayNode;
+            }
+
+            splayNode.LeftChild = parent;
+            splayNode.RightChild = grandparent;
+
+            parent.Parent = splayNode;
+            parent.RightChild = null;
+            if (splayLeftChild != null)
+            {
+                parent.RightChild = splayLeftChild;
+                splayLeftChild.Parent = parent;
+            }
+
+            grandparent.Parent = splayNode;
+            grandparent.LeftChild = null;
+            if (splayRightChild != null)
+            {
+                grandparent.LeftChild = splayRightChild;
+                splayRightChild.Parent = grandparent;
+            }
+        }
+
         internal void ZigZigLeft(TreeNode splayNode)
         {
             var splayNodeRightChild = splayNode.RightChild;
