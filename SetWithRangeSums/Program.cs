@@ -24,19 +24,23 @@ namespace SetWithRangeSums
 
             switch (DetermineZigZigZag(inputNode))
             {
-                case "zig left":
+                case ZiggaZigAh.ZigLeft:
                     ZigLeft(inputNode);
                     break;
-                case "zig right":
+                case ZiggaZigAh.ZigRight:
                     ZigRight(inputNode);
                     break;
-                case "zigzig":
-                    // don't forget to reassign great-gransparent pointers
+                case ZiggaZigAh.ZigZigLeft:
+                    ZigZigLeft(inputNode);
                     break;
-                case "zigzag":
-                    // don't forget to reassign great-gransparent pointers
+                case ZiggaZigAh.ZigZigRight:
+                    ZigZigRight(inputNode);
                     break;
-                default:
+                case ZiggaZigAh.ZigZagLeft:
+                    //ZigZigLeft(inputNode);
+                    break;
+                case ZiggaZigAh.ZigZagRight:
+                    //ZigZigRight(inputNode);
                     break;
             }
         }
@@ -206,15 +210,15 @@ namespace SetWithRangeSums
             if (splayNode.Parent == null)
                 return "none";
 
-            var zigZigZag = "hi, something went wrong";
+            var zigZigZag = ZiggaZigAh.Error;
 
             var parentNode = splayNode.Parent;
             if (!NodeHasGrandparent(splayNode))
             {
                 if (parentNode.LeftChild == splayNode)
-                    return "zig left";
+                    return ZiggaZigAh.ZigLeft;
                 else
-                    return "zig right";
+                    return ZiggaZigAh.ZigRight;
             }
             else
             {
@@ -229,15 +233,14 @@ namespace SetWithRangeSums
                     grandparentLeftRight = "right";
 
                 if (parentLeftRight == "left" && grandparentLeftRight == "left")
-                    zigZigZag = "zigzig left";
+                    zigZigZag = ZiggaZigAh.ZigZigLeft;
                 else if (parentLeftRight == "right" && grandparentLeftRight == "right")
-                    zigZigZag = "zigzig right";
+                    zigZigZag = ZiggaZigAh.ZigZigRight;
                 else if (parentLeftRight == "left" && grandparentLeftRight == "right")
-                    zigZigZag = "zigzag left";
+                    zigZigZag = ZiggaZigAh.ZigZagLeft;
                 else
-                    zigZigZag = "zigzag right";
+                    zigZigZag = ZiggaZigAh.ZigZagRight;
             }
-
             return zigZigZag;
         }
 
@@ -250,6 +253,17 @@ namespace SetWithRangeSums
         {
             return node.Parent != null && node.Parent.Parent != null;
         }
+    }
+
+    public static class ZiggaZigAh
+    {
+        public const string ZigLeft = "zig left";
+        public const string ZigRight = "zig right";
+        public const string ZigZigLeft = "zigzig left";
+        public const string ZigZigRight = "zigzig right";
+        public const string ZigZagLeft = "zigzag left";
+        public const string ZigZagRight = "zigzag right";
+        public const string Error = "hi, something went wrong";
     }
 
     public class TreeNode
