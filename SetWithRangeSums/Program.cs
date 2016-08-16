@@ -93,6 +93,12 @@ namespace SetWithRangeSums
                 parent.RightChild = replacementNode;
                 rightChild.Parent = replacementNode;
                 replacementNode.RightChild = rightChild;
+
+                if (nodeToDelete.LeftChild != null)
+                {
+                    replacementNode.LeftChild = leftChild;
+                    leftChild.Parent = replacementNode;
+                }
             }
         }
 

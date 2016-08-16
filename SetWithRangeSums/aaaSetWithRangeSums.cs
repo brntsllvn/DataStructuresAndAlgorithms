@@ -141,7 +141,7 @@ namespace SetWithRangeSums
         }
 
         [Test]
-        public void Del_Node_ThatHasRightChild_ParentsLeft()
+        public void Del_Node_ThatHasRightChild()
         {
             var program = new Program();
             program.Queries.Add(new QueryTriple("+", 50));
@@ -170,6 +170,10 @@ namespace SetWithRangeSums
             var rightRightChild = rightChild.RightChild;
             rightRightChild.Value.ShouldBe(99);
             rightRightChild.Parent.Value.ShouldBe(80);
+
+            var rightLeftChild = rightChild.LeftChild;
+            rightLeftChild.Value.ShouldBe(65);
+            rightLeftChild.Parent.Value.ShouldBe(80);
         }
 
         [Test]
