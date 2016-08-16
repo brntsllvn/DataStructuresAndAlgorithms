@@ -41,7 +41,7 @@ namespace SetWithRangeSums
                     break;
             }
 
-            if (inputNode.Parent.Value != null)
+            if (inputNode.Parent != null)
                 Splay(inputNode);
         }
 

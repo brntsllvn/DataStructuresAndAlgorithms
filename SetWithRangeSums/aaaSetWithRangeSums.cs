@@ -1,12 +1,94 @@
 ﻿using NUnit.Framework;
 using Shouldly;
 using System.Collections.Generic;
+using NUnit.Framework.Constraints;
 
 namespace SetWithRangeSums
 {
     [TestFixture]
     class aaaSetWithRangeSums
     {
+        [Test]
+        public void Splay_ZigZigRight_ZigZagLeft()
+        {
+            var program = new Program();
+
+            var great2Grandparent = new TreeNode(-2, null, null, null);
+            var greatGrandparent = new TreeNode(-1, null, null, great2Grandparent);
+            var grandparent = new TreeNode(0, null, null, greatGrandparent);
+            var parent = new TreeNode(2, null, null, grandparent);
+            var splay = new TreeNode(3, null, null, parent);
+
+            great2Grandparent.LeftChild = greatGrandparent;
+            greatGrandparent.RightChild = grandparent;
+            grandparent.RightChild = parent;
+            parent.RightChild = splay;
+
+            program.Splay(splay);
+
+            splay.Value.ShouldBe(3);
+            splay.LeftChild.Value.ShouldBe(greatGrandparent.Value);
+            splay.RightChild.Value.ShouldBe(great2Grandparent.Value);
+            splay.Parent.ShouldBeNull();
+
+            parent.Value.ShouldBe(2);
+            parent.LeftChild.Value.ShouldBe(grandparent.Value);
+            parent.RightChild.ShouldBeNull();
+            parent.Parent.Value.ShouldBe(greatGrandparent.Value);
+
+            grandparent.Value.ShouldBe(0);
+            grandparent.LeftChild.ShouldBeNull();
+            grandparent.RightChild.ShouldBeNull();
+            grandparent.Parent.Value.ShouldBe(parent.Value);
+
+            greatGrandparent.Value.ShouldBe(-1);
+            greatGrandparent.LeftChild.ShouldBeNull();
+            greatGrandparent.RightChild.Value.ShouldBe(parent.Value);
+            greatGrandparent.Parent.Value.ShouldBe(splay.Value);
+
+            great2Grandparent.Value.ShouldBe(-2);
+            great2Grandparent.LeftChild.ShouldBeNull();
+            great2Grandparent.RightChild.ShouldBeNull();
+            great2Grandparent.Parent.Value.ShouldBe(splay.Value);
+        }
+
+        [Test]
+        public void Splay_ZigZigLeft_ZigZigRight()
+        {
+            var program = new Program();
+
+            var greatGrandparent = new TreeNode(-1, null, null, null);
+            var grandparent = new TreeNode(0, null, null, greatGrandparent);
+            var parent = new TreeNode(2, null, null, grandparent);
+            var splay = new TreeNode(3, null, null, parent);
+
+            greatGrandparent.RightChild = grandparent;
+            grandparent.LeftChild = parent;
+            parent.LeftChild = splay;
+
+            program.Splay(splay);
+
+            splay.Value.ShouldBe(3);
+            splay.LeftChild.Value.ShouldBe(greatGrandparent.Value);
+            splay.RightChild.Value.ShouldBe(parent.Value);
+            splay.Parent.ShouldBeNull();
+
+            parent.Value.ShouldBe(2);
+            parent.LeftChild.ShouldBeNull();
+            parent.RightChild.Value.ShouldBe(grandparent.Value);
+            parent.Parent.Value.ShouldBe(splay.Value);
+
+            grandparent.Value.ShouldBe(0);
+            grandparent.LeftChild.ShouldBeNull();
+            grandparent.RightChild.ShouldBeNull();
+            grandparent.Parent.Value.ShouldBe(parent.Value);
+
+            greatGrandparent.Value.ShouldBe(-1);
+            greatGrandparent.LeftChild.ShouldBeNull();
+            greatGrandparent.RightChild.ShouldBeNull();
+            greatGrandparent.Parent.Value.ShouldBe(splay.Value);
+        }
+
         [Test]
         public void Splay_ZigZagRight_ZigLeft()
         {
