@@ -1,12 +1,11 @@
 ﻿using NUnit.Framework;
 using Shouldly;
 using System.Collections.Generic;
-using NUnit.Framework.Constraints;
 
 namespace SetWithRangeSums
 {
     [TestFixture]
-    class aaaSetWithRangeSums
+    class AaaSetWithRangeSums
     {
         [Test]
         public void Splay_ZigZigRight_ZigZagLeft()
@@ -1288,7 +1287,6 @@ namespace SetWithRangeSums
             triple.High.ShouldBe(high);
         }
 
-        #region
         private static readonly object[] Raw =
         {
                 new object[] { "A", new object[] {"+",1},  new List<InputTriple> {
@@ -1312,6 +1310,5 @@ namespace SetWithRangeSums
                     }
                 },
         };
-        #endregion
     }
 }

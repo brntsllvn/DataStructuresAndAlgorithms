@@ -50,9 +50,7 @@ namespace SetWithRangeSums
             var splayLeftChild = splayNode.LeftChild;
             var splayRightChild = splayNode.RightChild;
             var parent = splayNode.Parent;
-            var parentLeftChild = parent.LeftChild;
             var grandparent = parent.Parent;
-            var grandparentRightChild = grandparent.RightChild;
             var greatGrandparent = grandparent.Parent;
 
             splayNode.Parent = null;
@@ -91,9 +89,7 @@ namespace SetWithRangeSums
             var splayLeftChild = splayNode.LeftChild;
             var splayRightChild = splayNode.RightChild;
             var parent = splayNode.Parent;
-            var parentRightChild = parent.RightChild;
             var grandparent = parent.Parent;
-            var grandparentLeftChild = grandparent.LeftChild;
             var greatGrandparent = grandparent.Parent;
 
             splayNode.Parent = null;
@@ -237,19 +233,6 @@ namespace SetWithRangeSums
 
         internal void ExecuteQueries()
         {
-            var operation = Queries[0].Operation;
-            var low = Queries[0].Low;
-
-            switch (operation)
-            {
-                case "+":
-                    AddNode(low);
-                    break;
-            }
-        }
-
-        private void AddNode(int value)
-        {
         }
 
         internal void AddRawInputToList(object[] input)
@@ -266,7 +249,8 @@ namespace SetWithRangeSums
 
         public void ReadData()
         {
-            var input = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
+            //var input = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
+
         }
 
         public void WriteResponse()
@@ -281,7 +265,7 @@ namespace SetWithRangeSums
             WriteResponse();
         }
 
-        static void Main(string[] args)
+        static void Main()
         {
             new Program().Run();
         }
@@ -328,7 +312,7 @@ namespace SetWithRangeSums
 
         public bool NodeHasGrandparent(TreeNode node)
         {
-            return node.Parent != null && node.Parent.Parent != null;
+            return node.Parent?.Parent != null;
         }
     }
 
@@ -342,6 +326,14 @@ namespace SetWithRangeSums
         public const string ZigZagRight = "zigzag right";
         public const string Error = "hi, something went wrong";
         public const string None = "none";
+    }
+
+    public static class Operations
+    {
+        public const string Add = "+";
+        public const string Del = "-";
+        public const string Find = "?";
+        public const string Sum = "s";
     }
 
     public class TreeNode
