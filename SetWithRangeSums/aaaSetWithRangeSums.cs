@@ -53,6 +53,126 @@ namespace SetWithRangeSums
         }
 
         [Test]
+        public void Add_SameNodeMultipleTimes()
+        {
+            var program = new Program();
+            program.Queries.Add(new QueryTriple("+", 42));
+            program.Queries.Add(new QueryTriple("+", 42));
+            program.Queries.Add(new QueryTriple("+", 42));
+            program.Queries.Add(new QueryTriple("+", 42));
+            program.Queries.Add(new QueryTriple("+", 42));
+
+            program.ExecuteQueries();
+
+            program.TreeNodes.Count.ShouldBe(1);
+        }
+
+        [Test]
+        public void Del_NoNodes()
+        {
+            var program = new Program();
+            program.Queries.Add(new QueryTriple("-", 42));
+
+            program.ExecuteQueries();
+
+            program.TreeNodes.Count.ShouldBe(0);
+        }
+
+        [Test]
+        public void Del_OneNode()
+        {
+            var program = new Program();
+            program.Queries.Add(new QueryTriple("+", 42));
+            program.Queries.Add(new QueryTriple("-", 42));
+
+            program.ExecuteQueries();
+
+            program.TreeNodes.Count.ShouldBe(0);
+        }
+
+        [Test]
+        public void Del_Node_ThatHasNoRightChild_ParentsRight()
+        {
+            var program = new Program();
+            program.Queries.Add(new QueryTriple("+", 50));
+            program.Queries.Add(new QueryTriple("+", 25));
+            program.Queries.Add(new QueryTriple("+", 75));
+            program.Queries.Add(new QueryTriple("+", 60));
+            program.Queries.Add(new QueryTriple("-", 75));
+
+            program.ExecuteQueries();
+
+            var root = program.TreeNodes[0];
+            root.LeftChild.Value.ShouldBe(25);
+            root.RightChild.Value.ShouldBe(60);
+
+            var leftChild = root.LeftChild;
+            leftChild.Value.ShouldBe(25);
+            leftChild.Parent.Value.ShouldBe(50);
+
+            var rightChild = root.RightChild;
+            rightChild.Value.ShouldBe(60);
+            rightChild.Parent.Value.ShouldBe(50);
+        }
+
+        [Test]
+        public void Del_Node_ThatHasNoRightChild_ParentsLeft()
+        {
+            var program = new Program();
+            program.Queries.Add(new QueryTriple("+", 50));
+            program.Queries.Add(new QueryTriple("+", 25));
+            program.Queries.Add(new QueryTriple("+", 75));
+            program.Queries.Add(new QueryTriple("+", 12));
+            program.Queries.Add(new QueryTriple("-", 25));
+
+            program.ExecuteQueries();
+
+            var root = program.TreeNodes[0];
+            root.LeftChild.Value.ShouldBe(12);
+            root.RightChild.Value.ShouldBe(75);
+
+            var leftChild = root.LeftChild;
+            leftChild.Value.ShouldBe(12);
+            leftChild.Parent.Value.ShouldBe(50);
+
+            var rightChild = root.RightChild;
+            rightChild.Value.ShouldBe(75);
+            rightChild.Parent.Value.ShouldBe(50);
+        }
+
+        [Test]
+        public void Del_Node_ThatHasRightChild_ParentsLeft()
+        {
+            var program = new Program();
+            program.Queries.Add(new QueryTriple("+", 50));
+            program.Queries.Add(new QueryTriple("+", 25));
+            program.Queries.Add(new QueryTriple("+", 75));
+            program.Queries.Add(new QueryTriple("+", 65));
+            program.Queries.Add(new QueryTriple("+", 99));
+            program.Queries.Add(new QueryTriple("+", 85));
+            program.Queries.Add(new QueryTriple("+", 80));
+            program.Queries.Add(new QueryTriple("-", 75));
+
+            program.ExecuteQueries();
+
+            var root = program.TreeNodes[0];
+            root.LeftChild.Value.ShouldBe(25);
+            root.RightChild.Value.ShouldBe(80);
+
+            var leftChild = root.LeftChild;
+            leftChild.Value.ShouldBe(25);
+            leftChild.Parent.Value.ShouldBe(50);
+
+            var rightChild = root.RightChild;
+            rightChild.Value.ShouldBe(80);
+            rightChild.Parent.Value.ShouldBe(50);
+
+            var rightRightChild = rightChild.RightChild;
+            rightRightChild.Value.ShouldBe(99);
+            rightRightChild.Parent.Value.ShouldBe(80);
+        }
+
+        [Test]
         public void Find_Nothing_TreeWithNodes()
         {
             var program = new Program();
@@ -68,18 +188,14 @@ namespace SetWithRangeSums
         public void Find_Node_TreeWithNodes()
         {
             var program = new Program();
-            
-            var root = new TreeNode(2);
-            var leftChild = new TreeNode(1,null,null,root);
-            root.LeftChild = leftChild;
-            program.TreeNodes.Add(root);
-
-            var searchTerm = 1;
-            program.Queries.Add(new QueryTriple("?", searchTerm));
+            program.Queries.Add(new QueryTriple("?", 42));
+            program.Queries.Add(new QueryTriple("+", 42));
+            program.Queries.Add(new QueryTriple("?", 42));
 
             program.ExecuteQueries();
 
-            program.QueryResults[0].ShouldBe("Found");
+            program.QueryResults[0].ShouldBe("Not found");
+            program.QueryResults[1].ShouldBe("Found");
         }
 
         [Test]

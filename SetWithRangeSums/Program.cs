@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Shouldly;
 
 namespace SetWithRangeSums
 {
@@ -37,6 +38,9 @@ namespace SetWithRangeSums
                         root = TreeNodes[RootNodeIndex];
                         Add(operand, root);
                         break;
+
+                        // implement splay add
+
                     case Operations.Find:
                         if (!TreeNodes.Any())
                         {
@@ -44,21 +48,80 @@ namespace SetWithRangeSums
                             break;
                         }
                         root = TreeNodes[RootNodeIndex];
-                        var result = Find(operand, root);
-                        if (result.Value != operand)
+                        var foundNode = Find(operand, root);
+                        if (foundNode.Value != operand)
                             QueryResults.Add(Results.NotFound);
                         QueryResults.Add(Results.Found);
+                        break;
+
+                    // implement splay find
+
+                    case Operations.Del:
+                        if (!TreeNodes.Any())
+                            break;
+                        root = TreeNodes[RootNodeIndex];
+                        Del(operand, root);
                         break;
                 }
             }
         }
 
+        private void Del(int deleteTerm, TreeNode root)
+        {
+            var nodeToDelete = Find(deleteTerm, root);
+            var parent = nodeToDelete.Parent;
+            var rightChild = nodeToDelete.RightChild;
+            var leftChild = nodeToDelete.LeftChild;
+
+            TreeNodes.Remove(nodeToDelete);
+
+            if (rightChild == null && leftChild == null)
+                return;
+
+            if (rightChild == null)
+            {
+                if (parent.LeftChild == nodeToDelete)
+                    parent.LeftChild = leftChild;
+                else
+                    parent.RightChild = leftChild;
+                leftChild.Parent = parent;
+            }
+            else
+            {
+                var replacementNode = Next(nodeToDelete);
+                replacementNode.Parent = parent;
+                parent.RightChild = replacementNode;
+                rightChild.Parent = replacementNode;
+                replacementNode.RightChild = rightChild;
+            }
+        }
+
+        private TreeNode Next(TreeNode node)
+        {
+            return node.RightChild != null ? LeftDescendant(node.RightChild) : RightAncestor(node);
+        }
+
+        private TreeNode RightAncestor(TreeNode node)
+        {
+            return node.Value < node.Parent.Value ? node.Parent : RightAncestor(node.Parent);
+        }
+
+        private TreeNode LeftDescendant(TreeNode node)
+        {
+            return node.LeftChild == null ? node : LeftDescendant(node.LeftChild);
+        }
+
         internal void Add(int insertionTerm, TreeNode root)
         {
             var parent = Find(insertionTerm, root);
+
+            // no duplicate entries
+            if (parent.Value == insertionTerm)
+                return;
+
             var newNode = new TreeNode(insertionTerm, null, null, parent);
             TreeNodes.Add(newNode);
-            if (insertionTerm < parent.Value && parent.LeftChild == null)
+            if (insertionTerm < parent.Value && parent.LeftChild == null) 
                 parent.LeftChild = newNode;
             else
                 parent.RightChild = newNode;
