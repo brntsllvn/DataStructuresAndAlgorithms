@@ -19,19 +19,37 @@ namespace SetWithRangeSums
         }
 
         [Test]
-        public void Add_Node()
+        public void Add_Node_ToEmptyTree()
         {
             var program = new Program();
             program.Queries.Add(new QueryTriple("+", 42));
             var insertionTerm = program.Queries[0].Low;
 
-            program.Add(insertionTerm);
+            program.ExecuteQueries();
 
             var firstTreeNode = program.TreeNodes[0];
             firstTreeNode.Value.ShouldBe(insertionTerm);
             firstTreeNode.LeftChild.ShouldBeNull();
             firstTreeNode.RightChild.ShouldBeNull();
             firstTreeNode.Parent.ShouldBeNull();
+        }
+
+
+        [Test]
+        public void Add_AnotherNode()
+        {
+            var program = new Program();
+            program.Queries.Add(new QueryTriple("+", 42));
+            program.Queries.Add(new QueryTriple("+", 21));
+            var insertionTerm2 = program.Queries[1].Low;
+
+            program.ExecuteQueries();
+
+            var secondTreeNode = program.TreeNodes[1];
+            secondTreeNode.Value.ShouldBe(insertionTerm2);
+            secondTreeNode.LeftChild.ShouldBeNull();
+            secondTreeNode.RightChild.ShouldBeNull();
+            secondTreeNode.Parent.Value.ShouldBe(program.TreeNodes[0].Value);
         }
 
         [Test]

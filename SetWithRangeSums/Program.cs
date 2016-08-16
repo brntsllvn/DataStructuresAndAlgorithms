@@ -25,10 +25,17 @@ namespace SetWithRangeSums
             {
                 var operation = query.Operation;
                 var operand = query.Low;
+                TreeNode root;
                 switch (operation)
                 {
                     case Operations.Add:
-                        Add(operand);
+                        if (!TreeNodes.Any())
+                        {
+                            TreeNodes.Add(new TreeNode(operand));
+                            break;
+                        }
+                        root = TreeNodes[RootNodeIndex];
+                        Add(operand, root);
                         break;
                     case Operations.Find:
                         if (!TreeNodes.Any())
@@ -36,43 +43,36 @@ namespace SetWithRangeSums
                             QueryResults.Add(Results.NotFound);
                             break;
                         }
-                        var result = Find(operand, TreeNodes[RootNodeIndex]);
-                        if (result != null)
-                            QueryResults.Add(Results.Found);
-                        QueryResults.Add(Results.NotFound);
+                        root = TreeNodes[RootNodeIndex];
+                        var result = Find(operand, root);
+                        if (result.Value != operand)
+                            QueryResults.Add(Results.NotFound);
+                        QueryResults.Add(Results.Found);
                         break;
                 }
             }
         }
 
-        internal void Add(int insertionTerm)
+        internal void Add(int insertionTerm, TreeNode root)
         {
-            // must Add using binary tree logic
-            // Find where to add
-            // add as child of Find
-            TreeNodes.Add(new TreeNode(insertionTerm));
+            var parent = Find(insertionTerm, root);
+            var newNode = new TreeNode(insertionTerm, null, null, parent);
+            TreeNodes.Add(newNode);
+            if (insertionTerm < parent.Value && parent.LeftChild == null)
+                parent.LeftChild = newNode;
+            else
+                parent.RightChild = newNode;
         }
 
         internal TreeNode Find(int searchTerm, TreeNode root)
         {
-            if (!TreeNodes.Any())
-                return null;
-
             var rootVal = root.Value;
             if (rootVal == searchTerm)
                 return root;
 
             if (rootVal > searchTerm)
-            {
-                if (root.LeftChild != null)
-                    return Find(searchTerm, root.LeftChild);
-            }
-            else if (rootVal <= searchTerm)
-            {
-                if (root.RightChild != null)
-                    return Find(searchTerm, root.RightChild);
-            }
-            return null;
+                return root.LeftChild != null ? Find(searchTerm, root.LeftChild) : root;
+            return root.RightChild != null ? Find(searchTerm, root.RightChild) : root;
         }
 
         public void Splay(TreeNode inputNode)
