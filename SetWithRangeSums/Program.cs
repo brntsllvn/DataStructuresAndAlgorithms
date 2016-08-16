@@ -17,6 +17,17 @@ namespace SetWithRangeSums
             QueryResults = new List<string>();
         }
 
+        internal void ExecuteQueries()
+        {
+            foreach (var query in Queries)
+            {
+                // find
+                // add
+                // del
+                // sum
+            }
+        }
+
         public void Splay(TreeNode inputNode)
         {
             switch (DetermineZigZigZag(inputNode))
@@ -231,10 +242,6 @@ namespace SetWithRangeSums
             splayNode.Parent = null;
         }
 
-        internal void ExecuteQueries()
-        {
-        }
-
         internal void AddRawInputToList(object[] input)
         {
             var operation = (string)input[0];
@@ -249,8 +256,12 @@ namespace SetWithRangeSums
 
         public void ReadData()
         {
-            //var input = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray();
-
+            var numQueries = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray()[0];
+            for (int i = 0; i < numQueries; i++)
+            {
+                var query = Console.ReadLine().Split(' ').Select(n => Convert.ToString(n)).ToArray();
+                AddRawInputToList(query);
+            }
         }
 
         public void WriteResponse()
@@ -343,15 +354,7 @@ namespace SetWithRangeSums
         public TreeNode RightChild { get; set; }
         public TreeNode Parent { get; set; }
 
-        public TreeNode()
-        {
-            Value = -1;
-            LeftChild = null;
-            RightChild = null;
-            Parent = null;
-        }
-
-        public TreeNode(int val, TreeNode left, TreeNode right, TreeNode parent)
+        public TreeNode(int val = -1, TreeNode left = null, TreeNode right = null, TreeNode parent = null)
         {
             Value = val;
             LeftChild = left;
@@ -366,14 +369,7 @@ namespace SetWithRangeSums
         public int Low { get; set; }
         public int High { get; set; }
 
-        public InputTriple(string op, int val)
-        {
-            Operation = op;
-            Low = val;
-            High = -1;
-        }
-
-        public InputTriple(string op, int low, int high)
+        public InputTriple(string op, int low, int high = -1)
         {
             Operation = op;
             Low = low;
