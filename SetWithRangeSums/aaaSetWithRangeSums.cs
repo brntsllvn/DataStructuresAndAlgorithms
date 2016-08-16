@@ -8,6 +8,43 @@ namespace SetWithRangeSums
     class aaaSetWithRangeSums
     {
         [Test]
+        public void Splay_ZigZagRight_ZigLeft()
+        {
+            var program = new Program();
+
+            var greatGrandparent = new TreeNode(-1, null, null, null);
+            var grandparent = new TreeNode(0, null, null, greatGrandparent);
+            var parent = new TreeNode(2, null, null, grandparent);
+            var splay = new TreeNode(3, null, null, parent);
+
+            greatGrandparent.LeftChild = grandparent;
+            grandparent.RightChild = parent;
+            parent.LeftChild = splay;
+
+            program.Splay(splay);
+
+            splay.Value.ShouldBe(3);
+            splay.LeftChild.Value.ShouldBe(grandparent.Value);
+            splay.RightChild.Value.ShouldBe(greatGrandparent.Value);
+            splay.Parent.ShouldBeNull();
+
+            parent.Value.ShouldBe(2);
+            parent.LeftChild.ShouldBeNull();
+            parent.RightChild.ShouldBeNull();
+            parent.Parent.Value.ShouldBe(greatGrandparent.Value);
+
+            grandparent.Value.ShouldBe(0);
+            grandparent.LeftChild.ShouldBeNull();
+            grandparent.RightChild.ShouldBeNull();
+            grandparent.Parent.Value.ShouldBe(splay.Value);
+
+            greatGrandparent.Value.ShouldBe(-1);
+            greatGrandparent.LeftChild.Value.ShouldBe(parent.Value);
+            greatGrandparent.RightChild.ShouldBeNull();
+            greatGrandparent.Parent.Value.ShouldBe(splay.Value);
+        }
+
+        [Test]
         public void Zig_Zag_Left_GransparentIsRoot_NoSubtrees()
         {
             var program = new Program();
@@ -1067,7 +1104,7 @@ namespace SetWithRangeSums
             var program = new Program();
             var splayNode = new TreeNode(0, null, null, null);
             var zigZag = program.DetermineZigZigZag(splayNode);
-            zigZag.ShouldBe("none");
+            zigZag.ShouldBe(ZiggaZigAh.None);
         }
 
         [Test]
@@ -1079,7 +1116,7 @@ namespace SetWithRangeSums
             splayNode.Parent = parentNode;
 
             var zigZag = program.DetermineZigZigZag(splayNode);
-            zigZag.ShouldBe("zig left");
+            zigZag.ShouldBe(ZiggaZigAh.ZigLeft);
         }
 
         [Test]
@@ -1091,7 +1128,7 @@ namespace SetWithRangeSums
             splayNode.Parent = parentNode;
 
             var zigZag = program.DetermineZigZigZag(splayNode);
-            zigZag.ShouldBe("zig right");
+            zigZag.ShouldBe(ZiggaZigAh.ZigRight);
         }
 
         [Test]
@@ -1105,7 +1142,7 @@ namespace SetWithRangeSums
             parentNode.Parent = grandparentNode;
 
             var zigZag = program.DetermineZigZigZag(splayNode);
-            zigZag.ShouldBe("zigzig left");
+            zigZag.ShouldBe(ZiggaZigAh.ZigZigLeft);
         }
 
         [Test]
@@ -1119,7 +1156,7 @@ namespace SetWithRangeSums
             parentNode.Parent = grandparentNode;
 
             var zigZag = program.DetermineZigZigZag(splayNode);
-            zigZag.ShouldBe("zigzig right");
+            zigZag.ShouldBe(ZiggaZigAh.ZigZigRight);
         }
 
         [Test]
@@ -1133,7 +1170,7 @@ namespace SetWithRangeSums
             parentNode.Parent = grandparentNode;
 
             var zigZag = program.DetermineZigZigZag(splayNode);
-            zigZag.ShouldBe("zigzag right");
+            zigZag.ShouldBe(ZiggaZigAh.ZigZagLeft);
         }
 
         [Test]
@@ -1147,7 +1184,7 @@ namespace SetWithRangeSums
             parentNode.Parent = grandparentNode;
 
             var zigZag = program.DetermineZigZigZag(splayNode);
-            zigZag.ShouldBe("zigzag left");
+            zigZag.ShouldBe(ZiggaZigAh.ZigZagRight);
         }
 
         [Test, TestCaseSource(nameof(Raw))]

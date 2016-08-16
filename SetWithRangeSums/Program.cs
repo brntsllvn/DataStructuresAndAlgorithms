@@ -19,9 +19,6 @@ namespace SetWithRangeSums
 
         public void Splay(TreeNode inputNode)
         {
-            if (inputNode.Parent.Value == -1)
-                return;
-
             switch (DetermineZigZigZag(inputNode))
             {
                 case ZiggaZigAh.ZigLeft:
@@ -37,12 +34,15 @@ namespace SetWithRangeSums
                     ZigZigRight(inputNode);
                     break;
                 case ZiggaZigAh.ZigZagLeft:
-                    //ZigZigLeft(inputNode);
+                    ZigZagLeft(inputNode);
                     break;
                 case ZiggaZigAh.ZigZagRight:
-                    //ZigZigRight(inputNode);
+                    ZigZagRight(inputNode);
                     break;
             }
+
+            if (inputNode.Parent.Value != null)
+                Splay(inputNode);
         }
 
         internal void ZigZagLeft(TreeNode splayNode)
@@ -291,37 +291,33 @@ namespace SetWithRangeSums
             if (splayNode.Parent == null)
                 return "none";
 
-            var zigZigZag = ZiggaZigAh.Error;
+            string zigZigZag;
 
             var parentNode = splayNode.Parent;
             if (!NodeHasGrandparent(splayNode))
             {
                 if (parentNode.LeftChild == splayNode)
                     return ZiggaZigAh.ZigLeft;
-                else
-                    return ZiggaZigAh.ZigRight;
+                return ZiggaZigAh.ZigRight;
             }
+            var grandparentNode = GetGrandparentNode(splayNode);
+
+            var splayNodeIsWhichChildOfParent = "left";
+            if (parentNode.RightChild == splayNode)
+                splayNodeIsWhichChildOfParent = "right";
+
+            var parentNodeIsWhichChildOfParent = "left";
+            if (grandparentNode.RightChild == parentNode)
+                parentNodeIsWhichChildOfParent = "right";
+
+            if (splayNodeIsWhichChildOfParent == "left" && parentNodeIsWhichChildOfParent == "left")
+                zigZigZag = ZiggaZigAh.ZigZigLeft;
+            else if (splayNodeIsWhichChildOfParent == "right" && parentNodeIsWhichChildOfParent == "right")
+                zigZigZag = ZiggaZigAh.ZigZigRight;
+            else if (splayNodeIsWhichChildOfParent == "left" && parentNodeIsWhichChildOfParent == "right")
+                zigZigZag = ZiggaZigAh.ZigZagRight;
             else
-            {
-                var grandparentNode = GetGrandparentNode(splayNode);
-
-                var parentLeftRight = "left";
-                if (parentNode.RightChild == splayNode)
-                    parentLeftRight = "right";
-
-                var grandparentLeftRight = "left";
-                if (grandparentNode.RightChild == parentNode)
-                    grandparentLeftRight = "right";
-
-                if (parentLeftRight == "left" && grandparentLeftRight == "left")
-                    zigZigZag = ZiggaZigAh.ZigZigLeft;
-                else if (parentLeftRight == "right" && grandparentLeftRight == "right")
-                    zigZigZag = ZiggaZigAh.ZigZigRight;
-                else if (parentLeftRight == "left" && grandparentLeftRight == "right")
-                    zigZigZag = ZiggaZigAh.ZigZagLeft;
-                else
-                    zigZigZag = ZiggaZigAh.ZigZagRight;
-            }
+                zigZigZag = ZiggaZigAh.ZigZagLeft;
             return zigZigZag;
         }
 
@@ -345,6 +341,7 @@ namespace SetWithRangeSums
         public const string ZigZagLeft = "zigzag left";
         public const string ZigZagRight = "zigzag right";
         public const string Error = "hi, something went wrong";
+        public const string None = "none";
     }
 
     public class TreeNode
