@@ -8,6 +8,59 @@ namespace SetWithRangeSums
     class AaaSetWithRangeSums
     {
         [Test]
+        public void Find_Nothing_EmptyTree()
+        {
+            var program = new Program();
+            program.Queries.Add(new QueryTriple("?", 3));
+
+            program.ExecuteQueries();
+
+            program.QueryResults[0].ShouldBe("Not found");
+        }
+
+        [Test]
+        public void Add_Node()
+        {
+            var program = new Program();
+            program.Queries.Add(new QueryTriple("+", 42));
+            var insertionTerm = program.Queries[0].Low;
+
+            program.Add(insertionTerm);
+
+            var firstTreeNode = program.TreeNodes[0];
+            firstTreeNode.Value.ShouldBe(insertionTerm);
+            firstTreeNode.LeftChild.ShouldBeNull();
+            firstTreeNode.RightChild.ShouldBeNull();
+            firstTreeNode.Parent.ShouldBeNull();
+        }
+
+        [Test]
+        public void Find_Nothing_TreeWithNodes()
+        {
+            var program = new Program();
+            program.Queries.Add(new QueryTriple("+", 42));
+            program.Queries.Add(new QueryTriple("?", 3));
+
+            program.ExecuteQueries();
+
+            program.QueryResults[0].ShouldBe("Not found");
+        }
+
+        [Test]
+        public void Find_Node_TreeWithNodes()
+        {
+            var program = new Program();
+            program.Queries.Add(new QueryTriple("+", 42));
+            program.Queries.Add(new QueryTriple("+", 12));
+            program.Queries.Add(new QueryTriple("+", 7));
+            program.Queries.Add(new QueryTriple("?", 7));
+
+            program.ExecuteQueries();
+
+            program.QueryResults[0].ShouldBe("Found");
+        }
+
+        [Test]
         public void Splay_ZigZigRight_ZigZagLeft()
         {
             var program = new Program();
@@ -1270,7 +1323,7 @@ namespace SetWithRangeSums
 
         [Test, TestCaseSource(nameof(Raw))]
         public void TransformArrayIntoInputTriple_Tests(string caseName, object[] input,
-            List<InputTriple> expected)
+            List<QueryTriple> expected)
         {
             var program = new Program();
             program.AddRawInputToList(input);
@@ -1289,24 +1342,24 @@ namespace SetWithRangeSums
 
         private static readonly object[] Raw =
         {
-                new object[] { "A", new object[] {"+",1},  new List<InputTriple> {
-                        new InputTriple("+", 1, -1)
+                new object[] { "A", new object[] {"+",1},  new List<QueryTriple> {
+                        new QueryTriple("+", 1, -1)
                     }
                 },
-                new object[] { "B", new object[] {"?",5},  new List<InputTriple> {
-                        new InputTriple("?", 5, -1)
+                new object[] { "B", new object[] {"?",5},  new List<QueryTriple> {
+                        new QueryTriple("?", 5, -1)
                     }
                 },
-                new object[] { "C", new object[] {"s",1,2},  new List<InputTriple> {
-                        new InputTriple("s", 1, 2)
+                new object[] { "C", new object[] {"s",1,2},  new List<QueryTriple> {
+                        new QueryTriple("s", 1, 2)
                     }
                 },
-                new object[] { "D", new object[] {"-",1},  new List<InputTriple> {
-                        new InputTriple("-", 1, -1)
+                new object[] { "D", new object[] {"-",1},  new List<QueryTriple> {
+                        new QueryTriple("-", 1, -1)
                     }
                 },
-                new object[] { "E", new object[] {"s",999999999,1000000000},  new List<InputTriple> {
-                        new InputTriple("s",999999999,1000000000)
+                new object[] { "E", new object[] {"s",999999999,1000000000},  new List<QueryTriple> {
+                        new QueryTriple("s",999999999,1000000000)
                     }
                 },
         };

@@ -6,26 +6,72 @@ namespace SetWithRangeSums
 {
     public class Program
     {
-        public List<InputTriple> Queries { get; set; }
+        public List<QueryTriple> Queries { get; set; }
         public List<TreeNode> TreeNodes { get; set; }
+        public int RootNodeIndex { get; set; }
         public List<string> QueryResults { get; set; }
 
         public Program()
         {
-            Queries = new List<InputTriple>();
+            Queries = new List<QueryTriple>();
             TreeNodes = new List<TreeNode>();
             QueryResults = new List<string>();
+            RootNodeIndex = 0;
         }
 
         internal void ExecuteQueries()
         {
             foreach (var query in Queries)
             {
-                // find
-                // add
-                // del
-                // sum
+                var operation = query.Operation;
+                var operand = query.Low;
+                switch (operation)
+                {
+                    case Operations.Add:
+                        Add(operand);
+                        break;
+                    case Operations.Find:
+                        if (!TreeNodes.Any())
+                        {
+                            QueryResults.Add(Results.NotFound);
+                            break;
+                        }
+                        var result = Find(operand, TreeNodes[RootNodeIndex]);
+                        if (result != null)
+                            QueryResults.Add(Results.Found);
+                        QueryResults.Add(Results.NotFound);
+                        break;
+                }
             }
+        }
+
+        internal void Add(int insertionTerm)
+        {
+            // must Add using binary tree logic
+            // Find where to add
+            // add as child of Find
+            TreeNodes.Add(new TreeNode(insertionTerm));
+        }
+
+        internal TreeNode Find(int searchTerm, TreeNode root)
+        {
+            if (!TreeNodes.Any())
+                return null;
+
+            var rootVal = root.Value;
+            if (rootVal == searchTerm)
+                return root;
+            else if (rootVal > searchTerm)
+            {
+                if (root.LeftChild != null)
+                    return Find(searchTerm, root.LeftChild);
+            }
+            else if (rootVal <= searchTerm)
+            {
+                if (root.RightChild != null)
+                    return Find(searchTerm, root.RightChild);
+            }
+            return null;
         }
 
         public void Splay(TreeNode inputNode)
@@ -251,7 +297,7 @@ namespace SetWithRangeSums
             if (input.Length == 3)
                 high = (int)input[2];
 
-            Queries.Add(new InputTriple(operation, low, high));
+            Queries.Add(new QueryTriple(operation, low, high));
         }
 
         public void ReadData()
@@ -327,6 +373,12 @@ namespace SetWithRangeSums
         }
     }
 
+    public static class Results
+    {
+        public const string Found = "Found";
+        public const string NotFound = "Not found";
+    }
+
     public static class ZiggaZigAh
     {
         public const string ZigLeft = "zig left";
@@ -363,13 +415,13 @@ namespace SetWithRangeSums
         }
     }
 
-    public class InputTriple
+    public class QueryTriple
     {
         public string Operation { get; set; }
         public int Low { get; set; }
         public int High { get; set; }
 
-        public InputTriple(string op, int low, int high = -1)
+        public QueryTriple(string op, int low, int high = -1)
         {
             Operation = op;
             Low = low;
