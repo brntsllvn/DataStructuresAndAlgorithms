@@ -61,7 +61,8 @@ namespace SetWithRangeSums
             var rootVal = root.Value;
             if (rootVal == searchTerm)
                 return root;
-            else if (rootVal > searchTerm)
+
+            if (rootVal > searchTerm)
             {
                 if (root.LeftChild != null)
                     return Find(searchTerm, root.LeftChild);

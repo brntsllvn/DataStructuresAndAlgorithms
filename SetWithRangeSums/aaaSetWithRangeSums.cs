@@ -50,10 +50,36 @@ namespace SetWithRangeSums
         public void Find_Node_TreeWithNodes()
         {
             var program = new Program();
-            program.Queries.Add(new QueryTriple("+", 42));
-            program.Queries.Add(new QueryTriple("+", 12));
-            program.Queries.Add(new QueryTriple("+", 7));
-            program.Queries.Add(new QueryTriple("?", 7));
+            
+            var root = new TreeNode(2);
+            var leftChild = new TreeNode(1,null,null,root);
+            root.LeftChild = leftChild;
+            program.TreeNodes.Add(root);
+
+            var searchTerm = 1;
+            program.Queries.Add(new QueryTriple("?", searchTerm));
+
+            program.ExecuteQueries();
+
+            program.QueryResults[0].ShouldBe("Found");
+        }
+
+        [Test]
+        public void Find_Node_TreeWithSeveralNodes()
+        {
+            var program = new Program();
+
+            var root = new TreeNode(2);
+            var leftChild = new TreeNode(1, null, null, root);
+            root.LeftChild = leftChild;
+            var rightChild = new TreeNode(3, null, null, root);
+            root.RightChild = rightChild;
+            var rightGrandchild = new TreeNode(5, null, null, rightChild);
+            rightChild.RightChild = rightGrandchild;
+            program.TreeNodes.Add(root);
+
+            var searchTerm = 5;
+            program.Queries.Add(new QueryTriple("?", searchTerm));
 
             program.ExecuteQueries();
 
