@@ -218,6 +218,23 @@ namespace SetWithRangeSums
         }
 
         [Test]
+        public void Add_Del_Find_ProblemSetTestCase()
+        {
+            var program = new Program();
+            program.Queries.Add(new QueryTriple("?", 0));
+            program.Queries.Add(new QueryTriple("+", 0));
+            program.Queries.Add(new QueryTriple("?", 0));
+            program.Queries.Add(new QueryTriple("-", 0));
+            program.Queries.Add(new QueryTriple("?", 0));
+
+            program.ExecuteQueries();
+
+            program.QueryResults[0].ShouldBe(Results.NotFound);
+            program.QueryResults[1].ShouldBe(Results.Found);
+            program.QueryResults[2].ShouldBe(Results.NotFound);
+        }
+
+        [Test]
         public void Find_Nothing_TreeWithNodes()
         {
             var program = new Program();
