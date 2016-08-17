@@ -171,6 +171,37 @@ namespace SetWithRangeSums
         }
 
         [Test]
+        public void Del_Node_Variation()
+        {
+            var program = new Program();
+            program.Queries.Add(new QueryTriple("+", 50));
+            program.Queries.Add(new QueryTriple("+", 25));
+            program.Queries.Add(new QueryTriple("+", 75));
+            program.Queries.Add(new QueryTriple("+", 12));
+            program.Queries.Add(new QueryTriple("-", 12));
+
+            program.ExecuteQueries();
+
+            var root = program.Root;
+            root.Value.ShouldBe(25);
+            root.LeftChild.ShouldBeNull();
+            root.RightChild.Value.ShouldBe(75);
+            root.Parent.ShouldBeNull();
+
+            var rightChild = root.RightChild;
+            rightChild.Value.ShouldBe(75);
+            rightChild.RightChild.ShouldBeNull();
+            rightChild.LeftChild.Value.ShouldBe(50);
+            rightChild.Parent.Value.ShouldBe(25);
+
+            var grandchild = rightChild.LeftChild;
+            grandchild.Value.ShouldBe(50);
+            grandchild.RightChild.ShouldBeNull();
+            grandchild.LeftChild.ShouldBeNull();
+            grandchild.Parent.Value.ShouldBe(75);
+        }
+
+        [Test]
         public void Add_Del_Find_ProblemSetTestCase()
         {
             var program = new Program();
