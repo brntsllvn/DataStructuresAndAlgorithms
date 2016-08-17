@@ -166,14 +166,55 @@ namespace SetWithRangeSums
             var rightChild = root.RightChild;
             rightChild.Value.ShouldBe(80);
             rightChild.Parent.Value.ShouldBe(50);
+            rightChild.LeftChild.Value.ShouldBe(65);
+            rightChild.RightChild.Value.ShouldBe(99);
 
             var rightRightChild = rightChild.RightChild;
             rightRightChild.Value.ShouldBe(99);
             rightRightChild.Parent.Value.ShouldBe(80);
+            rightRightChild.LeftChild.Value.ShouldBe(85);
+            rightRightChild.RightChild.ShouldBeNull();
 
             var rightLeftChild = rightChild.LeftChild;
             rightLeftChild.Value.ShouldBe(65);
             rightLeftChild.Parent.Value.ShouldBe(80);
+        }
+
+        [Test]
+        public void Add_Del_Find_FirstPass()
+        {
+            var program = new Program();
+            program.Queries.Add(new QueryTriple("?", 50));
+            program.Queries.Add(new QueryTriple("+", 50));
+            program.Queries.Add(new QueryTriple("-", 50));
+            program.Queries.Add(new QueryTriple("?", 50));
+            program.Queries.Add(new QueryTriple("+", 50));
+            program.Queries.Add(new QueryTriple("+", 25));
+            program.Queries.Add(new QueryTriple("+", 75));
+            program.Queries.Add(new QueryTriple("?", 75));
+            program.Queries.Add(new QueryTriple("+", 60));
+            program.Queries.Add(new QueryTriple("+", 85));
+            program.Queries.Add(new QueryTriple("+", 95));
+            program.Queries.Add(new QueryTriple("+", 90));
+            program.Queries.Add(new QueryTriple("-", 75));
+            program.Queries.Add(new QueryTriple("?", 75));
+
+            program.ExecuteQueries();
+
+            program.QueryResults[0].ShouldBe(Results.NotFound);
+            program.QueryResults[1].ShouldBe(Results.NotFound);
+            program.QueryResults[2].ShouldBe(Results.Found);
+            program.QueryResults[3].ShouldBe(Results.NotFound);
+
+            var root = program.TreeNodes[0];
+            root.LeftChild.Value.ShouldBe(25);
+            root.RightChild.Value.ShouldBe(85);
+
+            var rightChild = root.RightChild;
+            rightChild.Value.ShouldBe(85);
+            rightChild.LeftChild.Value.ShouldBe(60);
+            rightChild.RightChild.Value.ShouldBe(95);
+            rightChild.Parent.Value.ShouldBe(50);
         }
 
         [Test]

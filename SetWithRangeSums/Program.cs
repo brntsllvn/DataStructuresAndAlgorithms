@@ -91,20 +91,31 @@ namespace SetWithRangeSums
                 var replacementNode = Next(nodeToDelete);
                 replacementNode.Parent = parent;
                 parent.RightChild = replacementNode;
-                rightChild.Parent = replacementNode;
-                replacementNode.RightChild = rightChild;
 
-                if (nodeToDelete.LeftChild != null)
+                if (leftChild != null)
                 {
                     replacementNode.LeftChild = leftChild;
                     leftChild.Parent = replacementNode;
                 }
+
+                if (replacementNode != rightChild)
+                {
+                    replacementNode.RightChild = rightChild;
+                    rightChild.Parent = replacementNode;
+                }
+
             }
         }
 
         private TreeNode Next(TreeNode node)
         {
-            return node.RightChild != null ? LeftDescendant(node.RightChild) : RightAncestor(node);
+            if (node.RightChild != null)
+            {
+                var leftDescendant = LeftDescendant(node.RightChild);
+                return leftDescendant;
+            }
+            var rightAncestor = RightAncestor(node);
+            return  rightAncestor;
         }
 
         private TreeNode RightAncestor(TreeNode node)
