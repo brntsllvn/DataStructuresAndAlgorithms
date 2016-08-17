@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Shouldly;
 
 namespace SetWithRangeSums
 {
@@ -9,7 +8,7 @@ namespace SetWithRangeSums
     {
         public List<QueryTriple> Queries { get; set; }
         public List<TreeNode> TreeNodes { get; set; }
-        public int RootNodeIndex { get; set; }
+        public TreeNode Root { get; set; }
         public List<string> QueryResults { get; set; }
 
         public Program()
@@ -17,7 +16,7 @@ namespace SetWithRangeSums
             Queries = new List<QueryTriple>();
             TreeNodes = new List<TreeNode>();
             QueryResults = new List<string>();
-            RootNodeIndex = 0;
+            Root = new TreeNode();
         }
 
         internal void ExecuteQueries()
@@ -26,44 +25,47 @@ namespace SetWithRangeSums
             {
                 var operation = query.Operation;
                 var operand = query.Low;
-                TreeNode root;
                 switch (operation)
                 {
                     case Operations.Add:
                         if (!TreeNodes.Any())
                         {
                             TreeNodes.Add(new TreeNode(operand));
+                            Root = TreeNodes[0];
                             break;
                         }
-                        root = TreeNodes[RootNodeIndex];
-                        Add(operand, root);
+                        SplayAdd(operand, Root);
                         break;
-
-                        // implement splay add
-
                     case Operations.Find:
                         if (!TreeNodes.Any())
                         {
                             QueryResults.Add(Results.NotFound);
                             break;
                         }
-                        root = TreeNodes[RootNodeIndex];
-                        var foundNode = Find(operand, root);
+                        var foundNode = SplayFind(operand, Root);
                         if (foundNode.Value != operand)
                             QueryResults.Add(Results.NotFound);
                         QueryResults.Add(Results.Found);
                         break;
-
-                    // implement splay find
-
                     case Operations.Del:
                         if (!TreeNodes.Any())
                             break;
-                        root = TreeNodes[RootNodeIndex];
-                        Del(operand, root);
+                        SplayDel(operand);
                         break;
                 }
             }
+        }
+
+        public void SplayDel(int deleteTerm)
+        {
+            if (Root == null)
+                return;
+
+            var nodeToDelete = Find(deleteTerm, Root);
+            var replacementNode = Next(nodeToDelete);
+            Splay(replacementNode);
+            Splay(nodeToDelete);
+            Del(deleteTerm, Root);
         }
 
         private void Del(int deleteTerm, TreeNode root)
@@ -73,10 +75,11 @@ namespace SetWithRangeSums
             var rightChild = nodeToDelete.RightChild;
             var leftChild = nodeToDelete.LeftChild;
 
-            TreeNodes.Remove(nodeToDelete);
-
             if (rightChild == null && leftChild == null)
+            {
+                Root = new TreeNode();
                 return;
+            }
 
             if (rightChild == null)
             {
@@ -85,13 +88,16 @@ namespace SetWithRangeSums
                 else
                     parent.RightChild = leftChild;
                 leftChild.Parent = parent;
+                Root = leftChild;
             }
             else
             {
                 var replacementNode = Next(nodeToDelete);
                 replacementNode.Parent = parent;
-                parent.RightChild = replacementNode;
 
+                if (parent != null)
+                    parent.RightChild = replacementNode; 
+                
                 if (leftChild != null)
                 {
                     replacementNode.LeftChild = leftChild;
@@ -103,7 +109,7 @@ namespace SetWithRangeSums
                     replacementNode.RightChild = rightChild;
                     rightChild.Parent = replacementNode;
                 }
-
+                Root = replacementNode;
             }
         }
 
@@ -120,12 +126,20 @@ namespace SetWithRangeSums
 
         private TreeNode RightAncestor(TreeNode node)
         {
+            if (node.Parent == null)
+                return node;
             return node.Value < node.Parent.Value ? node.Parent : RightAncestor(node.Parent);
         }
 
         private TreeNode LeftDescendant(TreeNode node)
         {
             return node.LeftChild == null ? node : LeftDescendant(node.LeftChild);
+        }
+
+        public void SplayAdd(int insertionTerm, TreeNode root)
+        {
+            Add(insertionTerm, root);
+            SplayFind(insertionTerm, root);
         }
 
         internal void Add(int insertionTerm, TreeNode root)
@@ -142,6 +156,14 @@ namespace SetWithRangeSums
                 parent.LeftChild = newNode;
             else
                 parent.RightChild = newNode;
+        }
+
+        public TreeNode SplayFind(int searchTerm, TreeNode root)
+        {
+            var foundNode = Find(searchTerm, root);
+            Splay(foundNode);
+            Root = foundNode;
+            return foundNode;
         }
 
         internal TreeNode Find(int searchTerm, TreeNode root)
@@ -181,6 +203,8 @@ namespace SetWithRangeSums
 
             if (inputNode.Parent != null)
                 Splay(inputNode);
+
+            Root = inputNode;
         }
 
         internal void ZigZagLeft(TreeNode splayNode)
@@ -353,6 +377,7 @@ namespace SetWithRangeSums
 
             splayNode.RightChild = parentNode;
             splayNode.Parent = null;
+            Root = splayNode;
         }
 
         internal void ZigRight(TreeNode splayNode)
@@ -367,6 +392,7 @@ namespace SetWithRangeSums
 
             splayNode.LeftChild = parentNode;
             splayNode.Parent = null;
+            Root = splayNode;
         }
 
         internal void AddRawInputToList(object[] input)

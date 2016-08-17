@@ -23,33 +23,61 @@ namespace SetWithRangeSums
         {
             var program = new Program();
             program.Queries.Add(new QueryTriple("+", 42));
-            var insertionTerm = program.Queries[0].Low;
 
             program.ExecuteQueries();
 
             var firstTreeNode = program.TreeNodes[0];
-            firstTreeNode.Value.ShouldBe(insertionTerm);
+            firstTreeNode.Value.ShouldBe(42);
             firstTreeNode.LeftChild.ShouldBeNull();
             firstTreeNode.RightChild.ShouldBeNull();
             firstTreeNode.Parent.ShouldBeNull();
         }
 
-
         [Test]
-        public void Add_AnotherNode()
+        public void SplayAdd_SmallTree()
         {
             var program = new Program();
-            program.Queries.Add(new QueryTriple("+", 42));
-            program.Queries.Add(new QueryTriple("+", 21));
-            var insertionTerm2 = program.Queries[1].Low;
+            program.Queries.Add(new QueryTriple("+", 0));
+            program.Queries.Add(new QueryTriple("+", 7));
 
             program.ExecuteQueries();
 
-            var secondTreeNode = program.TreeNodes[1];
-            secondTreeNode.Value.ShouldBe(insertionTerm2);
-            secondTreeNode.LeftChild.ShouldBeNull();
-            secondTreeNode.RightChild.ShouldBeNull();
-            secondTreeNode.Parent.Value.ShouldBe(program.TreeNodes[0].Value);
+            var oldRoot = program.TreeNodes[0];
+            oldRoot.Value.ShouldBe(0);
+            oldRoot.LeftChild.ShouldBeNull();
+            oldRoot.RightChild.ShouldBeNull();
+            oldRoot.Parent.Value.ShouldBe(7);
+
+            var newRoot = oldRoot.Parent;
+            newRoot.Value.ShouldBe(7);
+            newRoot.Parent.ShouldBeNull();
+            newRoot.LeftChild.Value.ShouldBe(0);
+            newRoot.RightChild.ShouldBeNull();
+        }
+
+        [Test]
+        public void SplayFind_SmallTree()
+        {
+            var program = new Program();
+            program.Queries.Add(new QueryTriple("+", 0));
+            program.Queries.Add(new QueryTriple("+", 7));
+            program.Queries.Add(new QueryTriple("?", 7));
+
+            program.ExecuteQueries();
+
+            var oldRoot = program.TreeNodes[0];
+            oldRoot.Value.ShouldBe(0);
+            oldRoot.LeftChild.ShouldBeNull();
+            oldRoot.RightChild.ShouldBeNull();
+            oldRoot.Parent.Value.ShouldBe(7);
+
+            var newRoot = oldRoot.Parent;
+            newRoot.Value.ShouldBe(7);
+            newRoot.Parent.ShouldBeNull();
+            newRoot.LeftChild.Value.ShouldBe(0);
+            newRoot.RightChild.ShouldBeNull();
+
+            program.QueryResults[0].ShouldBe("Found");
         }
 
         [Test]
@@ -59,23 +87,26 @@ namespace SetWithRangeSums
             program.Queries.Add(new QueryTriple("+", 42));
             program.Queries.Add(new QueryTriple("+", 42));
             program.Queries.Add(new QueryTriple("+", 42));
-            program.Queries.Add(new QueryTriple("+", 42));
-            program.Queries.Add(new QueryTriple("+", 42));
 
             program.ExecuteQueries();
 
             program.TreeNodes.Count.ShouldBe(1);
+            var root = program.Root;
+            root.Value.ShouldBe(42);
+            root.LeftChild.ShouldBeNull();
+            root.RightChild.ShouldBeNull();
+            root.Parent.ShouldBeNull();
         }
 
         [Test]
-        public void Del_NoNodes()
+        public void Del_ZeroNodes()
         {
             var program = new Program();
             program.Queries.Add(new QueryTriple("-", 42));
 
             program.ExecuteQueries();
 
-            program.TreeNodes.Count.ShouldBe(0);
+            program.Root.Value.ShouldBe(-1);
         }
 
         [Test]
@@ -87,7 +118,7 @@ namespace SetWithRangeSums
 
             program.ExecuteQueries();
 
-            program.TreeNodes.Count.ShouldBe(0);
+            program.Root.Value.ShouldBe(-1);
         }
 
         [Test]
@@ -98,21 +129,15 @@ namespace SetWithRangeSums
             program.Queries.Add(new QueryTriple("+", 25));
             program.Queries.Add(new QueryTriple("+", 75));
             program.Queries.Add(new QueryTriple("+", 60));
-            program.Queries.Add(new QueryTriple("-", 75));
+            program.Queries.Add(new QueryTriple("-", 50));
 
             program.ExecuteQueries();
 
-            var root = program.TreeNodes[0];
+            var root = program.Root;
+            root.Value.ShouldBe(60);
             root.LeftChild.Value.ShouldBe(25);
-            root.RightChild.Value.ShouldBe(60);
-
-            var leftChild = root.LeftChild;
-            leftChild.Value.ShouldBe(25);
-            leftChild.Parent.Value.ShouldBe(50);
-
-            var rightChild = root.RightChild;
-            rightChild.Value.ShouldBe(60);
-            rightChild.Parent.Value.ShouldBe(50);
+            root.RightChild.Value.ShouldBe(75);
+            root.Parent.ShouldBeNull();
         }
 
         [Test]
@@ -127,94 +152,22 @@ namespace SetWithRangeSums
 
             program.ExecuteQueries();
 
-            var root = program.TreeNodes[0];
+            var root = program.Root;
+            root.Value.ShouldBe(50);
             root.LeftChild.Value.ShouldBe(12);
             root.RightChild.Value.ShouldBe(75);
 
-            var leftChild = root.LeftChild;
-            leftChild.Value.ShouldBe(12);
-            leftChild.Parent.Value.ShouldBe(50);
-
             var rightChild = root.RightChild;
             rightChild.Value.ShouldBe(75);
+            rightChild.RightChild.ShouldBeNull();
+            rightChild.LeftChild.ShouldBeNull();
             rightChild.Parent.Value.ShouldBe(50);
-        }
-
-        [Test]
-        public void Del_Node_ThatHasRightChild()
-        {
-            var program = new Program();
-            program.Queries.Add(new QueryTriple("+", 50));
-            program.Queries.Add(new QueryTriple("+", 25));
-            program.Queries.Add(new QueryTriple("+", 75));
-            program.Queries.Add(new QueryTriple("+", 65));
-            program.Queries.Add(new QueryTriple("+", 99));
-            program.Queries.Add(new QueryTriple("+", 85));
-            program.Queries.Add(new QueryTriple("+", 80));
-            program.Queries.Add(new QueryTriple("-", 75));
-
-            program.ExecuteQueries();
-
-            var root = program.TreeNodes[0];
-            root.LeftChild.Value.ShouldBe(25);
-            root.RightChild.Value.ShouldBe(80);
 
             var leftChild = root.LeftChild;
-            leftChild.Value.ShouldBe(25);
+            leftChild.Value.ShouldBe(12);
+            leftChild.LeftChild.ShouldBeNull();
+            leftChild.RightChild.ShouldBeNull();
             leftChild.Parent.Value.ShouldBe(50);
-
-            var rightChild = root.RightChild;
-            rightChild.Value.ShouldBe(80);
-            rightChild.Parent.Value.ShouldBe(50);
-            rightChild.LeftChild.Value.ShouldBe(65);
-            rightChild.RightChild.Value.ShouldBe(99);
-
-            var rightRightChild = rightChild.RightChild;
-            rightRightChild.Value.ShouldBe(99);
-            rightRightChild.Parent.Value.ShouldBe(80);
-            rightRightChild.LeftChild.Value.ShouldBe(85);
-            rightRightChild.RightChild.ShouldBeNull();
-
-            var rightLeftChild = rightChild.LeftChild;
-            rightLeftChild.Value.ShouldBe(65);
-            rightLeftChild.Parent.Value.ShouldBe(80);
-        }
-
-        [Test]
-        public void Add_Del_Find_FirstPass()
-        {
-            var program = new Program();
-            program.Queries.Add(new QueryTriple("?", 50));
-            program.Queries.Add(new QueryTriple("+", 50));
-            program.Queries.Add(new QueryTriple("-", 50));
-            program.Queries.Add(new QueryTriple("?", 50));
-            program.Queries.Add(new QueryTriple("+", 50));
-            program.Queries.Add(new QueryTriple("+", 25));
-            program.Queries.Add(new QueryTriple("+", 75));
-            program.Queries.Add(new QueryTriple("?", 75));
-            program.Queries.Add(new QueryTriple("+", 60));
-            program.Queries.Add(new QueryTriple("+", 85));
-            program.Queries.Add(new QueryTriple("+", 95));
-            program.Queries.Add(new QueryTriple("+", 90));
-            program.Queries.Add(new QueryTriple("-", 75));
-            program.Queries.Add(new QueryTriple("?", 75));
-
-            program.ExecuteQueries();
-
-            program.QueryResults[0].ShouldBe(Results.NotFound);
-            program.QueryResults[1].ShouldBe(Results.NotFound);
-            program.QueryResults[2].ShouldBe(Results.Found);
-            program.QueryResults[3].ShouldBe(Results.NotFound);
-
-            var root = program.TreeNodes[0];
-            root.LeftChild.Value.ShouldBe(25);
-            root.RightChild.Value.ShouldBe(85);
-
-            var rightChild = root.RightChild;
-            rightChild.Value.ShouldBe(85);
-            rightChild.LeftChild.Value.ShouldBe(60);
-            rightChild.RightChild.Value.ShouldBe(95);
-            rightChild.Parent.Value.ShouldBe(50);
         }
 
         [Test]
@@ -261,33 +214,11 @@ namespace SetWithRangeSums
         }
 
         [Test]
-        public void Find_Node_TreeWithSeveralNodes()
-        {
-            var program = new Program();
-
-            var root = new TreeNode(2);
-            var leftChild = new TreeNode(1, null, null, root);
-            root.LeftChild = leftChild;
-            var rightChild = new TreeNode(3, null, null, root);
-            root.RightChild = rightChild;
-            var rightGrandchild = new TreeNode(5, null, null, rightChild);
-            rightChild.RightChild = rightGrandchild;
-            program.TreeNodes.Add(root);
-
-            var searchTerm = 5;
-            program.Queries.Add(new QueryTriple("?", searchTerm));
-
-            program.ExecuteQueries();
-
-            program.QueryResults[0].ShouldBe("Found");
-        }
-
-        [Test]
         public void Splay_ZigZigRight_ZigZagLeft()
         {
             var program = new Program();
 
-            var great2Grandparent = new TreeNode(-2, null, null, null);
+            var great2Grandparent = new TreeNode(-2);
             var greatGrandparent = new TreeNode(-1, null, null, great2Grandparent);
             var grandparent = new TreeNode(0, null, null, greatGrandparent);
             var parent = new TreeNode(2, null, null, grandparent);
@@ -331,7 +262,7 @@ namespace SetWithRangeSums
         {
             var program = new Program();
 
-            var greatGrandparent = new TreeNode(-1, null, null, null);
+            var greatGrandparent = new TreeNode(-1);
             var grandparent = new TreeNode(0, null, null, greatGrandparent);
             var parent = new TreeNode(2, null, null, grandparent);
             var splay = new TreeNode(3, null, null, parent);
@@ -368,7 +299,7 @@ namespace SetWithRangeSums
         {
             var program = new Program();
 
-            var greatGrandparent = new TreeNode(-1, null, null, null);
+            var greatGrandparent = new TreeNode(-1);
             var grandparent = new TreeNode(0, null, null, greatGrandparent);
             var parent = new TreeNode(2, null, null, grandparent);
             var splay = new TreeNode(3, null, null, parent);
