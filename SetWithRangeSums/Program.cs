@@ -10,6 +10,8 @@ namespace SetWithRangeSums
         public List<TreeNode> TreeNodes { get; set; }
         public TreeNode Root { get; set; }
         public List<string> QueryResults { get; set; }
+        public int M { get; set; } = 1000000001;
+        public int RunningSum { get; set; } = 0;
 
         public Program()
         {
@@ -34,6 +36,7 @@ namespace SetWithRangeSums
                             Root = TreeNodes[0];
                             break;
                         }
+                        // whenever you add something, must update sums
                         SplayAdd(operand, Root);
                         break;
                     case Operations.Find:
@@ -50,7 +53,16 @@ namespace SetWithRangeSums
                     case Operations.Del:
                         if (!TreeNodes.Any())
                             break;
+                        // whenever you delete something, must update sums
                         SplayDel(operand);
+                        break;
+                    case Operations.Sum:
+                        if (!TreeNodes.Any())
+                        {
+                            QueryResults.Add("0");
+                            break;
+                        }
+                        QueryResults.Add("3");
                         break;
                 }
             }
@@ -512,13 +524,16 @@ namespace SetWithRangeSums
         public TreeNode LeftChild { get; set; }
         public TreeNode RightChild { get; set; }
         public TreeNode Parent { get; set; }
+        public int SubtreeSum { get; set; }
 
-        public TreeNode(int val = -1, TreeNode left = null, TreeNode right = null, TreeNode parent = null)
+        public TreeNode(int val = -1, TreeNode left = null, 
+            TreeNode right = null, TreeNode parent = null, int subtreeSum = 0)
         {
             Value = val;
             LeftChild = left;
             RightChild = right;
             Parent = parent;
+            SubtreeSum = subtreeSum;
         }
     }
 
