@@ -492,9 +492,11 @@ namespace SetWithRangeSums
             return node.Parent?.Parent != null;
         }
 
-        public SplitRoots SplaySplit(int searchTerm, TreeNode rooNode)
+        public SplitRoots SplaySplit(int searchTerm, TreeNode node)
         {
-            return new SplitRoots(); 
+            var foundNode = Find(searchTerm, node);
+            Splay(node);
+            return Split(searchTerm, node);
         }
 
         public SplitRoots Split(int searchTerm, TreeNode rootNode)

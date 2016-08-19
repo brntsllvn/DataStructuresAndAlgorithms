@@ -8,6 +8,81 @@ namespace SetWithRangeSums
     class AaaSetWithRangeSums
     {
         [Test]
+        public void SplaySplit_OneNodeEqual()
+        {
+            var program = new Program();
+            var node = new TreeNode(50);
+            program.Root = node;
+
+            var splitNodes = program.SplaySplit(50, node);
+
+            splitNodes.RightRoot.Value.ShouldBe(50);
+            splitNodes.LeftRoot.ShouldBeNull();
+        }
+
+        [Test]
+        public void SplaySplit_OneNodeLessThan()
+        {
+            var program = new Program();
+            var node = new TreeNode(50);
+            program.Root = node;
+
+            var splitNodes = program.SplaySplit(0, node);
+
+            splitNodes.RightRoot.Value.ShouldBe(50);
+            splitNodes.LeftRoot.ShouldBeNull();
+        }
+
+        [Test]
+        public void SplaySplit_OneNodeGreaterThan()
+        {
+            var program = new Program();
+            var node = new TreeNode(50);
+            program.Root = node;
+
+            var splitNodes = program.SplaySplit(100, node);
+
+            splitNodes.RightRoot.ShouldBeNull();
+            splitNodes.LeftRoot.Value.ShouldBe(50);
+        }
+
+        [Test]
+        public void Sum_Nothing()
+        {
+            var program = new Program();
+            program.Queries.Add(new QueryTriple("s", 1, 2));
+
+            program.ExecuteQueries();
+
+            program.QueryResults[0].ShouldBe("0");
+        }
+
+        //[Test]
+        //public void Sum_1()
+        //{
+        //    var program = new Program();
+        //    program.Queries.Add(new QueryTriple("+", 1));
+        //    program.Queries.Add(new QueryTriple("s", 0, 2));
+
+        //    program.ExecuteQueries();
+
+        //    program.QueryResults[0].ShouldBe("1");
+        //}
+
+        [Test]
+        public void Sum_1_2()
+        {
+            var program = new Program();
+            program.Queries.Add(new QueryTriple("+", 1));
+            program.Queries.Add(new QueryTriple("+", 2));
+            program.Queries.Add(new QueryTriple("s", 1, 2));
+
+            program.ExecuteQueries();
+
+            program.QueryResults[0].ShouldBe("3");
+        }
+
+        [Test]
         public void MergeWithRoot_TwoNodes_AndRoot()
         {
             var program = new Program();
@@ -231,42 +306,6 @@ namespace SetWithRangeSums
 
             var rightRoot = splitRoots.RightRoot;
             rightRoot.Value.ShouldBe(75);
-        }
-
-        [Test]
-        public void Sum_Nothing()
-        {
-            var program = new Program();
-            program.Queries.Add(new QueryTriple("s", 1, 2));
-
-            program.ExecuteQueries();
-
-            program.QueryResults[0].ShouldBe("0");
-        }
-
-        //[Test]
-        //public void Sum_1()
-        //{
-        //    var program = new Program();
-        //    program.Queries.Add(new QueryTriple("+", 1));
-        //    program.Queries.Add(new QueryTriple("s", 0, 2));
-
-        //    program.ExecuteQueries();
-
-        //    program.QueryResults[0].ShouldBe("1");
-        //}
-
-        [Test]
-        public void Sum_1_2()
-        {
-            var program = new Program();
-            program.Queries.Add(new QueryTriple("+", 1));
-            program.Queries.Add(new QueryTriple("+", 2));
-            program.Queries.Add(new QueryTriple("s", 1, 2));
-
-            program.ExecuteQueries();
-
-            program.QueryResults[0].ShouldBe("3");
         }
 
         [Test]
