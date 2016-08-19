@@ -47,6 +47,96 @@ namespace SetWithRangeSums
         }
 
         [Test]
+        public void SplaySplit_ThreeNodesEqualToRoot()
+        {
+            var program = new Program();
+            var root = new TreeNode(50);
+            var left = new TreeNode(25,null,null,root);
+            var right = new TreeNode(75,null,null,root);
+            program.Root = root;
+
+            root.LeftChild = left;
+            root.RightChild = right;
+
+            var splitNodes = program.SplaySplit(50, root);
+
+            splitNodes.LeftRoot.Value.ShouldBe(25);
+            splitNodes.RightRoot.Value.ShouldBe(50);
+        }
+
+        [Test]
+        public void SplaySplit_ThreeNodesGreaterThanRoot()
+        {
+            var program = new Program();
+            var root = new TreeNode(50);
+            var left = new TreeNode(25,null,null,root);
+            var right = new TreeNode(75,null,null,root);
+            program.Root = root;
+
+            root.LeftChild = left;
+            root.RightChild = right;
+
+            var splitNodes = program.SplaySplit(100, root);
+
+            splitNodes.LeftRoot.Value.ShouldBe(75);
+            splitNodes.RightRoot.ShouldBeNull();
+        }
+
+        [Test]
+        public void SplaySplit_ThreeNodesLessThanRoot()
+        {
+            var program = new Program();
+            var root = new TreeNode(50);
+            var left = new TreeNode(25,null,null,root);
+            var right = new TreeNode(75,null,null,root);
+            program.Root = root;
+
+            root.LeftChild = left;
+            root.RightChild = right;
+
+            var splitNodes = program.SplaySplit(0, root);
+
+            splitNodes.LeftRoot.ShouldBeNull();
+            splitNodes.RightRoot.Value.ShouldBe(25);
+        }
+
+        [Test]
+        public void SplaySplit_ThreeNodesLessThanRootGreaterThanLeftChild()
+        {
+            var program = new Program();
+            var root = new TreeNode(50);
+            var left = new TreeNode(25,null,null,root);
+            var right = new TreeNode(75,null,null,root);
+            program.Root = root;
+
+            root.LeftChild = left;
+            root.RightChild = right;
+
+            var splitNodes = program.SplaySplit(40, root);
+
+            splitNodes.LeftRoot.Value.ShouldBe(25);
+            splitNodes.RightRoot.Value.ShouldBe(50);
+        }
+
+        [Test]
+        public void SplaySplit_ThreeNodesLessThanRootLessThanRightChild()
+        {
+            var program = new Program();
+            var root = new TreeNode(50);
+            var left = new TreeNode(25,null,null,root);
+            var right = new TreeNode(75,null,null,root);
+            program.Root = root;
+
+            root.LeftChild = left;
+            root.RightChild = right;
+
+            var splitNodes = program.SplaySplit(60, root);
+
+            splitNodes.LeftRoot.Value.ShouldBe(50);
+            splitNodes.RightRoot.Value.ShouldBe(75);
+        }
+
+        [Test]
         public void Sum_Nothing()
         {
             var program = new Program();

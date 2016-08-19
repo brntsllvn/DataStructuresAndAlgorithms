@@ -495,8 +495,8 @@ namespace SetWithRangeSums
         public SplitRoots SplaySplit(int searchTerm, TreeNode node)
         {
             var foundNode = Find(searchTerm, node);
-            Splay(node);
-            return Split(searchTerm, node);
+            Splay(foundNode);
+            return Split(searchTerm, foundNode);
         }
 
         public SplitRoots Split(int searchTerm, TreeNode rootNode)
