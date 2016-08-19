@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 
 namespace SetWithRangeSums
 {
@@ -490,6 +491,53 @@ namespace SetWithRangeSums
         {
             return node.Parent?.Parent != null;
         }
+
+        public SplitRoots SplaySplit(int searchTerm, TreeNode rooNode)
+        {
+            return new SplitRoots(); 
+        }
+
+        public SplitRoots Split(int searchTerm, TreeNode rootNode)
+        {
+            if (rootNode == null)
+                return new SplitRoots();
+
+            if (searchTerm < rootNode.Value)
+            {
+                var splitRoots = Split(searchTerm, rootNode.LeftChild);
+                var mergedRoot = MergeWithRoot(splitRoots.RightRoot, rootNode.RightChild, rootNode);
+                return new SplitRoots(splitRoots.LeftRoot, mergedRoot);
+            }
+            else if (searchTerm > rootNode.Value)
+            {
+                var splitRoots = Split(searchTerm, rootNode.RightChild);
+                var mergedRoot = MergeWithRoot(splitRoots.RightRoot, rootNode.RightChild, rootNode);
+                return new SplitRoots(splitRoots.LeftRoot, mergedRoot);
+            }
+            //else
+            //{
+
+            //}
+            return new SplitRoots(rootNode);
+        }
+
+        public TreeNode MergeWithRoot(TreeNode lessThanRoot, TreeNode greaterThanRoot, TreeNode newRoot)
+        {
+            newRoot.LeftChild = lessThanRoot;
+            newRoot.RightChild = greaterThanRoot;
+            lessThanRoot.Parent = newRoot;
+            greaterThanRoot.Parent = newRoot;
+            return newRoot;
+        }
+
+        public TreeNode Merge(TreeNode leftRoot, TreeNode rightRoot)
+        {
+            var largestNode = Find(int.MaxValue, leftRoot);
+            Del(largestNode.Value ?? int.MaxValue, leftRoot);
+            MergeWithRoot(leftRoot, rightRoot, largestNode);
+            Root = largestNode;
+            return largestNode;
+        }
     }
 
     public static class Results
@@ -534,6 +582,18 @@ namespace SetWithRangeSums
             RightChild = right;
             Parent = parent;
             SubtreeSum = subtreeSum;
+        }
+    }
+
+    public class SplitRoots
+    {
+        public TreeNode LeftRoot { get; set; }
+        public TreeNode RightRoot { get; set; }
+
+        public SplitRoots(TreeNode left = null, TreeNode right = null)
+        {
+            LeftRoot = left;
+            RightRoot = right;
         }
     }
 

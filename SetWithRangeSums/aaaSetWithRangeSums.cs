@@ -8,6 +8,81 @@ namespace SetWithRangeSums
     class AaaSetWithRangeSums
     {
         [Test]
+        public void MergeWithRoot_TwoNodes_AndRoot()
+        {
+            var program = new Program();
+            var leftRoot = new TreeNode(10);
+            var middleRoot = new TreeNode(15);
+            var rightRoot = new TreeNode(20);
+
+            var root = program.MergeWithRoot(leftRoot, rightRoot, middleRoot);
+
+            root.Value.ShouldBe(15);
+            root.LeftChild.Value.ShouldBe(10);
+            root.LeftChild.Parent.Value.ShouldBe(15);
+            root.RightChild.Value.ShouldBe(20);
+            root.RightChild.Parent.Value.ShouldBe(15);
+        }
+
+        [Test]
+        public void MergeWithoutRoot()
+        {
+            var program = new Program();
+            var leftRoot = new TreeNode(10);
+            var rightRoot = new TreeNode(20);
+
+            var root = program.Merge(leftRoot, rightRoot);
+
+            root.Value.ShouldBe(10);
+            root.RightChild.Value.ShouldBe(20);
+        }
+
+        [Test]
+        public void Split_Null()
+        {
+            var program = new Program();
+
+            var splitRoots = program.Split(5, null);
+
+            splitRoots.LeftRoot.ShouldBeNull();
+            splitRoots.RightRoot.ShouldBeNull();
+        }
+
+        [Test]
+        public void Split_SingleNode()
+        {
+            var program = new Program();
+            var root = new TreeNode(42);
+
+            var splitRoots = program.Split(42, root);
+
+            var leftRoot = splitRoots.LeftRoot;
+            leftRoot.Value.ShouldBe(42);
+            leftRoot.Parent.ShouldBeNull();
+
+            splitRoots.RightRoot.ShouldBeNull();
+        }
+
+        [Test]
+        public void Split_TwoNodes()
+        {
+            var program = new Program();
+            var root = new TreeNode(42);
+            var child = new TreeNode(40, null, null, root);
+            root.LeftChild = child;
+
+            var splitRoots = program.Split(41, root);
+
+            var leftRoot = splitRoots.LeftRoot;
+            leftRoot.Value.ShouldBe(42);
+            leftRoot.Parent.Value.ShouldBeNull();
+
+            var rightRoot = splitRoots.RightRoot;
+            rightRoot.Value.ShouldBe(42);
+            rightRoot.Parent.ShouldBeNull();
+        }
+
+        [Test]
         public void Sum_Nothing()
         {
             var program = new Program();
