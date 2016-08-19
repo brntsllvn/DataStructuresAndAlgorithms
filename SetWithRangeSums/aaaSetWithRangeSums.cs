@@ -57,29 +57,180 @@ namespace SetWithRangeSums
             var splitRoots = program.Split(42, root);
 
             var leftRoot = splitRoots.LeftRoot;
-            leftRoot.Value.ShouldBe(42);
-            leftRoot.Parent.ShouldBeNull();
+            leftRoot.ShouldBeNull();
 
-            splitRoots.RightRoot.ShouldBeNull();
+            splitRoots.RightRoot.Value.ShouldBe(42);
         }
 
         [Test]
-        public void Split_TwoNodes()
+        public void Split_TwoNodes_SearchTermLessThanWholeTree()
         {
             var program = new Program();
             var root = new TreeNode(42);
             var child = new TreeNode(40, null, null, root);
             root.LeftChild = child;
 
-            var splitRoots = program.Split(41, root);
-
-            var leftRoot = splitRoots.LeftRoot;
-            leftRoot.Value.ShouldBe(42);
-            leftRoot.Parent.Value.ShouldBeNull();
+            var splitRoots = program.Split(35, root);
 
             var rightRoot = splitRoots.RightRoot;
             rightRoot.Value.ShouldBe(42);
             rightRoot.Parent.ShouldBeNull();
+
+            splitRoots.LeftRoot.ShouldBeNull();
+        }
+
+        [Test]
+        public void Split_TwoNodes_SearchTermGreaterThanWholeTree()
+        {
+            var program = new Program();
+            var root = new TreeNode(42);
+            var child = new TreeNode(40, null, null, root);
+            root.LeftChild = child;
+
+            var splitRoots = program.Split(45, root);
+
+            splitRoots.RightRoot.ShouldBeNull();
+
+            var leftRoot = splitRoots.LeftRoot;
+            leftRoot.Value.ShouldBe(42);
+            leftRoot.Parent.ShouldBeNull();
+        }
+
+        [Test]
+        public void Split_TwoNodes_SearchTermEqual()
+        {
+            var program = new Program();
+            var root = new TreeNode(42);
+            var child = new TreeNode(40, null, null, root);
+            root.LeftChild = child;
+
+            var splitRoots = program.Split(42, root);
+
+            splitRoots.RightRoot.Value.ShouldBe(42);
+
+            var leftRoot = splitRoots.LeftRoot;
+            leftRoot.Value.ShouldBe(40);
+        }
+
+        [Test]
+        public void Split_TwoNodes_SearchTermEqualLower()
+        {
+            var program = new Program();
+            var root = new TreeNode(42);
+            var child = new TreeNode(40, null, null, root);
+            root.LeftChild = child;
+
+            var splitRoots = program.Split(40, root);
+
+            splitRoots.RightRoot.Value.ShouldBe(42);
+            splitRoots.RightRoot.LeftChild.Value.ShouldBe(40);
+            splitRoots.LeftRoot.ShouldBeNull();
+        }
+
+        [Test]
+        public void Split_Five_SearchEqualsNode()
+        {
+            var program = new Program();
+            var root = new TreeNode(50);
+            var leftChild = new TreeNode(25, null, null, root);
+            root.LeftChild = leftChild;
+            var leftRightGrandchild = new TreeNode(40, null, null, leftChild);
+            leftChild.RightChild = leftRightGrandchild;
+
+            var rightChild = new TreeNode(75, null, null, root);
+            root.RightChild = rightChild;
+            var rightLeftGrandchild = new TreeNode(60, null, null, rightChild);
+            rightChild.LeftChild = rightLeftGrandchild;
+
+            var splitRoots = program.Split(50, root);
+
+            var leftRoot = splitRoots.LeftRoot;
+            leftRoot.Value.ShouldBe(25);
+            leftRoot.RightChild.Value.ShouldBe(40);
+
+            var rightRoot = splitRoots.RightRoot;
+            rightRoot.Value.ShouldBe(50);
+            rightRoot.Parent.ShouldBeNull();
+            rightRoot.RightChild.Value.ShouldBe(75);
+        }
+
+        [Test]
+        public void Split_Five_SearchLessThanRoot()
+        {
+            var program = new Program();
+            var root = new TreeNode(50);
+            var leftChild = new TreeNode(25, null, null, root);
+            root.LeftChild = leftChild;
+            var leftRightGrandchild = new TreeNode(40, null, null, leftChild);
+            leftChild.RightChild = leftRightGrandchild;
+
+            var rightChild = new TreeNode(75, null, null, root);
+            root.RightChild = rightChild;
+            var rightLeftGrandchild = new TreeNode(60, null, null, rightChild);
+            rightChild.LeftChild = rightLeftGrandchild;
+
+            var splitRoots = program.Split(30, root);
+
+            var leftRoot = splitRoots.LeftRoot;
+            leftRoot.Value.ShouldBe(25);
+            leftRoot.RightChild.ShouldBeNull();
+
+            var rightRoot = splitRoots.RightRoot;
+            rightRoot.Value.ShouldBe(50);
+            rightRoot.LeftChild.Value.ShouldBe(40);
+            rightRoot.LeftChild.Parent.Value.ShouldBe(50);
+        }
+
+        [Test]
+        public void Split_Five_SearchEqualsLeftChild()
+        {
+            var program = new Program();
+            var root = new TreeNode(50);
+            var leftChild = new TreeNode(25, null, null, root);
+            root.LeftChild = leftChild;
+            var leftRightGrandchild = new TreeNode(40, null, null, leftChild);
+            leftChild.RightChild = leftRightGrandchild;
+
+            var rightChild = new TreeNode(75, null, null, root);
+            root.RightChild = rightChild;
+            var rightLeftGrandchild = new TreeNode(60, null, null, rightChild);
+            rightChild.LeftChild = rightLeftGrandchild;
+
+            var splitRoots = program.Split(25, root);
+
+            var leftRoot = splitRoots.LeftRoot;
+            leftRoot.ShouldBeNull();
+
+            var rightRoot = splitRoots.RightRoot;
+            rightRoot.Value.ShouldBe(50);
+            rightRoot.LeftChild.Value.ShouldBe(25);
+            rightRoot.LeftChild.Parent.Value.ShouldBe(50);
+        }
+
+        [Test]
+        public void Split_Five_SearchGreaterThanRightGrandchild()
+        {
+            var program = new Program();
+            var root = new TreeNode(50);
+            var leftChild = new TreeNode(25, null, null, root);
+            root.LeftChild = leftChild;
+            var leftRightGrandchild = new TreeNode(40, null, null, leftChild);
+            leftChild.RightChild = leftRightGrandchild;
+
+            var rightChild = new TreeNode(75, null, null, root);
+            root.RightChild = rightChild;
+            var rightLeftGrandchild = new TreeNode(60, null, null, rightChild);
+            rightChild.LeftChild = rightLeftGrandchild;
+
+            var splitRoots = program.Split(65, root);
+
+            var leftRoot = splitRoots.LeftRoot;
+            leftRoot.Value.ShouldBe(50);
+            leftRoot.RightChild.Value.ShouldBe(60);
+            leftRoot.RightChild.Parent.Value.ShouldBe(50);
+
+            var rightRoot = splitRoots.RightRoot;
+            rightRoot.Value.ShouldBe(75);
         }
 
         [Test]
@@ -93,17 +244,17 @@ namespace SetWithRangeSums
             program.QueryResults[0].ShouldBe("0");
         }
 
-        [Test]
-        public void Sum_1()
-        {
-            var program = new Program();
-            program.Queries.Add(new QueryTriple("+", 1));
-            program.Queries.Add(new QueryTriple("s", 0, 2));
+        //[Test]
+        //public void Sum_1()
+        //{
+        //    var program = new Program();
+        //    program.Queries.Add(new QueryTriple("+", 1));
+        //    program.Queries.Add(new QueryTriple("s", 0, 2));
 
-            program.ExecuteQueries();
+        //    program.ExecuteQueries();
 
-            program.QueryResults[0].ShouldBe("1");
-        }
+        //    program.QueryResults[0].ShouldBe("1");
+        //}
 
         [Test]
         public void Sum_1_2()

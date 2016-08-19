@@ -502,31 +502,31 @@ namespace SetWithRangeSums
             if (rootNode == null)
                 return new SplitRoots();
 
-            if (searchTerm < rootNode.Value)
+            if (searchTerm <= rootNode.Value)
             {
                 var splitRoots = Split(searchTerm, rootNode.LeftChild);
-                var mergedRoot = MergeWithRoot(splitRoots.RightRoot, rootNode.RightChild, rootNode);
-                return new SplitRoots(splitRoots.LeftRoot, mergedRoot);
+                var mergedGreaterThanRoot = MergeWithRoot(splitRoots.RightRoot, rootNode.RightChild, rootNode);
+                return new SplitRoots(splitRoots.LeftRoot, mergedGreaterThanRoot);
             }
-            else if (searchTerm > rootNode.Value)
+            else
             {
                 var splitRoots = Split(searchTerm, rootNode.RightChild);
-                var mergedRoot = MergeWithRoot(splitRoots.RightRoot, rootNode.RightChild, rootNode);
-                return new SplitRoots(splitRoots.LeftRoot, mergedRoot);
+                var mergedLessThanRoot = MergeWithRoot(rootNode.LeftChild, splitRoots.LeftRoot, rootNode);
+                return new SplitRoots(mergedLessThanRoot, splitRoots.RightRoot);
             }
-            //else
-            //{
-
-            //}
-            return new SplitRoots(rootNode);
         }
 
         public TreeNode MergeWithRoot(TreeNode lessThanRoot, TreeNode greaterThanRoot, TreeNode newRoot)
         {
             newRoot.LeftChild = lessThanRoot;
             newRoot.RightChild = greaterThanRoot;
-            lessThanRoot.Parent = newRoot;
-            greaterThanRoot.Parent = newRoot;
+
+            if (lessThanRoot != null)
+                lessThanRoot.Parent = newRoot;
+
+            if (greaterThanRoot !=null)
+                greaterThanRoot.Parent = newRoot;
+
             return newRoot;
         }
 
