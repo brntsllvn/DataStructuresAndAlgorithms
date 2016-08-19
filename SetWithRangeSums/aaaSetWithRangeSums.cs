@@ -8,6 +8,42 @@ namespace SetWithRangeSums
     class AaaSetWithRangeSums
     {
         [Test]
+        public void Sum_Nothing()
+        {
+            var program = new Program();
+            program.Queries.Add(new QueryTriple("s", 1, 2));
+
+            program.ExecuteQueries();
+
+            program.QueryResults[0].ShouldBe("0");
+        }
+
+        //[Test]
+        //public void Sum_1()
+        //{
+        //    var program = new Program();
+        //    program.Queries.Add(new QueryTriple("+", 1));
+        //    program.Queries.Add(new QueryTriple("s", 0, 2));
+
+        //    program.ExecuteQueries();
+
+        //    program.QueryResults[0].ShouldBe("1");
+        //}
+
+        [Test]
+        public void Sum_1_2()
+        {
+            var program = new Program();
+            program.Queries.Add(new QueryTriple("+", 1));
+            program.Queries.Add(new QueryTriple("+", 2));
+            program.Queries.Add(new QueryTriple("s", 1, 2));
+
+            program.ExecuteQueries();
+
+            program.QueryResults[0].ShouldBe("3");
+        }
+
+        [Test]
         public void SplaySplit_OneNodeEqual()
         {
             var program = new Program();
@@ -134,42 +170,6 @@ namespace SetWithRangeSums
 
             splitNodes.LeftRoot.Value.ShouldBe(50);
             splitNodes.RightRoot.Value.ShouldBe(75);
-        }
-
-        [Test]
-        public void Sum_Nothing()
-        {
-            var program = new Program();
-            program.Queries.Add(new QueryTriple("s", 1, 2));
-
-            program.ExecuteQueries();
-
-            program.QueryResults[0].ShouldBe("0");
-        }
-
-        //[Test]
-        //public void Sum_1()
-        //{
-        //    var program = new Program();
-        //    program.Queries.Add(new QueryTriple("+", 1));
-        //    program.Queries.Add(new QueryTriple("s", 0, 2));
-
-        //    program.ExecuteQueries();
-
-        //    program.QueryResults[0].ShouldBe("1");
-        //}
-
-        [Test]
-        public void Sum_1_2()
-        {
-            var program = new Program();
-            program.Queries.Add(new QueryTriple("+", 1));
-            program.Queries.Add(new QueryTriple("+", 2));
-            program.Queries.Add(new QueryTriple("s", 1, 2));
-
-            program.ExecuteQueries();
-
-            program.QueryResults[0].ShouldBe("3");
         }
 
         [Test]
