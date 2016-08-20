@@ -24,15 +24,51 @@ namespace SetWithRangeSums
         {
             var program = new Program();
             var parent = new TreeNode(50);
-            var child = new TreeNode(25,null,null,parent);
+            var child = new TreeNode(25,null,null,parent,25);
             parent.LeftChild = child;
             program.Root = parent;
 
-            program.UpdateSum(child);
-            child.SubtreeSum.ShouldBe(25);
-
             program.UpdateSum(parent);
             parent.SubtreeSum.ShouldBe(75);
+        }
+
+        [Test]
+        public void Sum_ThreeLeftNodes()
+        {
+            var program = new Program();
+            var parent = new TreeNode(50);
+            var child = new TreeNode(25,null,null,parent);
+            var grandChild = new TreeNode(10,null,null,parent,10);
+            parent.LeftChild = child;
+            child.LeftChild = grandChild;
+            program.Root = parent;
+
+            program.UpdateSum(child);
+            program.UpdateSum(parent);
+
+            parent.SubtreeSum.ShouldBe(85);
+        }
+
+        [Test]
+        public void Sum_ThreeNodes()
+        {
+            var program = new Program();
+            var parent = new TreeNode(50);
+            var leftChild = new TreeNode(25,null,null,parent);
+            var rightChild = new TreeNode(75,null,null,parent);
+            parent.LeftChild = leftChild;
+            leftChild.LeftChild = rightChild;
+            parent.RightChild = rightChild;
+            program.Root = parent;
+
+            program.UpdateSum(leftChild);
+            leftChild.SubtreeSum.ShouldBe(25);
+
+            program.UpdateSum(rightChild);
+            rightChild.SubtreeSum.ShouldBe(75);
+
+            program.UpdateSum(parent);
+            parent.SubtreeSum.ShouldBe(150);
         }
 
         [Test]
