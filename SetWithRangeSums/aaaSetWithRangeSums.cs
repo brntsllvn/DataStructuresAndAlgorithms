@@ -8,39 +8,31 @@ namespace SetWithRangeSums
     class AaaSetWithRangeSums
     {
         [Test]
-        public void Sum_Nothing()
+        public void Sum_OneNode()
         {
             var program = new Program();
-            program.Queries.Add(new QueryTriple("s", 1, 2));
+            var node = new TreeNode(50);
+            program.Root = node;
 
-            program.ExecuteQueries();
+            program.UpdateSum(node);
 
-            program.QueryResults[0].ShouldBe("0");
+            node.SubtreeSum.ShouldBe(50);
         }
 
-        //[Test]
-        //public void Sum_1()
-        //{
-        //    var program = new Program();
-        //    program.Queries.Add(new QueryTriple("+", 1));
-        //    program.Queries.Add(new QueryTriple("s", 0, 2));
-
-        //    program.ExecuteQueries();
-
-        //    program.QueryResults[0].ShouldBe("1");
-        //}
-
         [Test]
-        public void Sum_1_2()
+        public void Sum_TwoNodes()
         {
             var program = new Program();
-            program.Queries.Add(new QueryTriple("+", 1));
-            program.Queries.Add(new QueryTriple("+", 2));
-            program.Queries.Add(new QueryTriple("s", 1, 2));
+            var parent = new TreeNode(50);
+            var child = new TreeNode(25,null,null,parent);
+            parent.LeftChild = child;
+            program.Root = parent;
 
-            program.ExecuteQueries();
+            program.UpdateSum(child);
+            child.SubtreeSum.ShouldBe(25);
 
-            program.QueryResults[0].ShouldBe("3");
+            program.UpdateSum(parent);
+            parent.SubtreeSum.ShouldBe(75);
         }
 
         [Test]

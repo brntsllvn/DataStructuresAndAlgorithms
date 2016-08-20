@@ -540,6 +540,19 @@ namespace SetWithRangeSums
             Root = largestNode;
             return largestNode;
         }
+
+        public void UpdateSum(TreeNode node)
+        {
+            var leftSubtreeSum = 0;
+            if (node.LeftChild != null)
+                leftSubtreeSum = (int) node?.LeftChild.SubtreeSum;
+
+            var rightSubtreeSum = 0;
+            if (node.RightChild != null)
+                rightSubtreeSum = (int) node?.RightChild.SubtreeSum;
+
+            node.SubtreeSum = (node.Value ?? 0) + leftSubtreeSum + rightSubtreeSum;
+        }
     }
 
     public static class Results
