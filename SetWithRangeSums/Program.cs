@@ -38,7 +38,7 @@ namespace SetWithRangeSums
                             break;
                         }
                         // whenever you add something, must update sums
-                        SplayAdd(operand, Root);
+                        SplayInsert(operand, Root);
                         break;
                     case Operations.Find:
                         if (!TreeNodes.Any())
@@ -149,17 +149,16 @@ namespace SetWithRangeSums
             return node.LeftChild == null ? node : LeftDescendant(node.LeftChild);
         }
 
-        public void SplayAdd(int insertionTerm, TreeNode root)
+        public void SplayInsert(int insertionTerm, TreeNode root)
         {
-            Add(insertionTerm, root);
+            Insert(insertionTerm, root);
             SplayFind(insertionTerm, root);
         }
 
-        internal void Add(int insertionTerm, TreeNode root)
+        internal void Insert(int insertionTerm, TreeNode root)
         {
             var parent = Find(insertionTerm, root);
 
-            // no duplicate entries
             if (parent.Value == insertionTerm)
                 return;
 
