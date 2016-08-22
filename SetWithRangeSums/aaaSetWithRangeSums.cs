@@ -1275,7 +1275,7 @@ namespace SetWithRangeSums
         public void DetermineZigZag_None()
         {
             var program = new Program();
-            var splayNode = new TreeNode(0, null, null, null);
+            var splayNode = new TreeNode(0);
             var zigZag = program.DetermineZigZigZag(splayNode);
             zigZag.ShouldBe(ZiggaZigAh.None);
         }
@@ -1284,8 +1284,8 @@ namespace SetWithRangeSums
         public void DetermineZigZag_Zig_Left()
         {
             var program = new Program();
-            var splayNode = new TreeNode(0, null, null, null);
-            var parentNode = new TreeNode(1, splayNode, null, null);
+            var splayNode = new TreeNode(0);
+            var parentNode = new TreeNode(1, splayNode);
             splayNode.Parent = parentNode;
 
             var zigZag = program.DetermineZigZigZag(splayNode);
@@ -1296,8 +1296,8 @@ namespace SetWithRangeSums
         public void DetermineZigZag_Zig_Right()
         {
             var program = new Program();
-            var splayNode = new TreeNode(0, null, null, null);
-            var parentNode = new TreeNode(1, null, splayNode, null);
+            var splayNode = new TreeNode(0);
+            var parentNode = new TreeNode(1, null, splayNode);
             splayNode.Parent = parentNode;
 
             var zigZag = program.DetermineZigZigZag(splayNode);
@@ -1308,10 +1308,10 @@ namespace SetWithRangeSums
         public void DetermineZigZag_ZigZig_Left()
         {
             var program = new Program();
-            var splayNode = new TreeNode(0, null, null, null);
-            var parentNode = new TreeNode(1, splayNode, null, null);
+            var splayNode = new TreeNode(0);
+            var parentNode = new TreeNode(1, splayNode);
             splayNode.Parent = parentNode;
-            var grandparentNode = new TreeNode(2, parentNode, null, null);
+            var grandparentNode = new TreeNode(2, parentNode);
             parentNode.Parent = grandparentNode;
 
             var zigZag = program.DetermineZigZigZag(splayNode);
@@ -1322,10 +1322,10 @@ namespace SetWithRangeSums
         public void DetermineZigZag_ZigZig_Right()
         {
             var program = new Program();
-            var splayNode = new TreeNode(0, null, null, null);
-            var parentNode = new TreeNode(1, null, splayNode, null);
+            var splayNode = new TreeNode(0);
+            var parentNode = new TreeNode(1, null, splayNode);
             splayNode.Parent = parentNode;
-            var grandparentNode = new TreeNode(2, null, parentNode, null);
+            var grandparentNode = new TreeNode(2, null, parentNode);
             parentNode.Parent = grandparentNode;
 
             var zigZag = program.DetermineZigZigZag(splayNode);
@@ -1336,10 +1336,10 @@ namespace SetWithRangeSums
         public void DetermineZigZag_Zig_Zag_Right()
         {
             var program = new Program();
-            var splayNode = new TreeNode(0, null, null, null);
-            var parentNode = new TreeNode(1, null, splayNode, null);
+            var splayNode = new TreeNode(0);
+            var parentNode = new TreeNode(1, null, splayNode);
             splayNode.Parent = parentNode;
-            var grandparentNode = new TreeNode(2, parentNode, null, null);
+            var grandparentNode = new TreeNode(2, parentNode);
             parentNode.Parent = grandparentNode;
 
             var zigZag = program.DetermineZigZigZag(splayNode);
@@ -1350,10 +1350,10 @@ namespace SetWithRangeSums
         public void DetermineZigZag_Zig_Zag_Left()
         {
             var program = new Program();
-            var splayNode = new TreeNode(0, null, null, null);
-            var parentNode = new TreeNode(1, splayNode, null, null);
+            var splayNode = new TreeNode(0);
+            var parentNode = new TreeNode(1, splayNode);
             splayNode.Parent = parentNode;
-            var grandparentNode = new TreeNode(2, null, parentNode, null);
+            var grandparentNode = new TreeNode(2, null, parentNode);
             parentNode.Parent = grandparentNode;
 
             var zigZag = program.DetermineZigZigZag(splayNode);
@@ -1382,11 +1382,11 @@ namespace SetWithRangeSums
         private static readonly object[] Raw =
         {
                 new object[] { "A", new object[] {"+",1},  new List<QueryTriple> {
-                        new QueryTriple("+", 1, -1)
+                        new QueryTriple("+", 1)
                     }
                 },
                 new object[] { "B", new object[] {"?",5},  new List<QueryTriple> {
-                        new QueryTriple("?", 5, -1)
+                        new QueryTriple("?", 5)
                     }
                 },
                 new object[] { "C", new object[] {"s",1,2},  new List<QueryTriple> {
@@ -1394,7 +1394,7 @@ namespace SetWithRangeSums
                     }
                 },
                 new object[] { "D", new object[] {"-",1},  new List<QueryTriple> {
-                        new QueryTriple("-", 1, -1)
+                        new QueryTriple("-", 1)
                     }
                 },
                 new object[] { "E", new object[] {"s",999999999,1000000000},  new List<QueryTriple> {
