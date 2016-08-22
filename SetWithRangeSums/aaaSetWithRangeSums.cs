@@ -8,6 +8,42 @@ namespace SetWithRangeSums
     class AaaSetWithRangeSums
     {
         [Test]
+        public void SumRange_OneNode_OutOfRange()
+        {
+            var program = new Program();
+            var parent = new TreeNode(4);
+            program.Root = parent;
+
+            var sum = program.SumRange(5,9);
+
+            sum.ShouldBe(0);
+        }
+
+        [Test]
+        public void SumRange_OneNode_InRange()
+        {
+            var program = new Program();
+            var parent = new TreeNode(4,null,null,null,4);
+            program.Root = parent;
+
+            var sum = program.SumRange(4,9);
+
+            sum.ShouldBe(4);
+        }
+
+        [Test]
+        public void SumRange_OneNode_GreaterThanRange()
+        {
+            var program = new Program();
+            var parent = new TreeNode(10,null,null,null,10);
+            program.Root = parent;
+
+            var sum = program.SumRange(4,9);
+
+            sum.ShouldBe(0);
+        }
+
+        [Test]
         public void Sum_OneNode()
         {
             var program = new Program();
@@ -75,12 +111,14 @@ namespace SetWithRangeSums
         public void SplaySplit_OneNodeEqual()
         {
             var program = new Program();
-            var node = new TreeNode(50);
+            var node = new TreeNode(50,null,null,null,50);
             program.Root = node;
 
             var splitNodes = program.SplaySplit(50, node);
 
             splitNodes.RightRoot.Value.ShouldBe(50);
+            splitNodes.RightRoot.SubtreeSum.ShouldBe(50);
+
             splitNodes.LeftRoot.ShouldBeNull();
         }
 
@@ -88,12 +126,14 @@ namespace SetWithRangeSums
         public void SplaySplit_OneNodeLessThan()
         {
             var program = new Program();
-            var node = new TreeNode(50);
+            var node = new TreeNode(50, null, null, null, 50);
             program.Root = node;
 
             var splitNodes = program.SplaySplit(0, node);
 
             splitNodes.RightRoot.Value.ShouldBe(50);
+            splitNodes.RightRoot.SubtreeSum.ShouldBe(50);
+
             splitNodes.LeftRoot.ShouldBeNull();
         }
 
@@ -101,22 +141,24 @@ namespace SetWithRangeSums
         public void SplaySplit_OneNodeGreaterThan()
         {
             var program = new Program();
-            var node = new TreeNode(50);
+            var node = new TreeNode(50, null, null, null, 50);
             program.Root = node;
 
             var splitNodes = program.SplaySplit(100, node);
 
             splitNodes.RightRoot.ShouldBeNull();
+
             splitNodes.LeftRoot.Value.ShouldBe(50);
+            splitNodes.LeftRoot.SubtreeSum.ShouldBe(50);
         }
 
         [Test]
         public void SplaySplit_ThreeNodesEqualToRoot()
         {
             var program = new Program();
-            var root = new TreeNode(50);
-            var left = new TreeNode(25,null,null,root);
-            var right = new TreeNode(75,null,null,root);
+            var root = new TreeNode(50, null, null, null, 150);
+            var left = new TreeNode(25,null,null,root,25);
+            var right = new TreeNode(75,null,null,root,75);
             program.Root = root;
 
             root.LeftChild = left;
@@ -124,25 +166,32 @@ namespace SetWithRangeSums
 
             var splitNodes = program.SplaySplit(50, root);
 
-            splitNodes.LeftRoot.Value.ShouldBe(25);
-            splitNodes.RightRoot.Value.ShouldBe(50);
+            var leftRoot = splitNodes.LeftRoot;
+            leftRoot.Value.ShouldBe(25);
+            leftRoot.SubtreeSum.ShouldBe(25);
+
+            var rightRoot = splitNodes.RightRoot;
+            rightRoot.Value.ShouldBe(50);
+            rightRoot.SubtreeSum.ShouldBe(125);
         }
 
         [Test]
         public void SplaySplit_ThreeNodesGreaterThanRoot()
         {
             var program = new Program();
-            var root = new TreeNode(50);
-            var left = new TreeNode(25,null,null,root);
-            var right = new TreeNode(75,null,null,root);
+            var root = new TreeNode(50, null, null, null, 150);
+            var left = new TreeNode(25, null, null, root, 25);
+            var right = new TreeNode(75, null, null, root, 75);
             program.Root = root;
-
             root.LeftChild = left;
             root.RightChild = right;
 
             var splitNodes = program.SplaySplit(100, root);
 
-            splitNodes.LeftRoot.Value.ShouldBe(75);
+            var leftRoot = splitNodes.LeftRoot;
+            leftRoot.Value.ShouldBe(75);
+            leftRoot.SubtreeSum.ShouldBe(150);
+
             splitNodes.RightRoot.ShouldBeNull();
         }
 
@@ -150,54 +199,64 @@ namespace SetWithRangeSums
         public void SplaySplit_ThreeNodesLessThanRoot()
         {
             var program = new Program();
-            var root = new TreeNode(50);
-            var left = new TreeNode(25,null,null,root);
-            var right = new TreeNode(75,null,null,root);
+            var root = new TreeNode(50, null, null, null, 150);
+            var left = new TreeNode(25, null, null, root, 25);
+            var right = new TreeNode(75, null, null, root, 75);
             program.Root = root;
-
             root.LeftChild = left;
             root.RightChild = right;
 
             var splitNodes = program.SplaySplit(0, root);
 
             splitNodes.LeftRoot.ShouldBeNull();
-            splitNodes.RightRoot.Value.ShouldBe(25);
+
+            var rightRoot = splitNodes.RightRoot;
+            rightRoot.Value.ShouldBe(25);
+            rightRoot.SubtreeSum.ShouldBe(125);
         }
 
         [Test]
         public void SplaySplit_ThreeNodesLessThanRootGreaterThanLeftChild()
         {
             var program = new Program();
-            var root = new TreeNode(50);
-            var left = new TreeNode(25,null,null,root);
-            var right = new TreeNode(75,null,null,root);
+            var root = new TreeNode(50, null, null, null, 150);
+            var left = new TreeNode(25, null, null, root, 25);
+            var right = new TreeNode(75, null, null, root, 75);
             program.Root = root;
-
             root.LeftChild = left;
             root.RightChild = right;
 
             var splitNodes = program.SplaySplit(40, root);
 
-            splitNodes.LeftRoot.Value.ShouldBe(25);
-            splitNodes.RightRoot.Value.ShouldBe(50);
+            var leftRoot = splitNodes.LeftRoot;
+            leftRoot.Value.ShouldBe(25);
+            leftRoot.SubtreeSum.ShouldBe(25);
+
+            var rightRoot = splitNodes.RightRoot;
+            rightRoot.Value.ShouldBe(50);
+            rightRoot.SubtreeSum.ShouldBe(125);
         }
 
         [Test]
         public void SplaySplit_ThreeNodesLessThanRootLessThanRightChild()
         {
             var program = new Program();
-            var root = new TreeNode(50);
-            var left = new TreeNode(25,null,null,root);
-            var right = new TreeNode(75,null,null,root);
+            var root = new TreeNode(50, null, null, null, 150);
+            var left = new TreeNode(25, null, null, root, 25);
+            var right = new TreeNode(75, null, null, root, 75);
             program.Root = root;
-
             root.LeftChild = left;
             root.RightChild = right;
 
             var splitNodes = program.SplaySplit(60, root);
 
-            splitNodes.LeftRoot.Value.ShouldBe(50);
-            splitNodes.RightRoot.Value.ShouldBe(75);
+            var leftRoot = splitNodes.LeftRoot;
+            leftRoot.Value.ShouldBe(50);
+            leftRoot.SubtreeSum.ShouldBe(75);
+
+            var rightRoot = splitNodes.RightRoot;
+            rightRoot.Value.ShouldBe(75);
+            rightRoot.SubtreeSum.ShouldBe(75);
         }
 
         [Test]

@@ -552,6 +552,17 @@ namespace SetWithRangeSums
 
             node.SubtreeSum = (node.Value ?? 0) + leftSubtreeSum + rightSubtreeSum;
         }
+
+        public int SumRange(int lowerBound, int upperBound)
+        {
+            var leftAndMiddleRoots = SplaySplit(lowerBound, Root);
+            var rightTreeRoots = SplaySplit(upperBound + 1, Root);
+
+            UpdateSum(leftAndMiddleRoots?.RightRoot);
+
+            var sum = leftAndMiddleRoots.RightRoot?.SubtreeSum ?? 0;
+            return sum;
+        }
     }
 
     public static class Results
