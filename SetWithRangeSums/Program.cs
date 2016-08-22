@@ -389,6 +389,9 @@ namespace SetWithRangeSums
 
             splayNode.RightChild = parentNode;
             splayNode.Parent = null;
+
+            UpdateSum(parentNode);
+            UpdateSum(splayNode);
             Root = splayNode;
         }
 
@@ -404,6 +407,9 @@ namespace SetWithRangeSums
 
             splayNode.LeftChild = parentNode;
             splayNode.Parent = null;
+
+            UpdateSum(parentNode);
+            UpdateSum(splayNode);
             Root = splayNode;
         }
 
@@ -495,7 +501,23 @@ namespace SetWithRangeSums
         {
             var foundNode = Find(searchTerm, node);
             Splay(foundNode);
-            return Split(searchTerm, foundNode);
+            var roots = Split(searchTerm, foundNode);
+
+            var leftRoot = roots.LeftRoot;
+            if (leftRoot != null)
+            {
+                leftRoot.Parent = null;
+                UpdateSum(leftRoot);
+            }
+
+            var rightRoot = roots.RightRoot;
+            if (rightRoot != null)
+            {
+                rightRoot.Parent = null;
+                UpdateSum(rightRoot);
+            }
+
+            return roots;
         }
 
         public SplitRoots Split(int searchTerm, TreeNode rootNode)
@@ -560,7 +582,7 @@ namespace SetWithRangeSums
 
             UpdateSum(leftAndMiddleRoots?.RightRoot);
 
-            var sum = leftAndMiddleRoots.RightRoot?.SubtreeSum ?? 0;
+            var sum = leftAndMiddleRoots?.RightRoot?.SubtreeSum ?? 0;
             return sum;
         }
     }
