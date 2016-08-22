@@ -1160,306 +1160,82 @@ namespace SetWithRangeSums
         }
 
         [Test]
-        public void Zig_Zig_Left_GrandparentIsRoot_NoSubtrees()
-        {
-            var program = new Program();
-
-            var splay = new TreeNode(3, null, null, null);
-            var parent = new TreeNode(1, splay, null, null);
-            splay.Parent = parent;
-
-            var grandparent = new TreeNode(0, parent, null, null);
-            parent.Parent = grandparent;
-
-            program.ZigZigLeft(splay);
-
-            splay.Value.ShouldBe(3);
-            splay.LeftChild.ShouldBeNull();
-            splay.RightChild.Value.ShouldBe(parent.Value);
-            splay.Parent.ShouldBeNull();
-
-            parent.Value.ShouldBe(1);
-            parent.LeftChild.ShouldBeNull();
-            parent.RightChild.Value.ShouldBe(grandparent.Value);
-            parent.Parent.Value.ShouldBe(splay.Value);
-
-            grandparent.Value.ShouldBe(0);
-            grandparent.LeftChild.ShouldBeNull();
-            grandparent.RightChild.ShouldBeNull();
-            grandparent.Parent.Value.ShouldBe(parent.Value);
-        }
-
-        [Test]
-        public void Zig_Zig_Right_GrandparentIsRoot_NoSubtrees()
-        {
-            var program = new Program();
-
-            var splay = new TreeNode(3, null, null, null);
-            var parent = new TreeNode(1, null, splay, null);
-            splay.Parent = parent;
-
-            var grandparent = new TreeNode(0, null, parent, null);
-            parent.Parent = grandparent;
-
-            program.ZigZigRight(splay);
-
-            splay.Value.ShouldBe(3);
-            splay.LeftChild.Value.ShouldBe(parent.Value);
-            splay.RightChild.ShouldBeNull();
-            splay.Parent.ShouldBeNull();
-
-            parent.Value.ShouldBe(1);
-            parent.LeftChild.Value.ShouldBe(grandparent.Value);
-            parent.RightChild.ShouldBeNull();
-            parent.Parent.Value.ShouldBe(splay.Value);
-
-            grandparent.Value.ShouldBe(0);
-            grandparent.LeftChild.ShouldBeNull();
-            grandparent.RightChild.ShouldBeNull();
-            grandparent.Parent.Value.ShouldBe(parent.Value);
-        }
-
-        [Test]
-        public void Zig_Zig_Left_GrandparentIsNotRoot_NoSubtrees()
-        {
-            var program = new Program();
-
-            var splay = new TreeNode(3, null, null, null);
-            var parent = new TreeNode(1, splay, null, null);
-            splay.Parent = parent;
-
-            var grandparent = new TreeNode(0, parent, null, null);
-            parent.Parent = grandparent;
-
-            var greatGrandparent = new TreeNode(-1,grandparent,null,null);
-            grandparent.Parent = greatGrandparent;
-
-            program.ZigZigLeft(splay);
-
-            splay.Value.ShouldBe(3);
-            splay.LeftChild.ShouldBeNull();
-            splay.RightChild.Value.ShouldBe(parent.Value);
-            splay.Parent.Value.ShouldBe(greatGrandparent.Value);
-
-            parent.Value.ShouldBe(1);
-            parent.LeftChild.ShouldBeNull();
-            parent.RightChild.Value.ShouldBe(grandparent.Value);
-            parent.Parent.Value.ShouldBe(splay.Value);
-
-            grandparent.Value.ShouldBe(0);
-            grandparent.LeftChild.ShouldBeNull();
-            grandparent.RightChild.ShouldBeNull();
-            grandparent.Parent.Value.ShouldBe(parent.Value);
-
-            greatGrandparent.Value.ShouldBe(-1);
-            greatGrandparent.LeftChild.Value.ShouldBe(splay.Value);
-            greatGrandparent.RightChild.ShouldBeNull();
-            greatGrandparent.Parent.ShouldBeNull();
-        }
-
-
-        [Test]
-        public void Zig_Zig_Right_GrandparentIsNotRoot_NoSubtrees()
-        {
-            var program = new Program();
-
-            var splay = new TreeNode(3, null, null, null);
-            var parent = new TreeNode(1, null, splay, null);
-            splay.Parent = parent;
-
-            var grandparent = new TreeNode(0, null, parent, null);
-            parent.Parent = grandparent;
-
-            var greatGrandparent = new TreeNode(-1, null, grandparent, null);
-            grandparent.Parent = greatGrandparent;
-
-            program.ZigZigRight(splay);
-
-            splay.Value.ShouldBe(3);
-            splay.LeftChild.Value.ShouldBe(parent.Value);
-            splay.RightChild.ShouldBeNull();
-            splay.Parent.Value.ShouldBe(greatGrandparent.Value);
-
-            parent.Value.ShouldBe(1);
-            parent.LeftChild.Value.ShouldBe(grandparent.Value);
-            parent.RightChild.ShouldBeNull();
-            parent.Parent.Value.ShouldBe(splay.Value);
-
-            grandparent.Value.ShouldBe(0);
-            grandparent.LeftChild.ShouldBeNull();
-            grandparent.RightChild.ShouldBeNull();
-            grandparent.Parent.Value.ShouldBe(parent.Value);
-
-            greatGrandparent.Value.ShouldBe(-1);
-            greatGrandparent.LeftChild.ShouldBeNull();
-            greatGrandparent.RightChild.Value.ShouldBe(splay.Value);
-            greatGrandparent.Parent.ShouldBeNull();
-        }
-
-        [Test]
-        public void Zig_Zig_Left_GrandparentIsRoot_SplayWithLeftAndRightChildren()
-        {
-            var program = new Program();
-
-            var splay = new TreeNode(3, null, null, null);
-
-            var splayLeftChild = new TreeNode(5, null, null, splay);
-            splay.LeftChild = splayLeftChild;
-
-            var splayRightChild = new TreeNode(6, null, null, splay);
-            splay.RightChild = splayRightChild;
-
-            var parent = new TreeNode(1, splay, null, null);
-            splay.Parent = parent;
-
-            var grandparent = new TreeNode(0, parent, null, null);
-            parent.Parent = grandparent;
-
-            program.ZigZigLeft(splay);
-
-            splay.Value.ShouldBe(3);
-            splay.LeftChild.Value.ShouldBe(splayLeftChild.Value);
-            splay.RightChild.Value.ShouldBe(parent.Value);
-            splay.Parent.ShouldBeNull();
-
-            splayLeftChild.Value.ShouldBe(5);
-            splayLeftChild.LeftChild.ShouldBeNull();
-            splayLeftChild.RightChild.ShouldBeNull();
-            splayLeftChild.Parent.Value.ShouldBe(splay.Value);
-
-            splayRightChild.Value.ShouldBe(6);
-            splayRightChild.LeftChild.ShouldBeNull();
-            splayRightChild.RightChild.ShouldBeNull();
-            splayRightChild.Parent.Value.ShouldBe(parent.Value);
-
-            parent.Value.ShouldBe(1);
-            parent.LeftChild.Value.ShouldBe(splayRightChild.Value);
-            parent.RightChild.Value.ShouldBe(grandparent.Value);
-            parent.Parent.Value.ShouldBe(splay.Value);
-
-            grandparent.Value.ShouldBe(0);
-            grandparent.LeftChild.ShouldBeNull();
-            grandparent.RightChild.ShouldBeNull();
-            grandparent.Parent.Value.ShouldBe(parent.Value);
-        }
-
-
-        [Test]
-        public void Zig_Zig_Right_GrandparentIsRoot_SplayWithLeftAndRightChildren()
-        {
-            var program = new Program();
-
-            var splay = new TreeNode(3, null, null, null);
-
-            var splayLeftChild = new TreeNode(5, null, null, splay);
-            splay.LeftChild = splayLeftChild;
-
-            var splayRightChild = new TreeNode(6, null, null, splay);
-            splay.RightChild = splayRightChild;
-
-            var parent = new TreeNode(1, null, splay, null);
-            splay.Parent = parent;
-
-            var grandparent = new TreeNode(0, null, parent, null);
-            parent.Parent = grandparent;
-
-            program.ZigZigRight(splay);
-
-            splay.Value.ShouldBe(3);
-            splay.LeftChild.Value.ShouldBe(parent.Value);
-            splay.RightChild.Value.ShouldBe(splayRightChild.Value);
-            splay.Parent.ShouldBeNull();
-
-            splayLeftChild.Value.ShouldBe(5);
-            splayLeftChild.LeftChild.ShouldBeNull();
-            splayLeftChild.RightChild.ShouldBeNull();
-            splayLeftChild.Parent.Value.ShouldBe(parent.Value);
-
-            splayRightChild.Value.ShouldBe(6);
-            splayRightChild.LeftChild.ShouldBeNull();
-            splayRightChild.RightChild.ShouldBeNull();
-            splayRightChild.Parent.Value.ShouldBe(splay.Value);
-
-            parent.Value.ShouldBe(1);
-            parent.LeftChild.Value.ShouldBe(grandparent.Value);
-            parent.RightChild.Value.ShouldBe(splayLeftChild.Value);
-            parent.Parent.Value.ShouldBe(splay.Value);
-
-            grandparent.Value.ShouldBe(0);
-            grandparent.LeftChild.ShouldBeNull();
-            grandparent.RightChild.ShouldBeNull();
-            grandparent.Parent.Value.ShouldBe(parent.Value);
-        }
-
-        [Test]
         public void Zig_Zig_Left_GrandparentIsNotRoot_SplayWithLeftAndRightChildren_ParentWithChild_Grandparent_WithChild()
         {
             var program = new Program();
 
-            var splay = new TreeNode(3, null, null, null);
+            var splay = new TreeNode(5, null, null, null, 13);
 
-            var splayLeftChild = new TreeNode(5, null, null, splay);
+            var splayLeftChild = new TreeNode(2, null, null, splay, 2);
             splay.LeftChild = splayLeftChild;
 
-            var splayRightChild = new TreeNode(6, null, null, splay);
+            var splayRightChild = new TreeNode(6, null, null, splay, 6);
             splay.RightChild = splayRightChild;
 
-            var parent = new TreeNode(1, splay, null, null);
+            var parent = new TreeNode(10, splay, null, null, 38);
             splay.Parent = parent;
 
-            var parentRightChild = new TreeNode(4, null, null, parent);
+            var parentRightChild = new TreeNode(15, null, null, parent, 15);
             parent.RightChild = parentRightChild;
 
-            var grandparent = new TreeNode(0, parent, null, null);
+            var grandparent = new TreeNode(20, parent, null, null, 88);
             parent.Parent = grandparent;
 
-            var grandparentRightChild = new TreeNode(2, null, null, grandparent);
+            var grandparentRightChild = new TreeNode(30, null, null, grandparent, 30);
             grandparent.RightChild = grandparentRightChild;
 
-            var greatGrandparent = new TreeNode(-1, grandparent, null, null);
+            var greatGrandparent = new TreeNode(10, grandparent, null, null, 98);
             grandparent.Parent = greatGrandparent;
 
             program.ZigZigLeft(splay);
 
-            splay.Value.ShouldBe(3);
+            splay.Value.ShouldBe(5);
             splay.LeftChild.Value.ShouldBe(splayLeftChild.Value);
             splay.RightChild.Value.ShouldBe(parent.Value);
             splay.Parent.Value.ShouldBe(greatGrandparent.Value);
+            splay.SubtreeSum.ShouldBe(88);
 
-            splayLeftChild.Value.ShouldBe(5);
+            splayLeftChild.Value.ShouldBe(2);
             splayLeftChild.LeftChild.ShouldBeNull();
             splayLeftChild.RightChild.ShouldBeNull();
             splayLeftChild.Parent.Value.ShouldBe(splay.Value);
+            splayLeftChild.SubtreeSum.ShouldBe(2);
 
             splayRightChild.Value.ShouldBe(6);
             splayRightChild.LeftChild.ShouldBeNull();
             splayRightChild.RightChild.ShouldBeNull();
             splayRightChild.Parent.Value.ShouldBe(parent.Value);
+            splayRightChild.SubtreeSum.ShouldBe(6);
 
-            parent.Value.ShouldBe(1);
+            parent.Value.ShouldBe(10);
             parent.LeftChild.Value.ShouldBe(splayRightChild.Value);
             parent.RightChild.Value.ShouldBe(grandparent.Value);
             parent.Parent.Value.ShouldBe(splay.Value);
+            parent.SubtreeSum.ShouldBe(81);
 
-            parentRightChild.Value.ShouldBe(4);
+            parentRightChild.Value.ShouldBe(15);
             parentRightChild.RightChild.ShouldBeNull();
             parentRightChild.LeftChild.ShouldBeNull();
             parentRightChild.Parent.Value.ShouldBe(grandparent.Value);
+            parentRightChild.SubtreeSum.ShouldBe(15);
 
-            grandparent.Value.ShouldBe(0);
+            grandparent.Value.ShouldBe(20);
             grandparent.LeftChild.Value.ShouldBe(parentRightChild.Value);
             grandparent.RightChild.Value.ShouldBe(grandparentRightChild.Value);
             grandparent.Parent.Value.ShouldBe(parent.Value);
+            grandparent.SubtreeSum.ShouldBe(65);
 
-            grandparentRightChild.Value.ShouldBe(2);
+            grandparentRightChild.Value.ShouldBe(30);
             grandparentRightChild.RightChild.ShouldBeNull();
             grandparentRightChild.LeftChild.ShouldBeNull();
             grandparentRightChild.Parent.Value.ShouldBe(grandparent.Value);
+            grandparentRightChild.SubtreeSum.ShouldBe(30);
 
-            greatGrandparent.Value.ShouldBe(-1);
+            greatGrandparent.Value.ShouldBe(10);
             greatGrandparent.LeftChild.Value.ShouldBe(splay.Value);
             greatGrandparent.RightChild.ShouldBeNull();
             greatGrandparent.Parent.ShouldBeNull();
+            greatGrandparent.SubtreeSum.ShouldBe(98);
         }
 
         [Test]
@@ -1467,70 +1243,80 @@ namespace SetWithRangeSums
         {
             var program = new Program();
 
-            var splay = new TreeNode(3, null, null, null);
+            var splay = new TreeNode(20, null, null, null, 60);
 
-            var splayLeftChild = new TreeNode(5, null, null, splay);
+            var splayLeftChild = new TreeNode(15, null, null, splay, 15);
             splay.LeftChild = splayLeftChild;
 
-            var splayRightChild = new TreeNode(6, null, null, splay);
+            var splayRightChild = new TreeNode(25, null, null, splay, 25);
             splay.RightChild = splayRightChild;
 
-            var parent = new TreeNode(1, null, splay, null);
+            var parent = new TreeNode(10, null, splay, null, 74);
             splay.Parent = parent;
 
-            var parentLeftChild = new TreeNode(4, null, null, parent);
+            var parentLeftChild = new TreeNode(4, null, null, parent, 4);
             parent.LeftChild = parentLeftChild;
+            parent.RightChild = splay;
+            splay.Parent = parent;
 
-            var grandparent = new TreeNode(0, parent, null, null);
+            var grandparent = new TreeNode(2, parent, null, null, 77);
             parent.Parent = grandparent;
 
-            var grandparentLeftChild = new TreeNode(2, null, null, grandparent);
+            var grandparentLeftChild = new TreeNode(1, null, null, grandparent, 1);
             grandparent.LeftChild = grandparentLeftChild;
 
-            var greatGrandparent = new TreeNode(-1, grandparent, null, null);
+            var greatGrandparent = new TreeNode(0, grandparent, null, null, 77);
             grandparent.Parent = greatGrandparent;
 
             program.ZigZigRight(splay);
 
-            splay.Value.ShouldBe(3);
+            splay.Value.ShouldBe(20);
             splay.LeftChild.Value.ShouldBe(parent.Value);
             splay.RightChild.Value.ShouldBe(splayRightChild.Value);
             splay.Parent.Value.ShouldBe(greatGrandparent.Value);
+            splay.SubtreeSum.ShouldBe(77);
 
-            splayLeftChild.Value.ShouldBe(5);
+            splayLeftChild.Value.ShouldBe(15);
             splayLeftChild.LeftChild.ShouldBeNull();
             splayLeftChild.RightChild.ShouldBeNull();
             splayLeftChild.Parent.Value.ShouldBe(parent.Value);
+            splayLeftChild.SubtreeSum.ShouldBe(15);
 
-            splayRightChild.Value.ShouldBe(6);
+            splayRightChild.Value.ShouldBe(25);
             splayRightChild.LeftChild.ShouldBeNull();
             splayRightChild.RightChild.ShouldBeNull();
             splayRightChild.Parent.Value.ShouldBe(splay.Value);
+            splayRightChild.SubtreeSum.ShouldBe(25);
 
-            parent.Value.ShouldBe(1);
+            parent.Value.ShouldBe(10);
             parent.LeftChild.Value.ShouldBe(grandparent.Value);
             parent.RightChild.Value.ShouldBe(splayLeftChild.Value);
             parent.Parent.Value.ShouldBe(splay.Value);
+            parent.SubtreeSum.ShouldBe(32);
 
             parentLeftChild.Value.ShouldBe(4);
             parentLeftChild.RightChild.ShouldBeNull();
             parentLeftChild.LeftChild.ShouldBeNull();
             parentLeftChild.Parent.Value.ShouldBe(grandparent.Value);
+            parentLeftChild.SubtreeSum.ShouldBe(4);
 
-            grandparent.Value.ShouldBe(0);
+            grandparent.Value.ShouldBe(2);
             grandparent.LeftChild.Value.ShouldBe(grandparentLeftChild.Value);
             grandparent.RightChild.Value.ShouldBe(parentLeftChild.Value);
             grandparent.Parent.Value.ShouldBe(parent.Value);
+            grandparent.SubtreeSum.ShouldBe(7);
 
-            grandparentLeftChild.Value.ShouldBe(2);
+            grandparentLeftChild.Value.ShouldBe(1);
             grandparentLeftChild.RightChild.ShouldBeNull();
             grandparentLeftChild.LeftChild.ShouldBeNull();
             grandparentLeftChild.Parent.Value.ShouldBe(grandparent.Value);
+            grandparentLeftChild.SubtreeSum.ShouldBe(1);
 
-            greatGrandparent.Value.ShouldBe(-1);
+            greatGrandparent.Value.ShouldBe(0);
             greatGrandparent.LeftChild.Value.ShouldBe(splay.Value);
             greatGrandparent.RightChild.ShouldBeNull();
             greatGrandparent.Parent.ShouldBeNull();
+            greatGrandparent.SubtreeSum.ShouldBe(77);
         }
 
         [Test]

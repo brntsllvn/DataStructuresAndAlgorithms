@@ -334,6 +334,10 @@ namespace SetWithRangeSums
 
                 splayNode.Parent = greatGrandparent;
             }
+
+            UpdateSum(grandparent);
+            UpdateSum(parent);
+            UpdateSum(splayNode);
         }
 
         internal void ZigZigRight(TreeNode splayNode)
@@ -375,6 +379,10 @@ namespace SetWithRangeSums
 
                 splayNode.Parent = greatGrandparent;
             }
+
+            UpdateSum(grandparent);
+            UpdateSum(parent);
+            UpdateSum(splayNode);
         }
 
         internal void ZigLeft(TreeNode splayNode)
