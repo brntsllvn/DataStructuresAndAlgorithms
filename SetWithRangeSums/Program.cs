@@ -256,6 +256,10 @@ namespace SetWithRangeSums
                 grandparent.LeftChild = splayRightChild;
                 splayRightChild.Parent = grandparent;
             }
+
+            UpdateSum(grandparent);
+            UpdateSum(parent);
+            UpdateSum(splayNode);
         }
 
         internal void ZigZagRight(TreeNode splayNode)
@@ -294,6 +298,10 @@ namespace SetWithRangeSums
                 grandparent.RightChild = splayLeftChild;
                 splayLeftChild.Parent = grandparent;
             }
+
+            UpdateSum(grandparent);
+            UpdateSum(parent);
+            UpdateSum(splayNode);
         }
 
         internal void ZigZigLeft(TreeNode splayNode)

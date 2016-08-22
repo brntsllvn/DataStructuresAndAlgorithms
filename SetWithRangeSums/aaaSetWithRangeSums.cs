@@ -1073,45 +1073,50 @@ namespace SetWithRangeSums
         {
             var program = new Program();
 
-            var splay = new TreeNode(3, null, null, null);
+            var splay = new TreeNode(12, null, null, null, 38);
 
-            var splayLeftChild = new TreeNode(4, null, null, splay);
+            var splayLeftChild = new TreeNode(11, null, null, splay, 11);
             splay.LeftChild = splayLeftChild;
-            var splayRightChild = new TreeNode(5, null, null, splay);
+            var splayRightChild = new TreeNode(15, null, null, splay, 15);
             splay.RightChild = splayRightChild;
 
-            var parent = new TreeNode(1, splay, null, null);
+            var parent = new TreeNode(20, splay, null, null, 58);
             splay.Parent = parent;
 
-            var grandparent = new TreeNode(0, null, parent, null);
+            var grandparent = new TreeNode(10, null, parent, null, 68);
             parent.Parent = grandparent;
 
             program.ZigZagRight(splay);
 
-            splay.Value.ShouldBe(3);
+            splay.Value.ShouldBe(12);
             splay.LeftChild.Value.ShouldBe(grandparent.Value);
             splay.RightChild.Value.ShouldBe(parent.Value);
             splay.Parent.ShouldBeNull();
+            splay.SubtreeSum.ShouldBe(68);
 
-            splayLeftChild.Value.ShouldBe(4);
+            splayLeftChild.Value.ShouldBe(11);
             splayLeftChild.LeftChild.ShouldBeNull();
             splayLeftChild.RightChild.ShouldBeNull();
             splayLeftChild.Parent.Value.ShouldBe(grandparent.Value);
+            splayLeftChild.SubtreeSum.ShouldBe(11);
 
-            splayRightChild.Value.ShouldBe(5);
+            splayRightChild.Value.ShouldBe(15);
             splayRightChild.LeftChild.ShouldBeNull();
             splayRightChild.RightChild.ShouldBeNull();
             splayRightChild.Parent.Value.ShouldBe(parent.Value);
+            splayRightChild.SubtreeSum.ShouldBe(15);
 
-            parent.Value.ShouldBe(1);
+            parent.Value.ShouldBe(20);
             parent.LeftChild.Value.ShouldBe(splayRightChild.Value);
             parent.RightChild.ShouldBeNull();
             parent.Parent.Value.ShouldBe(splay.Value);
+            parent.SubtreeSum.ShouldBe(35);
 
-            grandparent.Value.ShouldBe(0);
+            grandparent.Value.ShouldBe(10);
             grandparent.LeftChild.ShouldBeNull();
             grandparent.RightChild.Value.ShouldBe(splayLeftChild.Value);
             grandparent.Parent.Value.ShouldBe(splay.Value);
+            grandparent.SubtreeSum.ShouldBe(21);
         }
 
         [Test]
@@ -1119,44 +1124,49 @@ namespace SetWithRangeSums
         {
             var program = new Program();
 
-            var splay = new TreeNode(3, null, null, null);
+            var splay = new TreeNode(15, null, null, null, 15);
 
-            var parent = new TreeNode(1, null, splay, null);
+            var parent = new TreeNode(10, null, splay, null, 29);
             splay.Parent = parent;
-            var parentLeftChild = new TreeNode(4, null, null, parent);
+            var parentLeftChild = new TreeNode(4, null, null, parent, 4);
             parent.LeftChild = parentLeftChild;
 
-            var grandparent = new TreeNode(0, parent, null, null);
+            var grandparent = new TreeNode(20, parent, null, null, 74);
             parent.Parent = grandparent;
-            var grandparentRightChild = new TreeNode(2, null, null, grandparent);
+            var grandparentRightChild = new TreeNode(25, null, null, grandparent, 25);
             grandparent.RightChild = grandparentRightChild;
 
             program.ZigZagLeft(splay);
 
-            splay.Value.ShouldBe(3);
+            splay.Value.ShouldBe(15);
             splay.LeftChild.Value.ShouldBe(parent.Value);
             splay.RightChild.Value.ShouldBe(grandparent.Value);
             splay.Parent.ShouldBeNull();
+            splay.SubtreeSum.ShouldBe(74);
 
-            parent.Value.ShouldBe(1);
+            parent.Value.ShouldBe(10);
             parent.LeftChild.Value.ShouldBe(parentLeftChild.Value);
             parent.RightChild.ShouldBeNull();
             parent.Parent.Value.ShouldBe(splay.Value);
+            parent.SubtreeSum.ShouldBe(14);
 
             parentLeftChild.Value.ShouldBe(4);
             parentLeftChild.LeftChild.ShouldBeNull();
             parentLeftChild.RightChild.ShouldBeNull();
             parentLeftChild.Parent.Value.ShouldBe(parent.Value);
+            parentLeftChild.SubtreeSum.ShouldBe(4);
 
-            grandparent.Value.ShouldBe(0);
+            grandparent.Value.ShouldBe(20);
             grandparent.LeftChild.ShouldBeNull();
             grandparent.RightChild.Value.ShouldBe(grandparentRightChild.Value);
             grandparent.Parent.Value.ShouldBe(splay.Value);
+            grandparent.SubtreeSum.ShouldBe(45);
 
-            grandparentRightChild.Value.ShouldBe(2);
+            grandparentRightChild.Value.ShouldBe(25);
             grandparentRightChild.LeftChild.ShouldBeNull();
             grandparentRightChild.RightChild.ShouldBeNull();
             grandparentRightChild.Parent.Value.ShouldBe(grandparent.Value);
+            grandparentRightChild.SubtreeSum.ShouldBe(25);
         }
 
         [Test]
