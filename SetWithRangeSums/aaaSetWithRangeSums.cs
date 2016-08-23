@@ -9,6 +9,52 @@ namespace SetWithRangeSums
     class AaaSetWithRangeSums
     {
         [Test]
+        public void QuerySum_Simple()
+        {
+            var program = new Program();
+            program.Queries.Add(new QueryTriple("+", 50));
+            program.Queries.Add(new QueryTriple("+", 60));
+            program.Queries.Add(new QueryTriple("+", 70));
+            program.Queries.Add(new QueryTriple("s", 40, 80));
+
+            program.ExecuteQueries();
+
+            program.QueryResults[0].ShouldBe("180");
+        }
+
+        [Test]
+        public void QuerySum_Del_SplitNotNecessary_QuerySum()
+        {
+            var program = new Program();
+            program.Queries.Add(new QueryTriple("+", 50));
+            program.Queries.Add(new QueryTriple("+", 60));
+            program.Queries.Add(new QueryTriple("+", 70));
+            program.Queries.Add(new QueryTriple("+", 80));
+            program.Queries.Add(new QueryTriple("-", 50));
+            program.Queries.Add(new QueryTriple("s", 50, 80));
+            
+            program.ExecuteQueries();
+
+            program.QueryResults[0].ShouldBe("210");
+        }
+
+        [Test]
+        public void QuerySum_Del_SplitNecessary_QuerySum()
+        {
+            var program = new Program();
+            program.Queries.Add(new QueryTriple("+", 50));
+            program.Queries.Add(new QueryTriple("+", 60));
+            program.Queries.Add(new QueryTriple("+", 70));
+            program.Queries.Add(new QueryTriple("+", 80));
+            program.Queries.Add(new QueryTriple("s", 50, 70));
+            program.Queries.Add(new QueryTriple("s", 60, 80));
+
+            program.ExecuteQueries();
+
+            program.QueryResults[0].ShouldBe("180");
+            program.QueryResults[1].ShouldBe("210");
+        }
+        [Test]
         public void SumRange_OneNode_OutOfRange()
         {
             var program = new Program();

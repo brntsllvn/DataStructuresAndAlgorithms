@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 
 namespace SetWithRangeSums
 {
@@ -28,6 +27,8 @@ namespace SetWithRangeSums
             {
                 var operation = query.Operation;
                 var operand = query.Low;
+                var highRange = query.High;
+
                 switch (operation)
                 {
                     case Operations.Add:
@@ -38,7 +39,6 @@ namespace SetWithRangeSums
                             UpdateSum(Root);
                             break;
                         }
-                        // whenever you add something, must update sums
                         SplayInsert(operand, Root);
                         break;
                     case Operations.Find:
@@ -55,7 +55,6 @@ namespace SetWithRangeSums
                     case Operations.Del:
                         if (!TreeNodes.Any())
                             break;
-                        // whenever you delete something, must update sums
                         SplayDel(operand);
                         break;
                     case Operations.Sum:
@@ -64,7 +63,8 @@ namespace SetWithRangeSums
                             QueryResults.Add("0");
                             break;
                         }
-                        QueryResults.Add("3");
+                        var rangeSum = SumRange(operand, highRange);
+                        QueryResults.Add(rangeSum.ToString());
                         break;
                 }
             }
@@ -84,8 +84,21 @@ namespace SetWithRangeSums
 
         private void Del(int deleteTerm, TreeNode root)
         {
+            if (root == null)
+            {
+                Root = new TreeNode();
+                return;
+            }
+
             var nodeToDelete = Find(deleteTerm, root);
             var parent = nodeToDelete.Parent;
+
+            if (parent == null)
+            {
+                Root = new TreeNode();
+                return;
+            }
+
             var rightChild = nodeToDelete.RightChild;
             var leftChild = nodeToDelete.LeftChild;
 
@@ -585,9 +598,17 @@ namespace SetWithRangeSums
 
         public TreeNode Merge(TreeNode leftRoot, TreeNode rightRoot)
         {
-            var largestNodeInLeftTree = Find(int.MaxValue, leftRoot);
-            Del(largestNodeInLeftTree.Value ?? int.MaxValue, leftRoot);
+            TreeNode largestNodeInLeftTree = null;
 
+            if (leftRoot == null)
+                return rightRoot;
+
+            if (rightRoot == null)
+                return leftRoot;
+
+            largestNodeInLeftTree = Find(int.MaxValue, leftRoot);
+            Del(largestNodeInLeftTree.Value ?? int.MaxValue, leftRoot);
+            
             if (leftRoot.LeftChild == null && leftRoot.RightChild == null)
                 leftRoot = null;
 
@@ -595,6 +616,7 @@ namespace SetWithRangeSums
 
             UpdateSum(largestNodeInLeftTree);
             Root = largestNodeInLeftTree;
+
             return largestNodeInLeftTree;
         }
 
@@ -617,6 +639,9 @@ namespace SetWithRangeSums
             var middleAndRightRoots = SplaySplit(upperBound + 1, leftAndMiddleRoots.RightRoot);
 
             var sum = middleAndRightRoots?.LeftRoot?.SubtreeSum ?? 0;
+
+            Merge(leftAndMiddleRoots.LeftRoot, leftAndMiddleRoots.RightRoot);
+            Merge(middleAndRightRoots.LeftRoot, middleAndRightRoots.RightRoot);
 
             return sum;
         }
