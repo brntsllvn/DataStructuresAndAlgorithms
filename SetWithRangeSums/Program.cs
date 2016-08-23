@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace SetWithRangeSums
@@ -447,43 +446,16 @@ namespace SetWithRangeSums
             Root = splayNode;
         }
 
-        internal void AddRawInputToList(object[] input)
+        internal void AddRawInputToList(string[] input)
         {
-            var operation = (string)input[0];
-            var low = (int)input[1];
+            var operation = input[0];
+            var low = int.Parse(input[1]);
             var high = -1;
 
             if (input.Length == 3)
-                high = (int)input[2];
+                high = int.Parse(input[2]);
 
             Queries.Add(new QueryTriple(operation, low, high));
-        }
-
-        public void ReadData()
-        {
-            var numQueries = Console.ReadLine().Split(' ').Select(n => Convert.ToInt64(n)).ToArray()[0];
-            for (int i = 0; i < numQueries; i++)
-            {
-                var query = Console.ReadLine().Split(' ').Select(n => Convert.ToString(n)).ToArray();
-                AddRawInputToList(query);
-            }
-        }
-
-        public void WriteResponse()
-        {
-            Console.WriteLine();
-        }
-
-        public void Run()
-        {
-            ReadData();
-            ExecuteQueries();
-            WriteResponse();
-        }
-
-        static void Main()
-        {
-            new Program().Run();
         }
 
         public string DetermineZigZigZag(TreeNode splayNode)
@@ -624,12 +596,12 @@ namespace SetWithRangeSums
         public void UpdateSum(TreeNode node)
         {
             var leftSubtreeSum = 0;
-            if (node?.LeftChild != null)
-                leftSubtreeSum = (int) node?.LeftChild.SubtreeSum;
+            if (node != null && node.LeftChild != null)
+                leftSubtreeSum = node.LeftChild.SubtreeSum;
 
             var rightSubtreeSum = 0;
-            if (node?.RightChild != null)
-                rightSubtreeSum = (int) node?.RightChild.SubtreeSum;
+            if (node != null && node.RightChild != null)
+                rightSubtreeSum = node.RightChild.SubtreeSum;
 
             if (node != null) node.SubtreeSum = (node.Value ?? 0) + leftSubtreeSum + rightSubtreeSum;
         }
@@ -639,13 +611,70 @@ namespace SetWithRangeSums
             var leftAndMiddleRoots = SplaySplit(lowerBound, Root);
             var middleAndRightRoots = SplaySplit(upperBound + 1, leftAndMiddleRoots.RightRoot);
 
-            var sum = middleAndRightRoots?.LeftRoot?.SubtreeSum ?? 0;
+            var sum = 0;
+            if (middleAndRightRoots.LeftRoot != null)
+                sum = middleAndRightRoots.LeftRoot.SubtreeSum;
 
             Merge(leftAndMiddleRoots.LeftRoot, middleAndRightRoots.LeftRoot);
             Merge(middleAndRightRoots.LeftRoot, middleAndRightRoots.RightRoot);
 
             return sum;
         }
+
+        // ######################################################################
+        // ######################################################################
+        // ######################################################################
+        // ######################################################################
+        // ######################################################################
+        // ######################################################################
+        // ######################################################################
+        // ######################################################################
+        // ######################################################################
+        // ######################################################################
+
+        public void ReadData()
+        {
+            var numQueries = Console.ReadLine().Split(' ')
+                .Select(n => Convert.ToInt64(n)).ToArray()[0];
+            for (int i = 0; i < numQueries; i++)
+            {
+                var query = Console.ReadLine().Split(' ')
+                    .Select(n => Convert.ToString(n)).ToArray();
+                AddRawInputToList(query);
+            }
+        }
+
+        public void WriteResponse()
+        {
+            foreach (var queryResult in QueryResults)
+            {
+                Console.WriteLine(queryResult);
+            }
+            //Console.ReadLine();
+        }
+
+        public void Run()
+        {
+            ReadData();
+            ExecuteQueries();
+            WriteResponse();
+        }
+
+        static void Main()
+        {
+            new Program().Run();
+        }
+
+        // ######################################################################
+        // ######################################################################
+        // ######################################################################
+        // ######################################################################
+        // ######################################################################
+        // ######################################################################
+        // ######################################################################
+        // ######################################################################
+        // ######################################################################
+        // ######################################################################
     }
 
     public static class Results

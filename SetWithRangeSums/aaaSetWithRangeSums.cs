@@ -8,6 +8,24 @@ namespace SetWithRangeSums
     class AaaSetWithRangeSums
     {
         [Test]
+        public void Query_ProblemSet2()
+        {
+            var program = new Program();
+
+            program.Queries.Add(new QueryTriple("+", 491572259));
+            program.Queries.Add(new QueryTriple("?", 491572259));
+            program.Queries.Add(new QueryTriple("?", 899375874));
+            program.Queries.Add(new QueryTriple("s", 310971296, 877523306));
+            program.Queries.Add(new QueryTriple("+", 352411209));
+
+            program.ExecuteQueries();
+
+            program.QueryResults[0].ShouldBe("Found"); 
+            program.QueryResults[1].ShouldBe("Not found");
+            program.QueryResults[2].ShouldBe("491572259"); 
+        }
+
+        [Test]
         public void Query_ProblemSet()
         {
             var program = new Program();
@@ -1617,17 +1635,17 @@ namespace SetWithRangeSums
         }
 
         [Test, TestCaseSource(nameof(Raw))]
-        public void TransformArrayIntoInputTriple_Tests(string caseName, object[] input,
+        public void TransformArrayIntoInputTriple_Tests(string caseName, string[] input,
             List<QueryTriple> expected)
         {
             var program = new Program();
             program.AddRawInputToList(input);
 
-            var operation = (string)input[0];
-            var low = (int)input[1];
+            var operation = input[0];
+            var low = int.Parse(input[1]);
             var high = -1;
             if (input.Length == 3)
-                high = (int)input[2];
+                high = int.Parse(input[2]);
 
             var triple = program.Queries[0];
             triple.Operation.ShouldBe(operation);
@@ -1638,23 +1656,23 @@ namespace SetWithRangeSums
         #region
         private static readonly object[] Raw =
         {
-                new object[] { "A", new object[] {"+",1},  new List<QueryTriple> {
+                new object[] { "A", new[] {"+","1"},  new List<QueryTriple> {
                         new QueryTriple("+", 1)
                     }
                 },
-                new object[] { "B", new object[] {"?",5},  new List<QueryTriple> {
+                new object[] { "B", new[] {"?","5"},  new List<QueryTriple> {
                         new QueryTriple("?", 5)
                     }
                 },
-                new object[] { "C", new object[] {"s",1,2},  new List<QueryTriple> {
+                new object[] { "C", new[] {"s","1","2"},  new List<QueryTriple> {
                         new QueryTriple("s", 1, 2)
                     }
                 },
-                new object[] { "D", new object[] {"-",1},  new List<QueryTriple> {
+                new object[] { "D", new[] {"-","1"},  new List<QueryTriple> {
                         new QueryTriple("-", 1)
                     }
                 },
-                new object[] { "E", new object[] {"s",999999999,1000000000},  new List<QueryTriple> {
+                new object[] { "E", new[] {"s","999999999","1000000000"},  new List<QueryTriple> {
                         new QueryTriple("s",999999999,1000000000)
                     }
                 },
