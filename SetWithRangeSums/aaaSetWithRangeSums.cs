@@ -7,17 +7,17 @@ namespace SetWithRangeSums
     [TestFixture]
     class AaaSetWithRangeSums
     {
-        //[Test]
-        //public void SumRange_OneNode_OutOfRange()
-        //{
-        //    var program = new Program();
-        //    var parent = new TreeNode(4);
-        //    program.Root = parent;
+        [Test]
+        public void SumRange_OneNode_OutOfRange()
+        {
+            var program = new Program();
+            var parent = new TreeNode(4);
+            program.Root = parent;
 
-        //    var sum = program.SumRange(5,9);
+            var sum = program.SumRange(5, 9);
 
-        //    sum.ShouldBe(0);
-        //}
+            sum.ShouldBe(0);
+        }
 
         [Test]
         public void SumRange_OneNode_InRange()
@@ -31,17 +31,17 @@ namespace SetWithRangeSums
             sum.ShouldBe(4);
         }
 
-        //[Test]
-        //public void SumRange_OneNode_GreaterThanRange()
-        //{
-        //    var program = new Program();
-        //    var parent = new TreeNode(10,null,null,null,10);
-        //    program.Root = parent;
+        [Test]
+        public void SumRange_OneNode_GreaterThanRange()
+        {
+            var program = new Program();
+            var parent = new TreeNode(10, null, null, null, 10);
+            program.Root = parent;
 
-        //    var sum = program.SumRange(4,9);
+            var sum = program.SumRange(4, 9);
 
-        //    sum.ShouldBe(0);
-        //}
+            sum.ShouldBe(0);
+        }
 
         [Test]
         public void Sum_OneNode()

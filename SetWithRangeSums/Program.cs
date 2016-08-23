@@ -522,6 +522,9 @@ namespace SetWithRangeSums
 
         public SplitRoots SplaySplit(int searchTerm, TreeNode node)
         {
+            if (node == null)
+                return new SplitRoots();
+
             var foundNode = Find(searchTerm, node);
             Splay(foundNode);
             var roots = Split(searchTerm, foundNode);
@@ -611,11 +614,11 @@ namespace SetWithRangeSums
         public int SumRange(int lowerBound, int upperBound)
         {
             var leftAndMiddleRoots = SplaySplit(lowerBound, Root);
-            var rightTreeRoots = SplaySplit(upperBound + 1, Root);
+            var middleAndRightRoots = SplaySplit(upperBound + 1, leftAndMiddleRoots.RightRoot);
 
-            UpdateSum(leftAndMiddleRoots?.RightRoot);
 
-            var sum = leftAndMiddleRoots?.RightRoot?.SubtreeSum ?? 0;
+            var sum = middleAndRightRoots?.LeftRoot?.SubtreeSum ?? 0;
+
             return sum;
         }
     }
