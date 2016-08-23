@@ -616,7 +616,6 @@ namespace SetWithRangeSums
             var leftAndMiddleRoots = SplaySplit(lowerBound, Root);
             var middleAndRightRoots = SplaySplit(upperBound + 1, leftAndMiddleRoots.RightRoot);
 
-
             var sum = middleAndRightRoots?.LeftRoot?.SubtreeSum ?? 0;
 
             return sum;

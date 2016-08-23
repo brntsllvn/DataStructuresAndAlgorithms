@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using Shouldly;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace SetWithRangeSums
 {
@@ -41,6 +42,116 @@ namespace SetWithRangeSums
             var sum = program.SumRange(4, 9);
 
             sum.ShouldBe(0);
+        }
+
+        [Test]
+        public void SumRange_FiveNodes_AllInRange()
+        {
+            var program = new Program();
+            var root = new TreeNode(50, null, null, null, 250);
+            program.Root = root;
+
+            var leftChild = new TreeNode(25, null, null, root, 65);
+            root.LeftChild = leftChild;
+            var leftRightGrandchild = new TreeNode(40, null, null, leftChild, 40);
+            leftChild.RightChild = leftRightGrandchild;
+
+            var rightChild = new TreeNode(75, null, null, root, 135);
+            root.RightChild = rightChild;
+            var rightLeftGrandchild = new TreeNode(60, null, null, rightChild, 60);
+            rightChild.LeftChild = rightLeftGrandchild;
+
+            var sum = program.SumRange(25, 75);
+
+            sum.ShouldBe(250);
+        }
+
+        [Test]
+        public void SumRange_FiveNodes_ChopOffLowestElement()
+        {
+            var program = new Program();
+            var root = new TreeNode(50, null, null, null, 250);
+            program.Root = root;
+
+            var leftChild = new TreeNode(25, null, null, root, 65);
+            root.LeftChild = leftChild;
+            var leftRightGrandchild = new TreeNode(40, null, null, leftChild, 40);
+            leftChild.RightChild = leftRightGrandchild;
+
+            var rightChild = new TreeNode(75, null, null, root, 135);
+            root.RightChild = rightChild;
+            var rightLeftGrandchild = new TreeNode(60, null, null, rightChild, 60);
+            rightChild.LeftChild = rightLeftGrandchild;
+
+            var sum = program.SumRange(30, 75);
+
+            sum.ShouldBe(225);
+        }
+
+        [Test]
+        public void SumRange_FiveNodes_ChopOffTwoLowestElements()
+        {
+            var program = new Program();
+            var root = new TreeNode(50, null, null, null, 250);
+            program.Root = root;
+
+            var leftChild = new TreeNode(25, null, null, root, 65);
+            root.LeftChild = leftChild;
+            var leftRightGrandchild = new TreeNode(40, null, null, leftChild, 40);
+            leftChild.RightChild = leftRightGrandchild;
+
+            var rightChild = new TreeNode(75, null, null, root, 135);
+            root.RightChild = rightChild;
+            var rightLeftGrandchild = new TreeNode(60, null, null, rightChild, 60);
+            rightChild.LeftChild = rightLeftGrandchild;
+
+            var sum = program.SumRange(50, 75);
+
+            sum.ShouldBe(185);
+        }
+
+        [Test]
+        public void SumRange_FiveNodes_ChopOffTwoLowestElementsAndTopElement()
+        {
+            var program = new Program();
+            var root = new TreeNode(50, null, null, null, 250);
+            program.Root = root;
+
+            var leftChild = new TreeNode(25, null, null, root, 65);
+            root.LeftChild = leftChild;
+            var leftRightGrandchild = new TreeNode(40, null, null, leftChild, 40);
+            leftChild.RightChild = leftRightGrandchild;
+
+            var rightChild = new TreeNode(75, null, null, root, 135);
+            root.RightChild = rightChild;
+            var rightLeftGrandchild = new TreeNode(60, null, null, rightChild, 60);
+            rightChild.LeftChild = rightLeftGrandchild;
+
+            var sum = program.SumRange(50, 65);
+
+            sum.ShouldBe(110);
+        }
+
+        [Test]
+        public void SumRange_FiveNodes_ChopOffTwoLowestElementsAndTopTwoElements()
+        {
+            var program = new Program();
+            var root = new TreeNode(50, null, null, null, 250);
+            program.Root = root;
+
+            var leftChild = new TreeNode(25, null, null, root, 65);
+            root.LeftChild = leftChild;
+            var leftRightGrandchild = new TreeNode(40, null, null, leftChild, 40);
+            leftChild.RightChild = leftRightGrandchild;
+
+            var rightChild = new TreeNode(75, null, null, root, 135);
+            root.RightChild = rightChild;
+            var rightLeftGrandchild = new TreeNode(60, null, null, rightChild, 60);
+            rightChild.LeftChild = rightLeftGrandchild;
+
+            var sum = program.SumRange(49, 51);
+
+            sum.ShouldBe(50);
         }
 
         [Test]
