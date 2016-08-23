@@ -35,6 +35,7 @@ namespace SetWithRangeSums
                         {
                             TreeNodes.Add(new TreeNode(operand));
                             Root = TreeNodes[0];
+                            UpdateSum(Root);
                             break;
                         }
                         // whenever you add something, must update sums
@@ -90,6 +91,7 @@ namespace SetWithRangeSums
 
             if (rightChild == null && leftChild == null)
             {
+                TreeNodes.Remove(nodeToDelete);
                 Root = new TreeNode();
                 return;
             }
@@ -101,6 +103,8 @@ namespace SetWithRangeSums
                 else
                     parent.RightChild = leftChild;
                 leftChild.Parent = parent;
+
+                UpdateSum(leftChild);
                 Root = leftChild;
             }
             else
@@ -122,6 +126,9 @@ namespace SetWithRangeSums
                     replacementNode.RightChild = rightChild;
                     rightChild.Parent = replacementNode;
                 }
+
+
+                UpdateSum(replacementNode);
                 Root = replacementNode;
             }
         }
@@ -544,18 +551,21 @@ namespace SetWithRangeSums
             if (searchTerm <= rootNode.Value)
             {
                 var splitRoots = Split(searchTerm, rootNode.LeftChild);
-                var mergedGreaterThanRoot = MergeWithRoot(splitRoots.RightRoot, rootNode.RightChild, rootNode);
+                var mergedGreaterThanRoot = MergeWithRoot(splitRoots.RightRoot, 
+                    rootNode.RightChild, rootNode);
                 return new SplitRoots(splitRoots.LeftRoot, mergedGreaterThanRoot);
             }
             else
             {
                 var splitRoots = Split(searchTerm, rootNode.RightChild);
-                var mergedLessThanRoot = MergeWithRoot(rootNode.LeftChild, splitRoots.LeftRoot, rootNode);
+                var mergedLessThanRoot = MergeWithRoot(rootNode.LeftChild, 
+                    splitRoots.LeftRoot, rootNode);
                 return new SplitRoots(mergedLessThanRoot, splitRoots.RightRoot);
             }
         }
 
-        public TreeNode MergeWithRoot(TreeNode lessThanRoot, TreeNode greaterThanRoot, TreeNode newRoot)
+        public TreeNode MergeWithRoot(TreeNode lessThanRoot, 
+            TreeNode greaterThanRoot, TreeNode newRoot)
         {
             newRoot.LeftChild = lessThanRoot;
             newRoot.RightChild = greaterThanRoot;
@@ -566,16 +576,23 @@ namespace SetWithRangeSums
             if (greaterThanRoot !=null)
                 greaterThanRoot.Parent = newRoot;
 
+            UpdateSum(newRoot);
             return newRoot;
         }
 
         public TreeNode Merge(TreeNode leftRoot, TreeNode rightRoot)
         {
-            var largestNode = Find(int.MaxValue, leftRoot);
-            Del(largestNode.Value ?? int.MaxValue, leftRoot);
-            MergeWithRoot(leftRoot, rightRoot, largestNode);
-            Root = largestNode;
-            return largestNode;
+            var largestNodeInLeftTree = Find(int.MaxValue, leftRoot);
+            Del(largestNodeInLeftTree.Value ?? int.MaxValue, leftRoot);
+
+            if (leftRoot.LeftChild == null && leftRoot.RightChild == null)
+                leftRoot = null;
+
+            MergeWithRoot(leftRoot, rightRoot, largestNodeInLeftTree);
+
+            UpdateSum(largestNodeInLeftTree);
+            Root = largestNodeInLeftTree;
+            return largestNodeInLeftTree;
         }
 
         public void UpdateSum(TreeNode node)

@@ -7,17 +7,17 @@ namespace SetWithRangeSums
     [TestFixture]
     class AaaSetWithRangeSums
     {
-        [Test]
-        public void SumRange_OneNode_OutOfRange()
-        {
-            var program = new Program();
-            var parent = new TreeNode(4);
-            program.Root = parent;
+        //[Test]
+        //public void SumRange_OneNode_OutOfRange()
+        //{
+        //    var program = new Program();
+        //    var parent = new TreeNode(4);
+        //    program.Root = parent;
 
-            var sum = program.SumRange(5,9);
+        //    var sum = program.SumRange(5,9);
 
-            sum.ShouldBe(0);
-        }
+        //    sum.ShouldBe(0);
+        //}
 
         [Test]
         public void SumRange_OneNode_InRange()
@@ -31,17 +31,17 @@ namespace SetWithRangeSums
             sum.ShouldBe(4);
         }
 
-        [Test]
-        public void SumRange_OneNode_GreaterThanRange()
-        {
-            var program = new Program();
-            var parent = new TreeNode(10,null,null,null,10);
-            program.Root = parent;
+        //[Test]
+        //public void SumRange_OneNode_GreaterThanRange()
+        //{
+        //    var program = new Program();
+        //    var parent = new TreeNode(10,null,null,null,10);
+        //    program.Root = parent;
 
-            var sum = program.SumRange(4,9);
+        //    var sum = program.SumRange(4,9);
 
-            sum.ShouldBe(0);
-        }
+        //    sum.ShouldBe(0);
+        //}
 
         [Test]
         public void Sum_OneNode()
@@ -271,30 +271,40 @@ namespace SetWithRangeSums
         public void MergeWithRoot_TwoNodes_AndRoot()
         {
             var program = new Program();
-            var leftRoot = new TreeNode(10);
-            var middleRoot = new TreeNode(15);
-            var rightRoot = new TreeNode(20);
+            var leftRoot = new TreeNode(10,null,null,null,10);
+            var middleRoot = new TreeNode(15,null,null,null,15);
+            var rightRoot = new TreeNode(20,null,null,null,20);
 
             var root = program.MergeWithRoot(leftRoot, rightRoot, middleRoot);
 
             root.Value.ShouldBe(15);
-            root.LeftChild.Value.ShouldBe(10);
-            root.LeftChild.Parent.Value.ShouldBe(15);
-            root.RightChild.Value.ShouldBe(20);
-            root.RightChild.Parent.Value.ShouldBe(15);
+            root.SubtreeSum.ShouldBe(45);
+
+            var left = root.LeftChild;
+            left.Value.ShouldBe(10);
+            left.Parent.Value.ShouldBe(15);
+            left.SubtreeSum.ShouldBe(10);
+
+            var right = root.RightChild;
+            right.Value.ShouldBe(20);
+            right.Parent.Value.ShouldBe(15);
+            right.SubtreeSum.ShouldBe(20);
         }
 
         [Test]
         public void MergeWithoutRoot()
         {
             var program = new Program();
-            var leftRoot = new TreeNode(10);
-            var rightRoot = new TreeNode(20);
+            var leftRoot = new TreeNode(10,null,null,null,10);
+            var rightRoot = new TreeNode(20,null,null,null,20);
 
             var root = program.Merge(leftRoot, rightRoot);
 
             root.Value.ShouldBe(10);
+            root.SubtreeSum.ShouldBe(30);
+
             root.RightChild.Value.ShouldBe(20);
+            root.RightChild.SubtreeSum.ShouldBe(20);
         }
 
         [Test]
@@ -320,6 +330,7 @@ namespace SetWithRangeSums
             leftRoot.ShouldBeNull();
 
             splitRoots.RightRoot.Value.ShouldBe(42);
+            splitRoots.RightRoot.SubtreeSum.ShouldBe(42);
         }
 
         [Test]
@@ -335,6 +346,7 @@ namespace SetWithRangeSums
             var rightRoot = splitRoots.RightRoot;
             rightRoot.Value.ShouldBe(42);
             rightRoot.Parent.ShouldBeNull();
+            rightRoot.SubtreeSum.ShouldBe(82);
 
             splitRoots.LeftRoot.ShouldBeNull();
         }
@@ -343,8 +355,8 @@ namespace SetWithRangeSums
         public void Split_TwoNodes_SearchTermGreaterThanWholeTree()
         {
             var program = new Program();
-            var root = new TreeNode(42);
-            var child = new TreeNode(40, null, null, root);
+            var root = new TreeNode(42, null, null, null, 42);
+            var child = new TreeNode(40, null, null, root, 40);
             root.LeftChild = child;
 
             var splitRoots = program.Split(45, root);
@@ -354,22 +366,25 @@ namespace SetWithRangeSums
             var leftRoot = splitRoots.LeftRoot;
             leftRoot.Value.ShouldBe(42);
             leftRoot.Parent.ShouldBeNull();
+            leftRoot.SubtreeSum.ShouldBe(82);
         }
 
         [Test]
         public void Split_TwoNodes_SearchTermEqual()
         {
             var program = new Program();
-            var root = new TreeNode(42);
-            var child = new TreeNode(40, null, null, root);
+            var root = new TreeNode(42, null, null, null, 42);
+            var child = new TreeNode(40, null, null, root, 40);
             root.LeftChild = child;
 
             var splitRoots = program.Split(42, root);
 
             splitRoots.RightRoot.Value.ShouldBe(42);
+            splitRoots.RightRoot.SubtreeSum.ShouldBe(42);
 
             var leftRoot = splitRoots.LeftRoot;
             leftRoot.Value.ShouldBe(40);
+            leftRoot.SubtreeSum.ShouldBe(40);
         }
 
         [Test]
@@ -384,6 +399,8 @@ namespace SetWithRangeSums
 
             splitRoots.RightRoot.Value.ShouldBe(42);
             splitRoots.RightRoot.LeftChild.Value.ShouldBe(40);
+            splitRoots.RightRoot.SubtreeSum.ShouldBe(82);
+
             splitRoots.LeftRoot.ShouldBeNull();
         }
 
@@ -391,42 +408,51 @@ namespace SetWithRangeSums
         public void Split_Five_SearchEqualsNode()
         {
             var program = new Program();
-            var root = new TreeNode(50);
-            var leftChild = new TreeNode(25, null, null, root);
+            var root = new TreeNode(50,null,null,null, 250);
+
+            var leftChild = new TreeNode(25, null, null, root, 65);
             root.LeftChild = leftChild;
-            var leftRightGrandchild = new TreeNode(40, null, null, leftChild);
+            var leftRightGrandchild = new TreeNode(40, null, null, leftChild, 40);
             leftChild.RightChild = leftRightGrandchild;
 
-            var rightChild = new TreeNode(75, null, null, root);
+            var rightChild = new TreeNode(75, null, null, root, 135);
             root.RightChild = rightChild;
-            var rightLeftGrandchild = new TreeNode(60, null, null, rightChild);
+            var rightLeftGrandchild = new TreeNode(60, null, null, rightChild, 60);
             rightChild.LeftChild = rightLeftGrandchild;
 
             var splitRoots = program.Split(50, root);
 
             var leftRoot = splitRoots.LeftRoot;
             leftRoot.Value.ShouldBe(25);
+            leftRoot.SubtreeSum.ShouldBe(65);
+
             leftRoot.RightChild.Value.ShouldBe(40);
+            leftRoot.RightChild.SubtreeSum.ShouldBe(40);
 
             var rightRoot = splitRoots.RightRoot;
             rightRoot.Value.ShouldBe(50);
+            rightRoot.SubtreeSum.ShouldBe(185);
             rightRoot.Parent.ShouldBeNull();
-            rightRoot.RightChild.Value.ShouldBe(75);
+
+            var newRightChild = rightRoot.RightChild;
+            newRightChild.Value.ShouldBe(75);
+            newRightChild.LeftChild.SubtreeSum.ShouldBe(60);
         }
 
         [Test]
         public void Split_Five_SearchLessThanRoot()
         {
             var program = new Program();
-            var root = new TreeNode(50);
-            var leftChild = new TreeNode(25, null, null, root);
+            var root = new TreeNode(50, null, null, null, 250);
+
+            var leftChild = new TreeNode(25, null, null, root, 65);
             root.LeftChild = leftChild;
-            var leftRightGrandchild = new TreeNode(40, null, null, leftChild);
+            var leftRightGrandchild = new TreeNode(40, null, null, leftChild, 40);
             leftChild.RightChild = leftRightGrandchild;
 
-            var rightChild = new TreeNode(75, null, null, root);
+            var rightChild = new TreeNode(75, null, null, root, 135);
             root.RightChild = rightChild;
-            var rightLeftGrandchild = new TreeNode(60, null, null, rightChild);
+            var rightLeftGrandchild = new TreeNode(60, null, null, rightChild, 60);
             rightChild.LeftChild = rightLeftGrandchild;
 
             var splitRoots = program.Split(30, root);
@@ -434,26 +460,36 @@ namespace SetWithRangeSums
             var leftRoot = splitRoots.LeftRoot;
             leftRoot.Value.ShouldBe(25);
             leftRoot.RightChild.ShouldBeNull();
+            leftRoot.SubtreeSum.ShouldBe(25);
 
             var rightRoot = splitRoots.RightRoot;
             rightRoot.Value.ShouldBe(50);
-            rightRoot.LeftChild.Value.ShouldBe(40);
-            rightRoot.LeftChild.Parent.Value.ShouldBe(50);
+            rightRoot.SubtreeSum.ShouldBe(225);
+
+            var rightLeftChild = rightRoot.LeftChild;
+            rightLeftChild.Value.ShouldBe(40);
+            rightLeftChild.Parent.Value.ShouldBe(50);
+            rightLeftChild.SubtreeSum.ShouldBe(40);
+
+            var rightRightChild = rightRoot.RightChild;
+            rightRightChild.Value.ShouldBe(75);
+            rightRightChild.SubtreeSum.ShouldBe(135);
         }
 
         [Test]
         public void Split_Five_SearchEqualsLeftChild()
         {
             var program = new Program();
-            var root = new TreeNode(50);
-            var leftChild = new TreeNode(25, null, null, root);
+            var root = new TreeNode(50, null, null, null, 250);
+
+            var leftChild = new TreeNode(25, null, null, root, 65);
             root.LeftChild = leftChild;
-            var leftRightGrandchild = new TreeNode(40, null, null, leftChild);
+            var leftRightGrandchild = new TreeNode(40, null, null, leftChild, 40);
             leftChild.RightChild = leftRightGrandchild;
 
-            var rightChild = new TreeNode(75, null, null, root);
+            var rightChild = new TreeNode(75, null, null, root, 135);
             root.RightChild = rightChild;
-            var rightLeftGrandchild = new TreeNode(60, null, null, rightChild);
+            var rightLeftGrandchild = new TreeNode(60, null, null, rightChild, 60);
             rightChild.LeftChild = rightLeftGrandchild;
 
             var splitRoots = program.Split(25, root);
@@ -463,34 +499,45 @@ namespace SetWithRangeSums
 
             var rightRoot = splitRoots.RightRoot;
             rightRoot.Value.ShouldBe(50);
+            rightRoot.SubtreeSum.ShouldBe(250);
             rightRoot.LeftChild.Value.ShouldBe(25);
+            rightRoot.LeftChild.SubtreeSum.ShouldBe(65);
             rightRoot.LeftChild.Parent.Value.ShouldBe(50);
+            rightRoot.RightChild.SubtreeSum.ShouldBe(135);
         }
 
         [Test]
         public void Split_Five_SearchGreaterThanRightGrandchild()
         {
             var program = new Program();
-            var root = new TreeNode(50);
-            var leftChild = new TreeNode(25, null, null, root);
+            var root = new TreeNode(50, null, null, null, 250);
+
+            var leftChild = new TreeNode(25, null, null, root, 65);
             root.LeftChild = leftChild;
-            var leftRightGrandchild = new TreeNode(40, null, null, leftChild);
+            var leftRightGrandchild = new TreeNode(40, null, null, leftChild, 40);
             leftChild.RightChild = leftRightGrandchild;
 
-            var rightChild = new TreeNode(75, null, null, root);
+            var rightChild = new TreeNode(75, null, null, root, 135);
             root.RightChild = rightChild;
-            var rightLeftGrandchild = new TreeNode(60, null, null, rightChild);
+            var rightLeftGrandchild = new TreeNode(60, null, null, rightChild, 60);
             rightChild.LeftChild = rightLeftGrandchild;
 
             var splitRoots = program.Split(65, root);
 
             var leftRoot = splitRoots.LeftRoot;
             leftRoot.Value.ShouldBe(50);
+            leftRoot.SubtreeSum.ShouldBe(175);
+
             leftRoot.RightChild.Value.ShouldBe(60);
             leftRoot.RightChild.Parent.Value.ShouldBe(50);
+            leftRoot.RightChild.SubtreeSum.ShouldBe(60);
+
+            leftRoot.LeftChild.Value.ShouldBe(25);
+            leftRoot.LeftChild.SubtreeSum.ShouldBe(65);
 
             var rightRoot = splitRoots.RightRoot;
             rightRoot.Value.ShouldBe(75);
+            rightRoot.SubtreeSum.ShouldBe(75);
         }
 
         [Test]
@@ -517,28 +564,31 @@ namespace SetWithRangeSums
             firstTreeNode.LeftChild.ShouldBeNull();
             firstTreeNode.RightChild.ShouldBeNull();
             firstTreeNode.Parent.ShouldBeNull();
+            firstTreeNode.SubtreeSum.ShouldBe(42);
         }
 
         [Test]
         public void SplayAdd_SmallTree()
         {
             var program = new Program();
-            program.Queries.Add(new QueryTriple("+", 0));
+            program.Queries.Add(new QueryTriple("+", 2));
             program.Queries.Add(new QueryTriple("+", 7));
 
             program.ExecuteQueries();
 
-            var oldRoot = program.TreeNodes[0];
-            oldRoot.Value.ShouldBe(0);
+            var root = program.Root;
+            root.Value.ShouldBe(7);
+            root.LeftChild.Value.ShouldBe(2);
+            root.RightChild.ShouldBeNull();
+            root.Parent.ShouldBeNull();
+            root.SubtreeSum.ShouldBe(9);
+
+            var oldRoot = root.LeftChild;
+            oldRoot.Value.ShouldBe(2);
+            oldRoot.Parent.Value.ShouldBe(7);
             oldRoot.LeftChild.ShouldBeNull();
             oldRoot.RightChild.ShouldBeNull();
-            oldRoot.Parent.Value.ShouldBe(7);
-
-            var newRoot = oldRoot.Parent;
-            newRoot.Value.ShouldBe(7);
-            newRoot.Parent.ShouldBeNull();
-            newRoot.LeftChild.Value.ShouldBe(0);
-            newRoot.RightChild.ShouldBeNull();
+            oldRoot.SubtreeSum.ShouldBe(2);
         }
 
         [Test]
@@ -550,18 +600,6 @@ namespace SetWithRangeSums
             program.Queries.Add(new QueryTriple("?", 7));
 
             program.ExecuteQueries();
-
-            var oldRoot = program.TreeNodes[0];
-            oldRoot.Value.ShouldBe(0);
-            oldRoot.LeftChild.ShouldBeNull();
-            oldRoot.RightChild.ShouldBeNull();
-            oldRoot.Parent.Value.ShouldBe(7);
-
-            var newRoot = oldRoot.Parent;
-            newRoot.Value.ShouldBe(7);
-            newRoot.Parent.ShouldBeNull();
-            newRoot.LeftChild.Value.ShouldBe(0);
-            newRoot.RightChild.ShouldBeNull();
 
             program.QueryResults[0].ShouldBe("Found");
         }
@@ -582,6 +620,7 @@ namespace SetWithRangeSums
             root.LeftChild.ShouldBeNull();
             root.RightChild.ShouldBeNull();
             root.Parent.ShouldBeNull();
+            root.SubtreeSum.ShouldBe(42);
         }
 
         [Test]
@@ -622,8 +661,11 @@ namespace SetWithRangeSums
             var root = program.Root;
             root.Value.ShouldBe(60);
             root.LeftChild.Value.ShouldBe(25);
+            root.LeftChild.SubtreeSum.ShouldBe(25);
             root.RightChild.Value.ShouldBe(75);
+            root.RightChild.SubtreeSum.ShouldBe(75);
             root.Parent.ShouldBeNull();
+            root.SubtreeSum.ShouldBe(160);
         }
 
         [Test]
@@ -642,18 +684,21 @@ namespace SetWithRangeSums
             root.Value.ShouldBe(50);
             root.LeftChild.Value.ShouldBe(12);
             root.RightChild.Value.ShouldBe(75);
+            root.SubtreeSum.ShouldBe(137);
 
             var rightChild = root.RightChild;
             rightChild.Value.ShouldBe(75);
             rightChild.RightChild.ShouldBeNull();
             rightChild.LeftChild.ShouldBeNull();
             rightChild.Parent.Value.ShouldBe(50);
+            rightChild.SubtreeSum.ShouldBe(75);
 
             var leftChild = root.LeftChild;
             leftChild.Value.ShouldBe(12);
             leftChild.LeftChild.ShouldBeNull();
             leftChild.RightChild.ShouldBeNull();
             leftChild.Parent.Value.ShouldBe(50);
+            leftChild.SubtreeSum.ShouldBe(12);
         }
 
         [Test]
@@ -673,18 +718,21 @@ namespace SetWithRangeSums
             root.LeftChild.ShouldBeNull();
             root.RightChild.Value.ShouldBe(75);
             root.Parent.ShouldBeNull();
+            root.SubtreeSum.ShouldBe(150);
 
             var rightChild = root.RightChild;
             rightChild.Value.ShouldBe(75);
             rightChild.RightChild.ShouldBeNull();
             rightChild.LeftChild.Value.ShouldBe(50);
             rightChild.Parent.Value.ShouldBe(25);
+            rightChild.SubtreeSum.ShouldBe(125);
 
             var grandchild = rightChild.LeftChild;
             grandchild.Value.ShouldBe(50);
             grandchild.RightChild.ShouldBeNull();
             grandchild.LeftChild.ShouldBeNull();
             grandchild.Parent.Value.ShouldBe(75);
+            grandchild.SubtreeSum.ShouldBe(50);
         }
 
         [Test]
@@ -1379,6 +1427,7 @@ namespace SetWithRangeSums
             triple.High.ShouldBe(high);
         }
 
+#region
         private static readonly object[] Raw =
         {
                 new object[] { "A", new object[] {"+",1},  new List<QueryTriple> {
@@ -1402,5 +1451,6 @@ namespace SetWithRangeSums
                     }
                 },
         };
+#endregion
     }
 }
