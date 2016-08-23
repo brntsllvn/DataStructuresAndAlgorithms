@@ -37,7 +37,7 @@ namespace SetWithRangeSums
                 switch (operation)
                 {
                     case Operations.Add:
-                        if (!TreeNodes.Any())
+                        if (!TreeNodes.Any() || Root == null)
                         {
                             TreeNodes.Add(new TreeNode(operand));
                             Root = TreeNodes[0];
@@ -53,7 +53,7 @@ namespace SetWithRangeSums
                             break;
                         }
                         var foundNode = SplayFind(operand, Root);
-                        if (foundNode.Value != operand)
+                        if (foundNode == null || foundNode.Value != operand)
                         {
                             QueryResults.Add(Results.NotFound);
                             break;
@@ -199,8 +199,12 @@ namespace SetWithRangeSums
         }
 
         public TreeNode SplayFind(long searchTerm, TreeNode root)
-        {
+        {                
             var foundNode = Find(searchTerm, root);
+
+            if (foundNode == null)
+                return null;
+
             Splay(foundNode);
             Root = foundNode;
             return foundNode;
@@ -208,6 +212,9 @@ namespace SetWithRangeSums
 
         internal TreeNode Find(long searchTerm, TreeNode root)
         {
+            if (root == null)
+                return null;
+
             var rootVal = root.Value;
             if (rootVal == searchTerm)
                 return root;
