@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace SetWithRangeSums
@@ -592,7 +593,7 @@ namespace SetWithRangeSums
 
         public TreeNode Merge(TreeNode leftRoot, TreeNode rightRoot)
         {
-            TreeNode largestNodeInLeftTree = null;
+            TreeNode smallestNodeInRightTree = null;
 
             if (leftRoot == null)
                 return rightRoot;
@@ -600,22 +601,21 @@ namespace SetWithRangeSums
             if (rightRoot == null)
                 return leftRoot;
 
-            largestNodeInLeftTree = Find(int.MaxValue, leftRoot);
-            Splay(largestNodeInLeftTree);
-            //Del(largestNodeInLeftTree.Value ?? int.MaxValue, leftRoot);
+            smallestNodeInRightTree = Find(int.MinValue, rightRoot);
+            Splay(smallestNodeInRightTree);
             
             if (leftRoot.LeftChild == null && leftRoot.RightChild == null)
                 leftRoot = null;
 
-            //MergeWithRoot(leftRoot, rightRoot, largestNodeInLeftTree);
+            smallestNodeInRightTree.LeftChild = leftRoot;
 
-            rightRoot.LeftChild = largestNodeInLeftTree;
-            largestNodeInLeftTree.Parent = rightRoot;
+            if (leftRoot != null)
+                leftRoot.Parent = rightRoot;
 
-            UpdateSum(rightRoot);
-            Root = rightRoot;
+            UpdateSum(smallestNodeInRightTree);
+            Root = smallestNodeInRightTree;
 
-            return rightRoot;
+            return smallestNodeInRightTree;
         }
 
         public void UpdateSum(TreeNode node)

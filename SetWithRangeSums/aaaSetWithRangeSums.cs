@@ -47,11 +47,13 @@ namespace SetWithRangeSums
             program.Queries.Add(new QueryTriple("+", 80));
             program.Queries.Add(new QueryTriple("s", 50, 70));
             program.Queries.Add(new QueryTriple("s", 60, 80));
+            program.Queries.Add(new QueryTriple("s", 60, 70));
 
             program.ExecuteQueries();
 
             program.QueryResults[0].ShouldBe("180");
             program.QueryResults[1].ShouldBe("210");
+            program.QueryResults[2].ShouldBe("130");
         }
         [Test]
         public void SumRange_OneNode_OutOfRange()
@@ -448,19 +450,32 @@ namespace SetWithRangeSums
         }
 
         [Test]
-        public void MergeWithoutRoot()
+        public void MergeWithoutRoot_TwoTrees()
         {
             var program = new Program();
-            var leftRoot = new TreeNode(10,null,null,null,10);
-            var rightRoot = new TreeNode(20,null,null,null,20);
+
+            var leftRoot = new TreeNode(10,null,null,null,30);
+            leftRoot.LeftChild = new TreeNode(5,null,null,leftRoot,5);
+            leftRoot.RightChild = new TreeNode(15,null,null,leftRoot,15);
+
+            var rightRoot = new TreeNode(20,null,null,null,60);
+            rightRoot.LeftChild = new TreeNode(17,null,null,rightRoot,47);
+            rightRoot.LeftChild.LeftChild = new TreeNode(11,null,null,rightRoot.LeftChild,11);
+            rightRoot.LeftChild.RightChild = new TreeNode(19,null,null,rightRoot.LeftChild,19);
+            rightRoot.RightChild = new TreeNode(23,null,null,rightRoot,23);
 
             var root = program.Merge(leftRoot, rightRoot);
 
-            root.Value.ShouldBe(20);
-            root.SubtreeSum.ShouldBe(30);
+            root.Value.ShouldBe(11);
+            root.SubtreeSum.ShouldBe(120);
 
-            root.LeftChild.Value.ShouldBe(10);
-            root.LeftChild.SubtreeSum.ShouldBe(10);
+            var right = root.RightChild;
+            right.Value.ShouldBe(17);
+            right.SubtreeSum.ShouldBe(79);
+
+            var left = root.LeftChild;
+            left.Value.ShouldBe(10);
+            left.SubtreeSum.ShouldBe(30);
         }
 
         [Test]
