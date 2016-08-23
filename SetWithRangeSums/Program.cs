@@ -10,8 +10,8 @@ namespace SetWithRangeSums
         public List<TreeNode> TreeNodes { get; set; }
         public TreeNode Root { get; set; }
         public List<string> QueryResults { get; set; }
-        public int M { get; set; }
-        public int RunningSum { get; set; }
+        public long M { get; set; }
+        public long RunningSum { get; set; }
 
         public Program()
         {
@@ -29,7 +29,10 @@ namespace SetWithRangeSums
             {
                 var operation = query.Operation;
                 var operand = (query.Low + RunningSum) % M;
+
                 var highRange = (query.High + RunningSum) % M;
+                if (operation != Operations.Sum)
+                    highRange = 0;
 
                 switch (operation)
                 {
@@ -76,7 +79,7 @@ namespace SetWithRangeSums
             }
         }
 
-        public void SplayDel(int deleteTerm)
+        public void SplayDel(long deleteTerm)
         {
             if (Root == null)
                 return;
@@ -86,10 +89,10 @@ namespace SetWithRangeSums
             Splay(replacementNode);
             Splay(nodeToDelete);
 
-            Del(deleteTerm, Root);
+            Del(Root);
         }
 
-        private void Del(int deleteTerm, TreeNode root)
+        private void Del(TreeNode root)
         {
             if (root == null)
                 return;
@@ -168,13 +171,13 @@ namespace SetWithRangeSums
             return node.LeftChild == null ? node : LeftDescendant(node.LeftChild);
         }
 
-        public void SplayInsert(int insertionTerm, TreeNode root)
+        public void SplayInsert(long insertionTerm, TreeNode root)
         {
             Insert(insertionTerm, root);
             SplayFind(insertionTerm, root);
         }
 
-        internal void Insert(int insertionTerm, TreeNode root)
+        internal void Insert(long insertionTerm, TreeNode root)
         {
             var parent = Find(insertionTerm, root);
 
@@ -182,14 +185,20 @@ namespace SetWithRangeSums
                 return;
 
             var newNode = new TreeNode(insertionTerm, null, null, parent);
+
             TreeNodes.Add(newNode);
-            if (insertionTerm < parent.Value && parent.LeftChild == null) 
+
+            if (insertionTerm < parent.Value && parent.LeftChild == null)
                 parent.LeftChild = newNode;
             else
                 parent.RightChild = newNode;
+
+            UpdateSum(newNode);
+            UpdateSum(root);
+            Root = root;
         }
 
-        public TreeNode SplayFind(int searchTerm, TreeNode root)
+        public TreeNode SplayFind(long searchTerm, TreeNode root)
         {
             var foundNode = Find(searchTerm, root);
             Splay(foundNode);
@@ -197,7 +206,7 @@ namespace SetWithRangeSums
             return foundNode;
         }
 
-        internal TreeNode Find(int searchTerm, TreeNode root)
+        internal TreeNode Find(long searchTerm, TreeNode root)
         {
             var rootVal = root.Value;
             if (rootVal == searchTerm)
@@ -509,7 +518,7 @@ namespace SetWithRangeSums
             return false;
         }
 
-        public SplitRoots SplaySplit(int searchTerm, TreeNode node)
+        public SplitRoots SplaySplit(long searchTerm, TreeNode node)
         {
             if (node == null)
                 return new SplitRoots();
@@ -535,7 +544,7 @@ namespace SetWithRangeSums
             return roots;
         }
 
-        public SplitRoots Split(int searchTerm, TreeNode rootNode)
+        public SplitRoots Split(long searchTerm, TreeNode rootNode)
         {
             if (rootNode == null)
                 return new SplitRoots();
@@ -574,15 +583,13 @@ namespace SetWithRangeSums
 
         public TreeNode Merge(TreeNode leftRoot, TreeNode rightRoot)
         {
-            TreeNode smallestNodeInRightTree = null;
-
             if (leftRoot == null)
                 return rightRoot;
 
             if (rightRoot == null)
                 return leftRoot;
 
-            smallestNodeInRightTree = Find(int.MinValue, rightRoot);
+            var smallestNodeInRightTree = Find(int.MinValue, rightRoot);
             Splay(smallestNodeInRightTree);
             
             if (leftRoot.LeftChild == null && leftRoot.RightChild == null)
@@ -601,29 +608,35 @@ namespace SetWithRangeSums
 
         public void UpdateSum(TreeNode node)
         {
-            var leftSubtreeSum = 0;
+            long leftSubtreeSum = 0;
             if (node != null && node.LeftChild != null)
                 leftSubtreeSum = node.LeftChild.SubtreeSum;
 
-            var rightSubtreeSum = 0;
+            long rightSubtreeSum = 0;
             if (node != null && node.RightChild != null)
                 rightSubtreeSum = node.RightChild.SubtreeSum;
 
             if (node != null) node.SubtreeSum = (node.Value ?? 0) + leftSubtreeSum + rightSubtreeSum;
         }
 
-        public int SumRange(int lowerBound, int upperBound)
+        public long SumRange(long lowerBound, long upperBound)
         {
             var leftAndMiddleRoots = SplaySplit(lowerBound, Root);
             var middleAndRightRoots = SplaySplit(upperBound + 1, leftAndMiddleRoots.RightRoot);
 
-            var sum = 0;
+            long sum = 0;
             if (middleAndRightRoots.LeftRoot != null)
                 sum = middleAndRightRoots.LeftRoot.SubtreeSum;
+
 
             Merge(leftAndMiddleRoots.LeftRoot, middleAndRightRoots.LeftRoot);
             Merge(middleAndRightRoots.LeftRoot, middleAndRightRoots.RightRoot);
 
+            if (middleAndRightRoots.LeftRoot != null)
+                Root = middleAndRightRoots.LeftRoot;
+            else if (middleAndRightRoots.RightRoot != null)
+                Root = middleAndRightRoots.RightRoot;
+                
             return sum;
         }
 
@@ -642,7 +655,7 @@ namespace SetWithRangeSums
         {
             var numQueries = Console.ReadLine().Split(' ')
                 .Select(n => Convert.ToInt64(n)).ToArray()[0];
-            for (int i = 0; i < numQueries; i++)
+            for (long i = 0; i < numQueries; i++)
             {
                 var query = Console.ReadLine().Split(' ')
                     .Select(n => Convert.ToString(n)).ToArray();
@@ -711,14 +724,14 @@ namespace SetWithRangeSums
 
     public class TreeNode
     {
-        public int? Value { get; set; }
+        public long? Value { get; set; }
         public TreeNode LeftChild { get; set; }
         public TreeNode RightChild { get; set; }
         public TreeNode Parent { get; set; }
-        public int SubtreeSum { get; set; }
+        public long SubtreeSum { get; set; }
 
-        public TreeNode(int val = -1, TreeNode left = null, 
-            TreeNode right = null, TreeNode parent = null, int subtreeSum = 0)
+        public TreeNode(long val = -1, TreeNode left = null, 
+            TreeNode right = null, TreeNode parent = null, long subtreeSum = 0)
         {
             Value = val;
             LeftChild = left;
@@ -743,10 +756,10 @@ namespace SetWithRangeSums
     public class QueryTriple
     {
         public string Operation { get; set; }
-        public int Low { get; set; }
-        public int High { get; set; }
+        public long Low { get; set; }
+        public long High { get; set; }
 
-        public QueryTriple(string op, int low, int high = -1)
+        public QueryTriple(string op, long low, long high = -1)
         {
             Operation = op;
             Low = low;

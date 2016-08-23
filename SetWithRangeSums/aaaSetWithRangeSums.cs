@@ -8,6 +8,202 @@ namespace SetWithRangeSums
     class AaaSetWithRangeSums
     {
         [Test]
+        public void Five()
+        {
+            var program = new Program();
+
+            program.Queries.Add(new QueryTriple("s", 88127140, 859949755));
+            program.Queries.Add(new QueryTriple("s", 407584225, 906606553));
+            program.Queries.Add(new QueryTriple("+", 885530090)); // 885,530,090
+            program.Queries.Add(new QueryTriple("+", 234423189)); // 234,423,189
+            program.Queries.Add(new QueryTriple("s", 30746291, 664192454)); // sum( 30,746,291 ...  664,192,454 )
+            program.Queries.Add(new QueryTriple("+", 465752492)); //  465,752,492 + 234,423,189 =  700,175,681 ... running sum = 234,423,189
+            program.Queries.Add(new QueryTriple("s", 848498590, 481606032));
+            // sum(848,498,590 ... 481,606,032) = sum(82,921,778 ... 716,029,221) = 234,423,189 + 700,175,681 = 934,598,870
+            program.Queries.Add(new QueryTriple("+", 844636782)); // 844,636,782, running sum = 934,598,870
+            program.Queries.Add(new QueryTriple("+", 251529178)); // 251,529,178
+            program.Queries.Add(new QueryTriple("+", 182631153)); // 182,631,153
+
+            program.ExecuteQueries();
+
+            program.QueryResults[0].ShouldBe("0"); // nothing to sum
+            program.QueryResults[1].ShouldBe("0"); // nothing to sum
+            program.QueryResults[2].ShouldBe("234423189"); // running sum = 234,423,189
+            program.QueryResults[3].ShouldBe("934598870");
+        }
+
+        [Test]
+        public void Twenty()
+        {
+            //var program = new Program();
+
+            //program.Queries.Add(new QueryTriple("s", 40279559, 89162572));
+            //program.Queries.Add(new QueryTriple("-", 774613289));
+            //program.Queries.Add(new QueryTriple("s", 869592654, 915517087));
+            //program.Queries.Add(new QueryTriple("-", 165280355));
+            //program.Queries.Add(new QueryTriple("-", 776346290));
+            //program.Queries.Add(new QueryTriple("-", 221187096));
+            //program.Queries.Add(new QueryTriple("s", 421986248, 742826969));
+            //program.Queries.Add(new QueryTriple("s", 83228103, 852190011));
+            //program.Queries.Add(new QueryTriple("-", 640319482));
+            //program.Queries.Add(new QueryTriple("?", 528689193));
+            //program.Queries.Add(new QueryTriple("?", 75245219));
+            //program.Queries.Add(new QueryTriple("-", 617070033));
+            //program.Queries.Add(new QueryTriple("+", 66257759));
+            //program.Queries.Add(new QueryTriple("s", 25751289, 70170547));
+            //program.Queries.Add(new QueryTriple("s", 28248247, 617849094));
+            //program.Queries.Add(new QueryTriple("-", 954357244));
+            //program.Queries.Add(new QueryTriple("+", 477444954));
+            //program.Queries.Add(new QueryTriple("?", 608389416));
+            //program.Queries.Add(new QueryTriple("s", 400483980, 423330836));
+            //program.Queries.Add(new QueryTriple("-", 477444954));
+            //program.Queries.Add(new QueryTriple("?", 441393551));
+            //program.Queries.Add(new QueryTriple("s", 66257759, 66257759));
+            //program.Queries.Add(new QueryTriple("-", 822218158));
+            //program.Queries.Add(new QueryTriple("?", 806479414));
+            //program.Queries.Add(new QueryTriple("s", 548665149, 925635534));
+            //program.Queries.Add(new QueryTriple("s", 66257759, 66257759));
+            //program.Queries.Add(new QueryTriple("?", 234121006));
+            //program.Queries.Add(new QueryTriple("+", 663305907));
+            //program.Queries.Add(new QueryTriple("s", 314809050, 685231317));
+            //program.Queries.Add(new QueryTriple("-", 0));
+            //program.Queries.Add(new QueryTriple("s", 487458874, 602635501));
+            //program.Queries.Add(new QueryTriple("s", 66257759, 66257759));
+            //program.Queries.Add(new QueryTriple("?", 918193520));
+            //program.Queries.Add(new QueryTriple("?", 606474691));
+            //program.Queries.Add(new QueryTriple("s", 188185089, 774086933));
+            //program.Queries.Add(new QueryTriple("-", 322445571));
+            //program.Queries.Add(new QueryTriple("s", 66257759, 66257759));
+            //program.Queries.Add(new QueryTriple("-", 814123984));
+            //program.Queries.Add(new QueryTriple("s", 0, 0));
+            //program.Queries.Add(new QueryTriple("s", 0, 0));
+            //program.Queries.Add(new QueryTriple("s", 689260392, 827869844));
+            //program.Queries.Add(new QueryTriple("?", 204276815));
+            //program.Queries.Add(new QueryTriple("-", 66257759));
+            //program.Queries.Add(new QueryTriple("?", 488766408));
+            //program.Queries.Add(new QueryTriple("s", 412617563, 631410280));
+            //program.Queries.Add(new QueryTriple("-", 463415495));
+            //program.Queries.Add(new QueryTriple("+", 601030115));
+            //program.Queries.Add(new QueryTriple("?", 776513589));
+            //program.Queries.Add(new QueryTriple("s", 257003372, 887483600));
+            //program.Queries.Add(new QueryTriple("+", 154047223));
+            //program.Queries.Add(new QueryTriple("?", 154047223));
+            //program.Queries.Add(new QueryTriple("?", 219327735));
+            //program.Queries.Add(new QueryTriple("+", 978812473));
+            //program.Queries.Add(new QueryTriple("s", 978812473, 154047223));
+            //program.Queries.Add(new QueryTriple("?", 718062555));
+            //program.Queries.Add(new QueryTriple("?", 128066784));
+            //program.Queries.Add(new QueryTriple("-", 15718305));
+            //program.Queries.Add(new QueryTriple("?", 754978417));
+            //program.Queries.Add(new QueryTriple("s", 643892549, 819127300));
+            //program.Queries.Add(new QueryTriple("?", 192401474));
+            //program.Queries.Add(new QueryTriple("?", 643892549));
+            //program.Queries.Add(new QueryTriple("+", 638898307));
+            //program.Queries.Add(new QueryTriple("?", 973173529));
+            //program.Queries.Add(new QueryTriple("+", 506709268));
+            //program.Queries.Add(new QueryTriple("-", 506709268));
+            //program.Queries.Add(new QueryTriple("+", 744166533));
+            //program.Queries.Add(new QueryTriple("-", 638898307));
+            //program.Queries.Add(new QueryTriple("+", 95240753));
+            //program.Queries.Add(new QueryTriple("s", 997348833, 63778002));
+            //program.Queries.Add(new QueryTriple("?", 31190791));
+            //program.Queries.Add(new QueryTriple("s", 21011834, 570648768));
+            //program.Queries.Add(new QueryTriple("+", 217208615));
+            //program.Queries.Add(new QueryTriple("+", 401912531));
+            //program.Queries.Add(new QueryTriple("s", 0, 723886547));
+            //program.Queries.Add(new QueryTriple("?", 251082460));
+            //program.Queries.Add(new QueryTriple("+", 542593404));
+            //program.Queries.Add(new QueryTriple("s", 702430665, 542593404));
+            //program.Queries.Add(new QueryTriple("?", 48285749));
+            //program.Queries.Add(new QueryTriple("s", 831077135, 671239874));
+            //program.Queries.Add(new QueryTriple("+", 917941607));
+            //program.Queries.Add(new QueryTriple("?", 908494561));
+            //program.Queries.Add(new QueryTriple("?", 671239874));
+            //program.Queries.Add(new QueryTriple("s", 333354822, 490605331));
+            //program.Queries.Add(new QueryTriple("+", 261522346));
+            //program.Queries.Add(new QueryTriple("s", 170201520, 10364259));
+            //program.Queries.Add(new QueryTriple("-", 139162050));
+            //program.Queries.Add(new QueryTriple("-", 677374727));
+            //program.Queries.Add(new QueryTriple("?", 992422786));
+            //program.Queries.Add(new QueryTriple("?", 500171144));
+            //program.Queries.Add(new QueryTriple("-", 239436034));
+            //program.Queries.Add(new QueryTriple("+", 556867643));
+            //program.Queries.Add(new QueryTriple("?", 992422786));
+            //program.Queries.Add(new QueryTriple("+", 720003678));
+            //program.Queries.Add(new QueryTriple("s", 220110584, 268880636));
+            //program.Queries.Add(new QueryTriple("s", 31190791, 997548180));
+            //program.Queries.Add(new QueryTriple("s", 898610232, 383552107));
+            //program.Queries.Add(new QueryTriple("-", 682670734));
+            //program.Queries.Add(new QueryTriple("+", 547596765));
+            //program.Queries.Add(new QueryTriple("s", 496810115, 875859347));
+            //program.Queries.Add(new QueryTriple("?", 41728941));
+
+            //program.ExecuteQueries();
+
+            //program.QueryResults[0].ShouldBe("0");
+            //program.QueryResults[1].ShouldBe("0");
+            //program.QueryResults[2].ShouldBe("0");
+            //program.QueryResults[3].ShouldBe("0");
+            //program.QueryResults[4].ShouldBe("Not found   ".TrimEnd(' '));
+            //program.QueryResults[5].ShouldBe("Not found   ".TrimEnd(' '));
+            //program.QueryResults[6].ShouldBe("66257759    ".TrimEnd(' '));
+            //program.QueryResults[7].ShouldBe("0           ".TrimEnd(' '));
+            //program.QueryResults[8].ShouldBe("Not found   ".TrimEnd(' '));
+            //program.QueryResults[9].ShouldBe("0           ".TrimEnd(' '));
+            //program.QueryResults[10].ShouldBe("Not found   ".TrimEnd(' '));
+            //program.QueryResults[11].ShouldBe("66257759    ".TrimEnd(' '));
+            //program.QueryResults[12].ShouldBe("Not found   ".TrimEnd(' '));
+            //program.QueryResults[13].ShouldBe("0           ".TrimEnd(' '));
+            //program.QueryResults[14].ShouldBe("66257759    ".TrimEnd(' '));
+            //program.QueryResults[15].ShouldBe("Not found   ".TrimEnd(' '));
+            //program.QueryResults[16].ShouldBe("729563666   ".TrimEnd(' '));
+            //program.QueryResults[17].ShouldBe("0           ".TrimEnd(' '));
+            //program.QueryResults[18].ShouldBe("66257759    ".TrimEnd(' '));
+            //program.QueryResults[19].ShouldBe("Not found   ".TrimEnd(' '));
+            //program.QueryResults[20].ShouldBe("Not found   ".TrimEnd(' '));
+            //program.QueryResults[21].ShouldBe("0           ".TrimEnd(' '));
+            //program.QueryResults[22].ShouldBe("66257759    ".TrimEnd(' '));
+            //program.QueryResults[23].ShouldBe("66257759    ".TrimEnd(' '));
+            //program.QueryResults[24].ShouldBe("66257759    ".TrimEnd(' '));
+            //program.QueryResults[25].ShouldBe("0           ".TrimEnd(' '));
+            //program.QueryResults[26].ShouldBe("Not found   ".TrimEnd(' '));
+            //program.QueryResults[27].ShouldBe("Not found   ".TrimEnd(' '));
+            //program.QueryResults[28].ShouldBe("0           ".TrimEnd(' '));
+            //program.QueryResults[29].ShouldBe("Not found   ".TrimEnd(' '));
+            //program.QueryResults[30].ShouldBe("601030115   ".TrimEnd(' '));
+            //program.QueryResults[31].ShouldBe("Found       ".TrimEnd(' '));
+            //program.QueryResults[32].ShouldBe("Not found   ".TrimEnd(' '));
+            //program.QueryResults[33].ShouldBe("1935950040  ".TrimEnd(' '));
+            //program.QueryResults[34].ShouldBe("Not found   ".TrimEnd(' '));
+            //program.QueryResults[35].ShouldBe("Not found   ".TrimEnd(' '));
+            //program.QueryResults[36].ShouldBe("Not found   ".TrimEnd(' '));
+            //program.QueryResults[37].ShouldBe("1935950040  ".TrimEnd(' '));
+            //program.QueryResults[38].ShouldBe("Not found   ".TrimEnd(' '));
+            //program.QueryResults[39].ShouldBe("Found       ".TrimEnd(' '));
+            //program.QueryResults[40].ShouldBe("Not found   ".TrimEnd(' '));
+            //program.QueryResults[41].ShouldBe("0           ".TrimEnd(' '));
+            //program.QueryResults[42].ShouldBe("Found       ".TrimEnd(' '));
+            //program.QueryResults[43].ShouldBe("31190791    ".TrimEnd(' '));
+            //program.QueryResults[44].ShouldBe("3328760130  ".TrimEnd(' '));
+            //program.QueryResults[45].ShouldBe("Found       ".TrimEnd(' '));
+            //program.QueryResults[46].ShouldBe("4200113661  ".TrimEnd(' '));
+            //program.QueryResults[47].ShouldBe("Found       ".TrimEnd(' '));
+            //program.QueryResults[48].ShouldBe("4200113661  ".TrimEnd(' '));
+            //program.QueryResults[49].ShouldBe("Not found   ".TrimEnd(' '));
+            //program.QueryResults[50].ShouldBe("Found       ".TrimEnd(' '));
+            //program.QueryResults[51].ShouldBe("1860989273  ".TrimEnd(' '));
+            //program.QueryResults[52].ShouldBe("4440680541  ".TrimEnd(' '));
+            //program.QueryResults[53].ShouldBe("Found       ".TrimEnd(' '));
+            //program.QueryResults[54].ShouldBe("Not found   ".TrimEnd(' '));
+            //program.QueryResults[55].ShouldBe("Found       ".TrimEnd(' '));
+            //program.QueryResults[56].ShouldBe("0           ".TrimEnd(' '));
+            //program.QueryResults[57].ShouldBe("4220898514  ".TrimEnd(' '));
+            //program.QueryResults[58].ShouldBe("1565728674  ".TrimEnd(' '));
+            //program.QueryResults[59].ShouldBe("829624590   ".TrimEnd(' '));
+            //program.QueryResults[60].ShouldBe("Found       ".TrimEnd(' '));
+        }
+
+        [Test]
         public void Query_ProblemSet2()
         {
             var program = new Program();
@@ -20,9 +216,9 @@ namespace SetWithRangeSums
 
             program.ExecuteQueries();
 
-            program.QueryResults[0].ShouldBe("Found"); 
+            program.QueryResults[0].ShouldBe("Found");
             program.QueryResults[1].ShouldBe("Not found");
-            program.QueryResults[2].ShouldBe("491572259"); 
+            program.QueryResults[2].ShouldBe("491572259");
         }
 
         [Test]
@@ -33,12 +229,12 @@ namespace SetWithRangeSums
             program.Queries.Add(new QueryTriple("+", 1));
             program.Queries.Add(new QueryTriple("?", 1));
             program.Queries.Add(new QueryTriple("+", 2));
-            program.Queries.Add(new QueryTriple("s", 1, 2)); 
+            program.Queries.Add(new QueryTriple("s", 1, 2));
             program.Queries.Add(new QueryTriple("+", 1000000000)); // running sum = 3
             program.Queries.Add(new QueryTriple("?", 1000000000));
             program.Queries.Add(new QueryTriple("-", 1000000000));
             program.Queries.Add(new QueryTriple("?", 1000000000));
-            program.Queries.Add(new QueryTriple("s", 999999999, 1000000000)); 
+            program.Queries.Add(new QueryTriple("s", 999999999, 1000000000));
             program.Queries.Add(new QueryTriple("-", 2)); // running sum = 1
             program.Queries.Add(new QueryTriple("?", 2));
             program.Queries.Add(new QueryTriple("-", 0));
@@ -120,6 +316,7 @@ namespace SetWithRangeSums
             var sum = program.SumRange(5, 9);
 
             sum.ShouldBe(0);
+            program.Root.Value.ShouldBe(4);
         }
 
         [Test]
@@ -132,6 +329,7 @@ namespace SetWithRangeSums
             var sum = program.SumRange(4, 9);
 
             sum.ShouldBe(4);
+            program.Root.Value.ShouldBe(4);
         }
 
         [Test]
@@ -144,6 +342,7 @@ namespace SetWithRangeSums
             var sum = program.SumRange(4, 9);
 
             sum.ShouldBe(0);
+            program.Root.Value.ShouldBe(10);
         }
 
         [Test]
@@ -166,6 +365,7 @@ namespace SetWithRangeSums
             var sum = program.SumRange(25, 75);
 
             sum.ShouldBe(250);
+            program.Root.Value.ShouldBe(75);
         }
 
         [Test]
