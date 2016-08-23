@@ -10,8 +10,8 @@ namespace SetWithRangeSums
         public List<TreeNode> TreeNodes { get; set; }
         public TreeNode Root { get; set; }
         public List<string> QueryResults { get; set; }
-        public int M { get; set; } = 1000000001;
-        public int RunningSum { get; set; } = 0;
+        public int M { get; set; }
+        public int RunningSum { get; set; }
 
         public Program()
         {
@@ -19,6 +19,8 @@ namespace SetWithRangeSums
             TreeNodes = new List<TreeNode>();
             QueryResults = new List<string>();
             Root = new TreeNode();
+            RunningSum = 0;
+            M = 1000000001;
         }
 
         internal void ExecuteQueries()
@@ -500,7 +502,11 @@ namespace SetWithRangeSums
 
         public bool NodeHasGrandparent(TreeNode node)
         {
-            return node.Parent?.Parent != null;
+            if (node.Parent != null)
+            {
+                return node.Parent.Parent != null;
+            }
+            return false;
         }
 
         public SplitRoots SplaySplit(int searchTerm, TreeNode node)
