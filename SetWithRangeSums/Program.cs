@@ -27,8 +27,8 @@ namespace SetWithRangeSums
             foreach (var query in Queries)
             {
                 var operation = query.Operation;
-                var operand = query.Low;
-                var highRange = query.High;
+                var operand = (query.Low + RunningSum) % M;
+                var highRange = (query.High + RunningSum) % M;
 
                 switch (operation)
                 {
@@ -50,7 +50,10 @@ namespace SetWithRangeSums
                         }
                         var foundNode = SplayFind(operand, Root);
                         if (foundNode.Value != operand)
+                        {
                             QueryResults.Add(Results.NotFound);
+                            break;
+                        }
                         QueryResults.Add(Results.Found);
                         break;
                     case Operations.Del:
@@ -66,6 +69,7 @@ namespace SetWithRangeSums
                         }
                         var rangeSum = SumRange(operand, highRange);
                         QueryResults.Add(rangeSum.ToString());
+                        RunningSum = rangeSum;
                         break;
                 }
             }
@@ -80,48 +84,38 @@ namespace SetWithRangeSums
             var replacementNode = Next(nodeToDelete);
             Splay(replacementNode);
             Splay(nodeToDelete);
+
             Del(deleteTerm, Root);
         }
 
         private void Del(int deleteTerm, TreeNode root)
         {
             if (root == null)
-            {
-                Root = new TreeNode();
                 return;
-            }
 
-            var nodeToDelete = Find(deleteTerm, root);
-            var parent = nodeToDelete.Parent;
-
-            var rightChild = nodeToDelete.RightChild;
-            var leftChild = nodeToDelete.LeftChild;
+            var rightChild = root.RightChild;
+            var leftChild = root.LeftChild;
 
             if (rightChild == null && leftChild == null)
             {
-                TreeNodes.Remove(nodeToDelete);
-                Root = new TreeNode();
-                return;
+                Root = null;
+                DeleteNode(root);
             }
 
+            TreeNode replacementNode;
             if (rightChild == null)
             {
-                if (parent.LeftChild == nodeToDelete)
-                    parent.LeftChild = leftChild;
-                else
-                    parent.RightChild = leftChild;
-                leftChild.Parent = parent;
+                replacementNode = leftChild;
+                if (leftChild != null)
+                    leftChild.Parent = null;
 
                 UpdateSum(leftChild);
                 Root = leftChild;
             }
             else
             {
-                var replacementNode = Next(nodeToDelete);
-                replacementNode.Parent = parent;
-
-                if (parent != null)
-                    parent.RightChild = replacementNode; 
+                replacementNode = Next(root);
+                replacementNode.Parent = null;
                 
                 if (leftChild != null)
                 {
@@ -135,10 +129,19 @@ namespace SetWithRangeSums
                     rightChild.Parent = replacementNode;
                 }
 
-
                 UpdateSum(replacementNode);
                 Root = replacementNode;
             }
+
+            DeleteNode(root);
+        }
+
+        private void DeleteNode(TreeNode root)
+        {
+            TreeNodes.Remove(root);
+            root.LeftChild = null;
+            root.RightChild = null;
+            root.Parent = null;
         }
 
         private TreeNode Next(TreeNode node)
@@ -621,14 +624,14 @@ namespace SetWithRangeSums
         public void UpdateSum(TreeNode node)
         {
             var leftSubtreeSum = 0;
-            if (node.LeftChild != null)
+            if (node?.LeftChild != null)
                 leftSubtreeSum = (int) node?.LeftChild.SubtreeSum;
 
             var rightSubtreeSum = 0;
-            if (node.RightChild != null)
+            if (node?.RightChild != null)
                 rightSubtreeSum = (int) node?.RightChild.SubtreeSum;
 
-            node.SubtreeSum = (node.Value ?? 0) + leftSubtreeSum + rightSubtreeSum;
+            if (node != null) node.SubtreeSum = (node.Value ?? 0) + leftSubtreeSum + rightSubtreeSum;
         }
 
         public int SumRange(int lowerBound, int upperBound)

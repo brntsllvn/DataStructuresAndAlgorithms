@@ -8,6 +8,38 @@ namespace SetWithRangeSums
     class AaaSetWithRangeSums
     {
         [Test]
+        public void Query_ProblemSet()
+        {
+            var program = new Program();
+            program.Queries.Add(new QueryTriple("?", 1)); // running sum = 0
+            program.Queries.Add(new QueryTriple("+", 1));
+            program.Queries.Add(new QueryTriple("?", 1));
+            program.Queries.Add(new QueryTriple("+", 2));
+            program.Queries.Add(new QueryTriple("s", 1, 2)); 
+            program.Queries.Add(new QueryTriple("+", 1000000000)); // running sum = 3
+            program.Queries.Add(new QueryTriple("?", 1000000000));
+            program.Queries.Add(new QueryTriple("-", 1000000000));
+            program.Queries.Add(new QueryTriple("?", 1000000000));
+            program.Queries.Add(new QueryTriple("s", 999999999, 1000000000)); 
+            program.Queries.Add(new QueryTriple("-", 2)); // running sum = 1
+            program.Queries.Add(new QueryTriple("?", 2));
+            program.Queries.Add(new QueryTriple("-", 0));
+            program.Queries.Add(new QueryTriple("+", 9));
+            program.Queries.Add(new QueryTriple("s", 0, 9));
+
+            program.ExecuteQueries();
+
+            program.QueryResults[0].ShouldBe("Not found"); // ?1 
+            program.QueryResults[1].ShouldBe("Found"); //?1
+            program.QueryResults[2].ShouldBe("3"); // s1,2
+            program.QueryResults[3].ShouldBe("Found"); // ?1000000000
+            program.QueryResults[4].ShouldBe("Not found"); // ?1000000000
+            program.QueryResults[5].ShouldBe("1"); // s999999999,1000000000
+            program.QueryResults[6].ShouldBe("Not found"); // ?2
+            program.QueryResults[7].ShouldBe("10"); // ?2
+        }
+
+        [Test]
         public void QuerySum_Simple()
         {
             var program = new Program();
@@ -31,7 +63,7 @@ namespace SetWithRangeSums
             program.Queries.Add(new QueryTriple("+", 80));
             program.Queries.Add(new QueryTriple("-", 50));
             program.Queries.Add(new QueryTriple("s", 50, 80));
-            
+
             program.ExecuteQueries();
 
             program.QueryResults[0].ShouldBe("210");
@@ -46,15 +78,20 @@ namespace SetWithRangeSums
             program.Queries.Add(new QueryTriple("+", 70));
             program.Queries.Add(new QueryTriple("+", 80));
             program.Queries.Add(new QueryTriple("s", 50, 70));
+            program.Queries.Add(new QueryTriple("s", 9999, 1000));
             program.Queries.Add(new QueryTriple("s", 60, 80));
+            program.Queries.Add(new QueryTriple("s", 9999, 1000));
             program.Queries.Add(new QueryTriple("s", 60, 70));
 
             program.ExecuteQueries();
 
             program.QueryResults[0].ShouldBe("180");
-            program.QueryResults[1].ShouldBe("210");
-            program.QueryResults[2].ShouldBe("130");
+            program.QueryResults[1].ShouldBe("0");
+            program.QueryResults[2].ShouldBe("210");
+            program.QueryResults[3].ShouldBe("0");
+            program.QueryResults[4].ShouldBe("130");
         }
+
         [Test]
         public void SumRange_OneNode_OutOfRange()
         {
@@ -71,10 +108,10 @@ namespace SetWithRangeSums
         public void SumRange_OneNode_InRange()
         {
             var program = new Program();
-            var parent = new TreeNode(4,null,null,null,4);
+            var parent = new TreeNode(4, null, null, null, 4);
             program.Root = parent;
 
-            var sum = program.SumRange(4,9);
+            var sum = program.SumRange(4, 9);
 
             sum.ShouldBe(4);
         }
@@ -218,7 +255,7 @@ namespace SetWithRangeSums
         {
             var program = new Program();
             var parent = new TreeNode(50);
-            var child = new TreeNode(25,null,null,parent,25);
+            var child = new TreeNode(25, null, null, parent, 25);
             parent.LeftChild = child;
             program.Root = parent;
 
@@ -231,8 +268,8 @@ namespace SetWithRangeSums
         {
             var program = new Program();
             var parent = new TreeNode(50);
-            var child = new TreeNode(25,null,null,parent);
-            var grandChild = new TreeNode(10,null,null,parent,10);
+            var child = new TreeNode(25, null, null, parent);
+            var grandChild = new TreeNode(10, null, null, parent, 10);
             parent.LeftChild = child;
             child.LeftChild = grandChild;
             program.Root = parent;
@@ -248,8 +285,8 @@ namespace SetWithRangeSums
         {
             var program = new Program();
             var parent = new TreeNode(50);
-            var leftChild = new TreeNode(25,null,null,parent);
-            var rightChild = new TreeNode(75,null,null,parent);
+            var leftChild = new TreeNode(25, null, null, parent);
+            var rightChild = new TreeNode(75, null, null, parent);
             parent.LeftChild = leftChild;
             leftChild.LeftChild = rightChild;
             parent.RightChild = rightChild;
@@ -269,7 +306,7 @@ namespace SetWithRangeSums
         public void SplaySplit_OneNodeEqual()
         {
             var program = new Program();
-            var node = new TreeNode(50,null,null,null,50);
+            var node = new TreeNode(50, null, null, null, 50);
             program.Root = node;
 
             var splitNodes = program.SplaySplit(50, node);
@@ -315,8 +352,8 @@ namespace SetWithRangeSums
         {
             var program = new Program();
             var root = new TreeNode(50, null, null, null, 150);
-            var left = new TreeNode(25,null,null,root,25);
-            var right = new TreeNode(75,null,null,root,75);
+            var left = new TreeNode(25, null, null, root, 25);
+            var right = new TreeNode(75, null, null, root, 75);
             program.Root = root;
 
             root.LeftChild = left;
@@ -429,9 +466,9 @@ namespace SetWithRangeSums
         public void MergeWithRoot_TwoNodes_AndRoot()
         {
             var program = new Program();
-            var leftRoot = new TreeNode(10,null,null,null,10);
-            var middleRoot = new TreeNode(15,null,null,null,15);
-            var rightRoot = new TreeNode(20,null,null,null,20);
+            var leftRoot = new TreeNode(10, null, null, null, 10);
+            var middleRoot = new TreeNode(15, null, null, null, 15);
+            var rightRoot = new TreeNode(20, null, null, null, 20);
 
             var root = program.MergeWithRoot(leftRoot, rightRoot, middleRoot);
 
@@ -454,15 +491,15 @@ namespace SetWithRangeSums
         {
             var program = new Program();
 
-            var leftRoot = new TreeNode(10,null,null,null,30);
-            leftRoot.LeftChild = new TreeNode(5,null,null,leftRoot,5);
-            leftRoot.RightChild = new TreeNode(15,null,null,leftRoot,15);
+            var leftRoot = new TreeNode(10, null, null, null, 30);
+            leftRoot.LeftChild = new TreeNode(5, null, null, leftRoot, 5);
+            leftRoot.RightChild = new TreeNode(15, null, null, leftRoot, 15);
 
-            var rightRoot = new TreeNode(20,null,null,null,60);
-            rightRoot.LeftChild = new TreeNode(17,null,null,rightRoot,47);
-            rightRoot.LeftChild.LeftChild = new TreeNode(11,null,null,rightRoot.LeftChild,11);
-            rightRoot.LeftChild.RightChild = new TreeNode(19,null,null,rightRoot.LeftChild,19);
-            rightRoot.RightChild = new TreeNode(23,null,null,rightRoot,23);
+            var rightRoot = new TreeNode(20, null, null, null, 60);
+            rightRoot.LeftChild = new TreeNode(17, null, null, rightRoot, 47);
+            rightRoot.LeftChild.LeftChild = new TreeNode(11, null, null, rightRoot.LeftChild, 11);
+            rightRoot.LeftChild.RightChild = new TreeNode(19, null, null, rightRoot.LeftChild, 19);
+            rightRoot.RightChild = new TreeNode(23, null, null, rightRoot, 23);
 
             var root = program.Merge(leftRoot, rightRoot);
 
@@ -579,7 +616,7 @@ namespace SetWithRangeSums
         public void Split_Five_SearchEqualsNode()
         {
             var program = new Program();
-            var root = new TreeNode(50,null,null,null, 250);
+            var root = new TreeNode(50, null, null, null, 250);
 
             var leftChild = new TreeNode(25, null, null, root, 65);
             root.LeftChild = leftChild;
@@ -814,7 +851,7 @@ namespace SetWithRangeSums
 
             program.ExecuteQueries();
 
-            program.Root.Value.ShouldBe(-1);
+            program.Root.ShouldBeNull();
         }
 
         [Test]
@@ -1003,7 +1040,7 @@ namespace SetWithRangeSums
         {
             var program = new Program();
 
-            var greatGrandparent = new TreeNode(40,null,null,null, 179);
+            var greatGrandparent = new TreeNode(40, null, null, null, 179);
             var grandparent = new TreeNode(50, null, null, greatGrandparent, 139);
             var parent = new TreeNode(45, null, null, grandparent, 89);
             var splay = new TreeNode(44, null, null, parent, 44);
@@ -1598,7 +1635,7 @@ namespace SetWithRangeSums
             triple.High.ShouldBe(high);
         }
 
-#region
+        #region
         private static readonly object[] Raw =
         {
                 new object[] { "A", new object[] {"+",1},  new List<QueryTriple> {
@@ -1622,6 +1659,6 @@ namespace SetWithRangeSums
                     }
                 },
         };
-#endregion
+        #endregion
     }
 }
