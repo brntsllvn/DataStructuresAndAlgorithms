@@ -93,12 +93,6 @@ namespace SetWithRangeSums
             var nodeToDelete = Find(deleteTerm, root);
             var parent = nodeToDelete.Parent;
 
-            if (parent == null)
-            {
-                Root = new TreeNode();
-                return;
-            }
-
             var rightChild = nodeToDelete.RightChild;
             var leftChild = nodeToDelete.LeftChild;
 
@@ -640,8 +634,8 @@ namespace SetWithRangeSums
 
             var sum = middleAndRightRoots?.LeftRoot?.SubtreeSum ?? 0;
 
-            Merge(leftAndMiddleRoots.LeftRoot, leftAndMiddleRoots.RightRoot);
-            Merge(middleAndRightRoots.LeftRoot, middleAndRightRoots.RightRoot);
+            //Merge(leftAndMiddleRoots.LeftRoot, leftAndMiddleRoots.RightRoot);
+            //Merge(middleAndRightRoots.LeftRoot, middleAndRightRoots.RightRoot);
 
             return sum;
         }
