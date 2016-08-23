@@ -456,11 +456,11 @@ namespace SetWithRangeSums
 
             var root = program.Merge(leftRoot, rightRoot);
 
-            root.Value.ShouldBe(10);
+            root.Value.ShouldBe(20);
             root.SubtreeSum.ShouldBe(30);
 
-            root.RightChild.Value.ShouldBe(20);
-            root.RightChild.SubtreeSum.ShouldBe(20);
+            root.LeftChild.Value.ShouldBe(10);
+            root.LeftChild.SubtreeSum.ShouldBe(10);
         }
 
         [Test]

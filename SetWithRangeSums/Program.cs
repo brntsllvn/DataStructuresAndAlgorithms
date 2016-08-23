@@ -601,17 +601,21 @@ namespace SetWithRangeSums
                 return leftRoot;
 
             largestNodeInLeftTree = Find(int.MaxValue, leftRoot);
-            Del(largestNodeInLeftTree.Value ?? int.MaxValue, leftRoot);
+            Splay(largestNodeInLeftTree);
+            //Del(largestNodeInLeftTree.Value ?? int.MaxValue, leftRoot);
             
             if (leftRoot.LeftChild == null && leftRoot.RightChild == null)
                 leftRoot = null;
 
-            MergeWithRoot(leftRoot, rightRoot, largestNodeInLeftTree);
+            //MergeWithRoot(leftRoot, rightRoot, largestNodeInLeftTree);
 
-            UpdateSum(largestNodeInLeftTree);
-            Root = largestNodeInLeftTree;
+            rightRoot.LeftChild = largestNodeInLeftTree;
+            largestNodeInLeftTree.Parent = rightRoot;
 
-            return largestNodeInLeftTree;
+            UpdateSum(rightRoot);
+            Root = rightRoot;
+
+            return rightRoot;
         }
 
         public void UpdateSum(TreeNode node)
@@ -634,8 +638,8 @@ namespace SetWithRangeSums
 
             var sum = middleAndRightRoots?.LeftRoot?.SubtreeSum ?? 0;
 
-            //Merge(leftAndMiddleRoots.LeftRoot, leftAndMiddleRoots.RightRoot);
-            //Merge(middleAndRightRoots.LeftRoot, middleAndRightRoots.RightRoot);
+            Merge(leftAndMiddleRoots.LeftRoot, middleAndRightRoots.LeftRoot);
+            Merge(middleAndRightRoots.LeftRoot, middleAndRightRoots.RightRoot);
 
             return sum;
         }
