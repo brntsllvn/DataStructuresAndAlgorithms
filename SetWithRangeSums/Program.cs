@@ -18,7 +18,7 @@ namespace SetWithRangeSums
             Queries = new List<QueryTriple>();
             TreeNodes = new List<TreeNode>();
             QueryResults = new List<string>();
-            Root = new TreeNode();
+            Root = null;
             RunningSum = 0;
             M = 1000000001;
         }
@@ -30,7 +30,8 @@ namespace SetWithRangeSums
                 var operation = query.Operation;
                 var operand = (query.Low + RunningSum) % M;
 
-                var highRange = (query.High + RunningSum) % M;
+                var high = query.High;
+                var highRange = (high + RunningSum) % M;
                 if (operation != Operations.Sum)
                     highRange = 0;
 
@@ -85,6 +86,10 @@ namespace SetWithRangeSums
                 return;
 
             var nodeToDelete = Find(deleteTerm, Root);
+
+            if (nodeToDelete.Value != deleteTerm)
+                return;
+
             var replacementNode = Next(nodeToDelete);
             Splay(replacementNode);
             Splay(nodeToDelete);
@@ -392,7 +397,7 @@ namespace SetWithRangeSums
             var greatGrandparent = grandparent.Parent;
 
             splayNode.LeftChild = parent;
-            splayNode.Parent = null;
+            splayNode.Parent = null; // should equal great-grandparent?
 
             parent.RightChild = splayNodeLeftChild;
 
@@ -402,8 +407,6 @@ namespace SetWithRangeSums
                 parentLeftChild.Parent = grandparent;
                 grandparent.RightChild = parentLeftChild;
             }
-            else
-                grandparent.LeftChild = null;
 
             parent.LeftChild = grandparent;
             parent.Parent = splayNode;
@@ -566,6 +569,10 @@ namespace SetWithRangeSums
             else
             {
                 var splitRoots = Split(searchTerm, rootNode.RightChild);
+
+                //if (rootNode.LeftChild == null && splitRoots.LeftRoot == null)
+                //    return new SplitRoots(rootNode, splitRoots.RightRoot);
+
                 var mergedLessThanRoot = MergeWithRoot(rootNode.LeftChild, 
                     splitRoots.LeftRoot, rootNode);
                 return new SplitRoots(mergedLessThanRoot, splitRoots.RightRoot);
@@ -599,13 +606,8 @@ namespace SetWithRangeSums
             var smallestNodeInRightTree = Find(int.MinValue, rightRoot);
             Splay(smallestNodeInRightTree);
             
-            if (leftRoot.LeftChild == null && leftRoot.RightChild == null)
-                leftRoot = null;
-
             smallestNodeInRightTree.LeftChild = leftRoot;
-
-            if (leftRoot != null)
-                leftRoot.Parent = rightRoot;
+            leftRoot.Parent = rightRoot;
 
             UpdateSum(smallestNodeInRightTree);
             Root = smallestNodeInRightTree;
@@ -635,14 +637,8 @@ namespace SetWithRangeSums
             if (middleAndRightRoots.LeftRoot != null)
                 sum = middleAndRightRoots.LeftRoot.SubtreeSum;
 
-
-            Merge(leftAndMiddleRoots.LeftRoot, middleAndRightRoots.LeftRoot);
+            Merge(leftAndMiddleRoots.LeftRoot, leftAndMiddleRoots.RightRoot);
             Merge(middleAndRightRoots.LeftRoot, middleAndRightRoots.RightRoot);
-
-            if (middleAndRightRoots.LeftRoot != null)
-                Root = middleAndRightRoots.LeftRoot;
-            else if (middleAndRightRoots.RightRoot != null)
-                Root = middleAndRightRoots.RightRoot;
                 
             return sum;
         }
