@@ -79,6 +79,14 @@ namespace SetWithRangeSums
         }
 
         [Test]
+        public void Merge_Bug()
+        {
+            var program = new Program();
+
+
+        }
+
+        [Test]
         public void Another_Sum_Related_Bug()
         {
 
@@ -348,6 +356,32 @@ namespace SetWithRangeSums
             root.SubtreeSum.ShouldBe(150);
         }
 
+        //[Test]
+        //public void MergeBug()
+        //{
+        //    var program = new Program();
+
+        //    // left tree
+        //    var leftRoot = new TreeNode(10, null, null, null, 45);
+        //    var leftRight = new TreeNode(15, null, null, leftRoot, 35);
+        //    var leftRightLeft = new TreeNode(20, null, null, leftRight, 20);
+        //    leftRoot.RightChild = leftRight;
+        //    leftRight.RightChild = leftRightLeft;
+
+        //    program.Root = leftRoot;
+
+        //    // right tree
+        //    var rightRoot = new TreeNode(100, null, null, null, 250);
+        //    var rightRight = new TreeNode(150, null, null, rightRoot, 150);
+        //    rightRoot.RightChild = rightRight;
+
+        //    var root = program.Merge(leftRight, rightRoot);
+
+        //    root.Value.ShouldBe(100);
+        //    root.RightChild.Value.ShouldBe(150);
+        //    root.LeftChild.Value.ShouldBe(10);
+        //}
+
         [Test]
         //[Ignore]
         public void Problem_Twenty()
@@ -439,28 +473,26 @@ namespace SetWithRangeSums
             program.Queries.Add(new QueryTriple("s", 333354822, 490605331));
             program.Queries.Add(new QueryTriple("+", 261522346));
             program.Queries.Add(new QueryTriple("s", 170201520, 10364259));
-
-
-            //program.Queries.Add(new QueryTriple("-", 139162050));
-            //program.Queries.Add(new QueryTriple("-", 677374727));
-            //program.Queries.Add(new QueryTriple("?", 992422786));
-            //program.Queries.Add(new QueryTriple("?", 500171144));
-            //program.Queries.Add(new QueryTriple("-", 239436034));
-            //program.Queries.Add(new QueryTriple("+", 556867643));
-            //program.Queries.Add(new QueryTriple("?", 992422786));
-            //program.Queries.Add(new QueryTriple("+", 720003678));
-            //program.Queries.Add(new QueryTriple("s", 220110584, 268880636));
-            //program.Queries.Add(new QueryTriple("s", 31190791, 997548180));
-            //program.Queries.Add(new QueryTriple("s", 898610232, 383552107));
-            //program.Queries.Add(new QueryTriple("-", 682670734));
-            //program.Queries.Add(new QueryTriple("+", 547596765));
-            //program.Queries.Add(new QueryTriple("s", 496810115, 875859347));
+            program.Queries.Add(new QueryTriple("-", 139162050));
+            program.Queries.Add(new QueryTriple("-", 677374727));
+            program.Queries.Add(new QueryTriple("?", 992422786));
+            program.Queries.Add(new QueryTriple("?", 500171144));
+            program.Queries.Add(new QueryTriple("-", 239436034));
+            program.Queries.Add(new QueryTriple("+", 556867643));
+            program.Queries.Add(new QueryTriple("?", 992422786));
+            program.Queries.Add(new QueryTriple("+", 720003678));
+            program.Queries.Add(new QueryTriple("s", 220110584, 268880636));
+            program.Queries.Add(new QueryTriple("s", 31190791, 997548180));
+            program.Queries.Add(new QueryTriple("s", 898610232, 383552107));
+            program.Queries.Add(new QueryTriple("-", 682670734));
+            program.Queries.Add(new QueryTriple("+", 547596765));
+            program.Queries.Add(new QueryTriple("s", 496810115, 875859347)); // stack overflow...?
             //program.Queries.Add(new QueryTriple("?", 41728941));
 
             program.ExecuteQueries();
 
             var queryResultCount = program.Queries.Count(x => x.Operation == "s" || x.Operation == "?");
-            queryResultCount.ShouldBe(53);
+            queryResultCount.ShouldBe(59);
 
             program.QueryResults[0].ShouldBe("0");
             program.QueryResults[1].ShouldBe("0");
@@ -514,15 +546,13 @@ namespace SetWithRangeSums
             program.QueryResults[49].ShouldBe("Not found   ".TrimEnd(' '));
             program.QueryResults[50].ShouldBe("Found       ".TrimEnd(' '));
             program.QueryResults[51].ShouldBe("1860989273  ".TrimEnd(' '));
-            program.QueryResults[52].ShouldBe("4440680541  ".TrimEnd(' ')); // broken
-
-
-            //program.QueryResults[53].ShouldBe("Found       ".TrimEnd(' '));
-            //program.QueryResults[54].ShouldBe("Not found   ".TrimEnd(' '));
-            //program.QueryResults[55].ShouldBe("Found       ".TrimEnd(' '));
-            //program.QueryResults[56].ShouldBe("0           ".TrimEnd(' '));
-            //program.QueryResults[57].ShouldBe("4220898514  ".TrimEnd(' '));
-            //program.QueryResults[58].ShouldBe("1565728674  ".TrimEnd(' '));
+            program.QueryResults[52].ShouldBe("4440680541  ".TrimEnd(' ')); 
+            program.QueryResults[53].ShouldBe("Found       ".TrimEnd(' '));
+            program.QueryResults[54].ShouldBe("Not found   ".TrimEnd(' '));
+            program.QueryResults[55].ShouldBe("Found       ".TrimEnd(' '));
+            program.QueryResults[56].ShouldBe("0           ".TrimEnd(' '));
+            program.QueryResults[57].ShouldBe("4220898514  ".TrimEnd(' '));
+            program.QueryResults[58].ShouldBe("1565728674  ".TrimEnd(' '));
             //program.QueryResults[59].ShouldBe("829624590   ".TrimEnd(' '));
             //program.QueryResults[60].ShouldBe("Found       ".TrimEnd(' '));
         }

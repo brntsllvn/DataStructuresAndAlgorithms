@@ -606,6 +606,8 @@ namespace SetWithRangeSums
             var smallestNodeInRightTree = Find(int.MinValue, rightRoot);
             Splay(smallestNodeInRightTree);
             
+            Splay(leftRoot);
+
             smallestNodeInRightTree.LeftChild = leftRoot;
             leftRoot.Parent = rightRoot;
 
