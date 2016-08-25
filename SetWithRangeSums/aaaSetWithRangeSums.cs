@@ -2,7 +2,6 @@
 using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace SetWithRangeSums
 {
@@ -424,58 +423,6 @@ namespace SetWithRangeSums
         }
 
         [Test]
-        public void Split_And_Merge_8()
-        {
-            var program = new Program();
-
-            program.Queries.Add(new QueryTriple("+", 50));
-            program.Queries.Add(new QueryTriple("+", 20));
-            program.Queries.Add(new QueryTriple("+", 40));
-            program.Queries.Add(new QueryTriple("+", 10));
-            program.Queries.Add(new QueryTriple("+", 30));
-            program.Queries.Add(new QueryTriple("s", 20, 40));
-
-            program.ExecuteQueries();
-
-            program.QueryResults[0].ShouldBe("90");
-
-            var root = program.Root;
-            root.Value.ShouldBe(50);
-            root.LeftChild.Value.ShouldBe(20);
-            root.RightChild.ShouldBeNull();
-            root.Parent.ShouldBeNull();
-            root.SubtreeSum.ShouldBe(150);
-
-            var left = root.LeftChild;
-            left.Value.ShouldBe(20);
-            left.LeftChild.Value.ShouldBe(10);
-            left.RightChild.Value.ShouldBe(40);
-            left.Parent.Value.ShouldBe(50);
-            left.SubtreeSum.ShouldBe(100);
-
-            var ll = left.LeftChild;
-            ll.Value.ShouldBe(10);
-            ll.LeftChild.ShouldBeNull();
-            ll.RightChild.ShouldBeNull();
-            ll.Parent.Value.ShouldBe(20);
-            ll.SubtreeSum.ShouldBe(10);
-
-            var lr = left.RightChild;
-            lr.Value.ShouldBe(40);
-            lr.LeftChild.Value.ShouldBe(30);
-            lr.RightChild.ShouldBeNull();
-            lr.Parent.Value.ShouldBe(20);
-            lr.SubtreeSum.ShouldBe(70);
-
-            var final = lr.LeftChild;
-            final.Value.ShouldBe(30);
-            final.LeftChild.ShouldBeNull();
-            final.RightChild.ShouldBeNull();
-            final.Parent.Value.ShouldBe(40);
-            final.SubtreeSum.ShouldBe(30);
-        }
-
-        [Test]
         //[Ignore]
         public void Split_And_Merge_9()
         {
@@ -687,12 +634,12 @@ namespace SetWithRangeSums
             program.Queries.Add(new QueryTriple("-", 682670734));
             program.Queries.Add(new QueryTriple("+", 547596765));
             program.Queries.Add(new QueryTriple("s", 496810115, 875859347)); // stack overflow...?
-            //program.Queries.Add(new QueryTriple("?", 41728941));
+            program.Queries.Add(new QueryTriple("?", 41728941));
 
             program.ExecuteQueries();
 
             var queryResultCount = program.Queries.Count(x => x.Operation == "s" || x.Operation == "?");
-            queryResultCount.ShouldBe(59);
+            queryResultCount.ShouldBe(61);
 
             program.QueryResults[0].ShouldBe("0");
             program.QueryResults[1].ShouldBe("0");
@@ -754,7 +701,7 @@ namespace SetWithRangeSums
             program.QueryResults[57].ShouldBe("4220898514  ".TrimEnd(' '));
             program.QueryResults[58].ShouldBe("1565728674  ".TrimEnd(' '));
             program.QueryResults[59].ShouldBe("829624590   ".TrimEnd(' '));
-            //program.QueryResults[60].ShouldBe("Found       ".TrimEnd(' '));
+            program.QueryResults[60].ShouldBe("Found       ".TrimEnd(' '));
         }
 
         [Test]
