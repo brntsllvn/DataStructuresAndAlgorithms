@@ -28,6 +28,8 @@ namespace SetWithRangeSums
             foreach (var query in Queries)
             {
                 var operation = query.Operation;
+
+                var adder = query.Low;
                 var operand = (query.Low + RunningSum) % M;
 
                 var high = query.High;
@@ -91,8 +93,10 @@ namespace SetWithRangeSums
                 return;
 
             var replacementNode = Next(nodeToDelete);
-            Splay(replacementNode);
+            Splay(replacementNode); // the problem is here!!!
+            UpdateSum(replacementNode);
             Splay(nodeToDelete);
+            UpdateSum(nodeToDelete);
 
             Del(Root);
         }
@@ -231,6 +235,7 @@ namespace SetWithRangeSums
 
         public void Splay(TreeNode inputNode)
         {
+            // update sum!!!
             switch (DetermineZigZigZag(inputNode))
             {
                 case ZiggaZigAh.ZigLeft:
@@ -541,6 +546,7 @@ namespace SetWithRangeSums
             if (leftRoot != null)
             {
                 leftRoot.Parent = null;
+                // delete parent->child pointer?
                 UpdateSum(leftRoot);
             }
 
@@ -548,6 +554,7 @@ namespace SetWithRangeSums
             if (rightRoot != null)
             {
                 rightRoot.Parent = null;
+                // delete parent->child pointer?
                 UpdateSum(rightRoot);
             }
 

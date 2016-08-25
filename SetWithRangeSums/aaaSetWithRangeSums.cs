@@ -2,6 +2,7 @@
 using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace SetWithRangeSums
 {
@@ -215,7 +216,7 @@ namespace SetWithRangeSums
         }
 
         [Test]
-        public void Split_And_Merge_4()
+        public void Split_And_Merge_4000()
         {
             var program = new Program();
 
@@ -231,11 +232,43 @@ namespace SetWithRangeSums
             program.QueryResults[0].ShouldBe("0");
 
             var root = program.Root;
+            root.Value.ShouldBe(10);
+            root.LeftChild.ShouldBeNull();
+            root.RightChild.Value.ShouldBe(30);
+            root.Parent.ShouldBeNull();
             root.SubtreeSum.ShouldBe(150);
+
+            var rightChild = root.RightChild;
+            rightChild.Value.ShouldBe(30);
+            rightChild.LeftChild.Value.ShouldBe(20);
+            rightChild.RightChild.Value.ShouldBe(40);
+            rightChild.Parent.Value.ShouldBe(10);
+            rightChild.SubtreeSum.ShouldBe(140);
+
+            var rightLeft = rightChild.LeftChild;
+            rightLeft.Value.ShouldBe(20);
+            rightLeft.LeftChild.ShouldBeNull();
+            rightLeft.RightChild.ShouldBeNull();
+            rightLeft.Parent.Value.ShouldBe(30);
+            rightLeft.SubtreeSum.ShouldBe(20);
+
+            var rightChildRight = rightChild.RightChild;
+            rightChildRight.Value.ShouldBe(40);
+            rightChildRight.LeftChild.ShouldBeNull();
+            rightChildRight.RightChild.Value.ShouldBe(50);
+            rightChildRight.Parent.Value.ShouldBe(30);
+            rightChildRight.SubtreeSum.ShouldBe(90);
+
+            var rightRightRight = rightChildRight.RightChild;
+            rightRightRight.Value.ShouldBe(50);
+            rightRightRight.LeftChild.ShouldBeNull();
+            rightRightRight.RightChild.ShouldBeNull();
+            rightRightRight.Parent.Value.ShouldBe(40);
+            rightRightRight.SubtreeSum.ShouldBe(50);
         }
 
         [Test]
-        public void Split_And_Merge_5()
+        public void Split_And_Merge_5000()
         {
             var program = new Program();
 
@@ -251,11 +284,43 @@ namespace SetWithRangeSums
             program.QueryResults[0].ShouldBe("10");
 
             var root = program.Root;
+            root.Value.ShouldBe(20);
+            root.LeftChild.Value.ShouldBe(10);
+            root.RightChild.Value.ShouldBe(30);
+            root.Parent.ShouldBeNull();
             root.SubtreeSum.ShouldBe(150);
+
+            var left = root.LeftChild;
+            left.Value.ShouldBe(10);
+            left.LeftChild.ShouldBeNull();
+            left.RightChild.ShouldBeNull();
+            left.Parent.Value.ShouldBe(20);
+            left.SubtreeSum.ShouldBe(10);
+
+            var right = root.RightChild;
+            right.Value.ShouldBe(30);
+            right.LeftChild.ShouldBeNull();
+            right.RightChild.Value.ShouldBe(40);
+            right.Parent.Value.ShouldBe(20);
+            right.SubtreeSum.ShouldBe(120);
+
+            var rightRight = right.RightChild;
+            rightRight.Value.ShouldBe(40);
+            rightRight.LeftChild.ShouldBeNull();
+            rightRight.RightChild.Value.ShouldBe(50);
+            rightRight.Parent.Value.ShouldBe(30);
+            rightRight.SubtreeSum.ShouldBe(90);
+
+            var rightRightRight = rightRight.RightChild;
+            rightRightRight.Value.ShouldBe(50);
+            rightRightRight.LeftChild.ShouldBeNull();
+            rightRightRight.RightChild.ShouldBeNull();
+            rightRightRight.Parent.Value.ShouldBe(40);
+            rightRightRight.SubtreeSum.ShouldBe(50);
         }
 
         [Test]
-        public void Split_And_Merge_6()
+        public void Split_And_Merge_6000()
         {
             var program = new Program();
 
@@ -271,7 +336,39 @@ namespace SetWithRangeSums
             program.QueryResults[0].ShouldBe("30");
 
             var root = program.Root;
+            root.Value.ShouldBe(30);
+            root.LeftChild.Value.ShouldBe(20);
+            root.RightChild.Value.ShouldBe(40);
+            root.Parent.ShouldBeNull();
             root.SubtreeSum.ShouldBe(150);
+
+            var left = root.LeftChild;
+            left.Value.ShouldBe(20);
+            left.LeftChild.Value.ShouldBe(10);
+            left.RightChild.ShouldBeNull();
+            left.Parent.Value.ShouldBe(30);
+            left.SubtreeSum.ShouldBe(30);
+
+            var leftLeft = left.LeftChild;
+            leftLeft.Value.ShouldBe(10);
+            leftLeft.LeftChild.ShouldBeNull();
+            leftLeft.RightChild.ShouldBeNull();
+            leftLeft.Parent.Value.ShouldBe(20);
+            leftLeft.SubtreeSum.ShouldBe(10);
+
+            var right = root.RightChild;
+            right.Value.ShouldBe(40);
+            right.LeftChild.ShouldBeNull();
+            right.RightChild.Value.ShouldBe(50);
+            right.Parent.Value.ShouldBe(30);
+            right.SubtreeSum.ShouldBe(90);
+
+            var rightRight = right.RightChild;
+            rightRight.Value.ShouldBe(50);
+            rightRight.RightChild.ShouldBeNull();
+            rightRight.LeftChild.ShouldBeNull();
+            rightRight.Parent.Value.ShouldBe(40);
+            rightRight.SubtreeSum.ShouldBe(50);
         }
 
         [Test]
@@ -291,7 +388,39 @@ namespace SetWithRangeSums
             program.QueryResults[0].ShouldBe("150");
 
             var root = program.Root;
+            root.Value.ShouldBe(50);
+            root.LeftChild.Value.ShouldBe(10);
+            root.RightChild.ShouldBeNull();
+            root.Parent.ShouldBeNull();
             root.SubtreeSum.ShouldBe(150);
+
+            var left = root.LeftChild;
+            left.Value.ShouldBe(10);
+            left.LeftChild.ShouldBeNull();
+            left.RightChild.Value.ShouldBe(40);
+            left.Parent.Value.ShouldBe(50);
+            left.SubtreeSum.ShouldBe(100);
+
+            var leftRight = left.RightChild;
+            leftRight.Value.ShouldBe(40);
+            leftRight.LeftChild.Value.ShouldBe(30);
+            leftRight.RightChild.ShouldBeNull();
+            leftRight.Parent.Value.ShouldBe(10);
+            leftRight.SubtreeSum.ShouldBe(90);
+
+            var leftRightLeft = leftRight.LeftChild;
+            leftRightLeft.Value.ShouldBe(30);
+            leftRightLeft.LeftChild.Value.ShouldBe(20);
+            leftRightLeft.RightChild.ShouldBeNull();
+            leftRightLeft.Parent.Value.ShouldBe(40);
+            leftRightLeft.SubtreeSum.ShouldBe(50);
+
+            var lrlr = leftRightLeft.LeftChild;
+            lrlr.Value.ShouldBe(20);
+            lrlr.LeftChild.ShouldBeNull();
+            lrlr.RightChild.ShouldBeNull();
+            lrlr.Parent.Value.ShouldBe(30);
+            lrlr.SubtreeSum.ShouldBe(20);
         }
 
         [Test]
@@ -311,7 +440,39 @@ namespace SetWithRangeSums
             program.QueryResults[0].ShouldBe("90");
 
             var root = program.Root;
+            root.Value.ShouldBe(50);
+            root.LeftChild.Value.ShouldBe(20);
+            root.RightChild.ShouldBeNull();
+            root.Parent.ShouldBeNull();
             root.SubtreeSum.ShouldBe(150);
+
+            var left = root.LeftChild;
+            left.Value.ShouldBe(20);
+            left.LeftChild.Value.ShouldBe(10);
+            left.RightChild.Value.ShouldBe(40);
+            left.Parent.Value.ShouldBe(50);
+            left.SubtreeSum.ShouldBe(100);
+
+            var ll = left.LeftChild;
+            ll.Value.ShouldBe(10);
+            ll.LeftChild.ShouldBeNull();
+            ll.RightChild.ShouldBeNull();
+            ll.Parent.Value.ShouldBe(20);
+            ll.SubtreeSum.ShouldBe(10);
+
+            var lr = left.RightChild;
+            lr.Value.ShouldBe(40);
+            lr.LeftChild.Value.ShouldBe(30);
+            lr.RightChild.ShouldBeNull();
+            lr.Parent.Value.ShouldBe(20);
+            lr.SubtreeSum.ShouldBe(70);
+
+            var final = lr.LeftChild;
+            final.Value.ShouldBe(30);
+            final.LeftChild.ShouldBeNull();
+            final.RightChild.ShouldBeNull();
+            final.Parent.Value.ShouldBe(40);
+            final.SubtreeSum.ShouldBe(30);
         }
 
         [Test]
@@ -332,7 +493,39 @@ namespace SetWithRangeSums
             program.QueryResults[0].ShouldBe("50");
 
             var root = program.Root;
+            root.Value.ShouldBe(50);
+            root.LeftChild.Value.ShouldBe(40);
+            root.RightChild.ShouldBeNull();
+            root.Parent.ShouldBeNull();
             root.SubtreeSum.ShouldBe(150);
+
+            var left = root.LeftChild;
+            left.Value.ShouldBe(40);
+            left.LeftChild.Value.ShouldBe(30);
+            left.RightChild.ShouldBeNull();
+            left.Parent.Value.ShouldBe(50);
+            left.SubtreeSum.ShouldBe(100);
+
+            var ll = left.LeftChild;
+            ll.Value.ShouldBe(30);
+            ll.LeftChild.Value.ShouldBe(10);
+            ll.RightChild.ShouldBeNull();
+            ll.Parent.Value.ShouldBe(40);
+            ll.SubtreeSum.ShouldBe(60);
+
+            var final = ll.LeftChild;
+            final.Value.ShouldBe(10);
+            final.LeftChild.ShouldBeNull();
+            final.RightChild.Value.ShouldBe(20);
+            final.Parent.Value.ShouldBe(30);
+            final.SubtreeSum.ShouldBe(30);
+
+            var aFin = final.RightChild;
+            aFin.Value.ShouldBe(20);
+            aFin.LeftChild.ShouldBeNull();
+            aFin.RightChild.ShouldBeNull();
+            aFin.Parent.Value.ShouldBe(10);
+            aFin.SubtreeSum.ShouldBe(20);
         }
 
         [Test]
@@ -353,41 +546,47 @@ namespace SetWithRangeSums
             program.QueryResults[0].ShouldBe("0");
 
             var root = program.Root;
+            root.Value.ShouldBe(50);
+            root.LeftChild.Value.ShouldBe(40);
+            root.RightChild.ShouldBeNull();
+            root.Parent.ShouldBeNull();
             root.SubtreeSum.ShouldBe(150);
+
+            var left = root.LeftChild;
+            left.Value.ShouldBe(40);
+            left.LeftChild.Value.ShouldBe(30);
+            left.RightChild.ShouldBeNull();
+            left.Parent.Value.ShouldBe(50);
+            left.SubtreeSum.ShouldBe(100);
+
+            var ll = left.LeftChild;
+            ll.Value.ShouldBe(30);
+            ll.LeftChild.Value.ShouldBe(10);
+            ll.RightChild.ShouldBeNull();
+            ll.Parent.Value.ShouldBe(40);
+            ll.SubtreeSum.ShouldBe(60);
+
+            var final = ll.LeftChild;
+            final.Value.ShouldBe(10);
+            final.LeftChild.ShouldBeNull();
+            final.RightChild.Value.ShouldBe(20);
+            final.Parent.Value.ShouldBe(30);
+            final.SubtreeSum.ShouldBe(30);
+
+            var aFin = final.RightChild;
+            aFin.Value.ShouldBe(20);
+            aFin.LeftChild.ShouldBeNull();
+            aFin.RightChild.ShouldBeNull();
+            aFin.Parent.Value.ShouldBe(10);
+            aFin.SubtreeSum.ShouldBe(20);
         }
-
-        //[Test]
-        //public void MergeBug()
-        //{
-        //    var program = new Program();
-
-        //    // left tree
-        //    var leftRoot = new TreeNode(10, null, null, null, 45);
-        //    var leftRight = new TreeNode(15, null, null, leftRoot, 35);
-        //    var leftRightLeft = new TreeNode(20, null, null, leftRight, 20);
-        //    leftRoot.RightChild = leftRight;
-        //    leftRight.RightChild = leftRightLeft;
-
-        //    program.Root = leftRoot;
-
-        //    // right tree
-        //    var rightRoot = new TreeNode(100, null, null, null, 250);
-        //    var rightRight = new TreeNode(150, null, null, rightRoot, 150);
-        //    rightRoot.RightChild = rightRight;
-
-        //    var root = program.Merge(leftRight, rightRoot);
-
-        //    root.Value.ShouldBe(100);
-        //    root.RightChild.Value.ShouldBe(150);
-        //    root.LeftChild.Value.ShouldBe(10);
-        //}
 
         [Test]
         //[Ignore]
         public void Problem_Twenty()
         {
             var program = new Program();
-
+#region
             program.Queries.Add(new QueryTriple("s", 40279559, 89162572)); // 0
             program.Queries.Add(new QueryTriple("-", 774613289)); // - 
             program.Queries.Add(new QueryTriple("s", 869592654, 915517087)); // 0
@@ -479,11 +678,12 @@ namespace SetWithRangeSums
             program.Queries.Add(new QueryTriple("?", 500171144));
             program.Queries.Add(new QueryTriple("-", 239436034));
             program.Queries.Add(new QueryTriple("+", 556867643));
-            program.Queries.Add(new QueryTriple("?", 992422786));
-            program.Queries.Add(new QueryTriple("+", 720003678));
-            program.Queries.Add(new QueryTriple("s", 220110584, 268880636));
-            program.Queries.Add(new QueryTriple("s", 31190791, 997548180));
-            program.Queries.Add(new QueryTriple("s", 898610232, 383552107));
+#endregion
+            program.Queries.Add(new QueryTriple("?", 992422786));  
+            program.Queries.Add(new QueryTriple("+", 720003678)); // GOOD STATE
+            program.Queries.Add(new QueryTriple("s", 220110584, 268880636)); // GOOD STATE
+            program.Queries.Add(new QueryTriple("s", 31190791, 997548180)); // GOOD STATE
+            program.Queries.Add(new QueryTriple("s", 898610232, 383552107)); // ? 601 pointing at wrong parent
             program.Queries.Add(new QueryTriple("-", 682670734));
             program.Queries.Add(new QueryTriple("+", 547596765));
             program.Queries.Add(new QueryTriple("s", 496810115, 875859347)); // stack overflow...?
@@ -553,7 +753,7 @@ namespace SetWithRangeSums
             program.QueryResults[56].ShouldBe("0           ".TrimEnd(' '));
             program.QueryResults[57].ShouldBe("4220898514  ".TrimEnd(' '));
             program.QueryResults[58].ShouldBe("1565728674  ".TrimEnd(' '));
-            //program.QueryResults[59].ShouldBe("829624590   ".TrimEnd(' '));
+            program.QueryResults[59].ShouldBe("829624590   ".TrimEnd(' '));
             //program.QueryResults[60].ShouldBe("Found       ".TrimEnd(' '));
         }
 
@@ -1792,7 +1992,7 @@ namespace SetWithRangeSums
         }
 
         [Test]
-        public void Zig_Zag_Left_GransparentIsRoot_ParentAndGrandparentWithChild()
+        public void Zig_Zag_Left_GransparentIsNotRoot_ParentAndGrandparentWithChild()
         {
             var program = new Program();
 
@@ -1808,37 +2008,67 @@ namespace SetWithRangeSums
             var grandparentRightChild = new TreeNode(25, null, null, grandparent, 25);
             grandparent.RightChild = grandparentRightChild;
 
+            var greatGrandparent = new TreeNode(18, null, grandparent, null, 1992);
+            grandparent.Parent = greatGrandparent;
+            program.Root = greatGrandparent;
+
+            var greatGrandparentRightChild = new TreeNode(1000, null, null, greatGrandparent, 1900);
+            greatGrandparent.RightChild = greatGrandparentRightChild;
+
+            var greatGrandparentRightLeftChild = new TreeNode(900, null, null, greatGrandparentRightChild, 900);
+            greatGrandparentRightChild.LeftChild = greatGrandparentRightLeftChild;
+
             program.ZigZagLeft(splay);
 
             splay.Value.ShouldBe(15);
-            splay.LeftChild.Value.ShouldBe(parent.Value);
-            splay.RightChild.Value.ShouldBe(grandparent.Value);
-            splay.Parent.ShouldBeNull();
+            splay.LeftChild.Value.ShouldBe(10);
+            splay.RightChild.Value.ShouldBe(20);
+            splay.Parent.Value.ShouldBe(18);
             splay.SubtreeSum.ShouldBe(74);
 
             parent.Value.ShouldBe(10);
-            parent.LeftChild.Value.ShouldBe(parentLeftChild.Value);
+            parent.LeftChild.Value.ShouldBe(4);
             parent.RightChild.ShouldBeNull();
-            parent.Parent.Value.ShouldBe(splay.Value);
+            parent.Parent.Value.ShouldBe(15);
             parent.SubtreeSum.ShouldBe(14);
 
             parentLeftChild.Value.ShouldBe(4);
             parentLeftChild.LeftChild.ShouldBeNull();
             parentLeftChild.RightChild.ShouldBeNull();
-            parentLeftChild.Parent.Value.ShouldBe(parent.Value);
+            parentLeftChild.Parent.Value.ShouldBe(10);
             parentLeftChild.SubtreeSum.ShouldBe(4);
 
             grandparent.Value.ShouldBe(20);
             grandparent.LeftChild.ShouldBeNull();
-            grandparent.RightChild.Value.ShouldBe(grandparentRightChild.Value);
-            grandparent.Parent.Value.ShouldBe(splay.Value);
+            grandparent.RightChild.Value.ShouldBe(25);
+            grandparent.Parent.Value.ShouldBe(15);
             grandparent.SubtreeSum.ShouldBe(45);
 
             grandparentRightChild.Value.ShouldBe(25);
             grandparentRightChild.LeftChild.ShouldBeNull();
             grandparentRightChild.RightChild.ShouldBeNull();
-            grandparentRightChild.Parent.Value.ShouldBe(grandparent.Value);
+            grandparentRightChild.Parent.Value.ShouldBe(20);
             grandparentRightChild.SubtreeSum.ShouldBe(25);
+
+            greatGrandparent.Value.ShouldBe(18);
+            greatGrandparent.LeftChild.ShouldBeNull();
+            greatGrandparent.RightChild.Value.ShouldBe(15);
+            greatGrandparent.Parent.ShouldBeNull();
+            greatGrandparent.SubtreeSum.ShouldBe(1992);
+
+            greatGrandparentRightChild.Value.ShouldBe(1000);
+            greatGrandparentRightChild.LeftChild.Value.ShouldBe(900);
+            greatGrandparentRightChild.RightChild.ShouldBeNull();
+            greatGrandparentRightChild.Parent.Value.ShouldBe(18);
+            greatGrandparentRightChild.SubtreeSum.ShouldBe(1900);
+
+            greatGrandparentRightLeftChild.Value.ShouldBe(900);
+            greatGrandparentRightLeftChild.LeftChild.ShouldBeNull();
+            greatGrandparentRightLeftChild.RightChild.ShouldBeNull();
+            greatGrandparentRightLeftChild.Parent.Value.ShouldBe(1000);
+            greatGrandparentRightLeftChild.SubtreeSum.ShouldBe(900);
+
+            program.Root.Value.ShouldBe(18);
         }
 
         [Test]
