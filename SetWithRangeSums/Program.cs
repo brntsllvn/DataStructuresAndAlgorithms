@@ -1,4 +1,5 @@
-﻿using System;
+//https://ideone.com/aQgEpF
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
