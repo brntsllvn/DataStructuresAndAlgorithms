@@ -8,6 +8,20 @@ namespace SetWithRangeSums
     [TestFixture]
     class Problem36
     {
+        //[Test]
+        //public void LargeInput()
+        //{
+        //    var program = new Program();
+
+        //    for (int i = 1; i <= 1000000; i++)
+        //        program.Queries.Add(new QueryTriple("?", i));
+
+        //    program.ExecuteQueries();
+
+        //    for (int i = 0; i < 1000000; i++)
+        //        program.QueryResults[i].ShouldBe("Not found");
+        //}
+
         [Test]
         public void Find_1()
         {
